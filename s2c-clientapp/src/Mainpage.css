@@ -1,20 +1,19 @@
-.Mainpage-header {
-    background-color: #282c34;
-    min-height: 200vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(80px + 7vmin);
-    color: white;
-  }
 
-  .Login-BTN {
-    background-color: black;
-    color: white;
-    font-size: 20px;
-    padding: 10px 60px;
-    border-radius: 5px;
-    margin: 10px 0px;
+  .mainheading {
+    background-color: rgb(68, 162, 199);
+    color: rgb(18, 86, 126);
+    font-size: 25px;
+    padding: 5px 20px;
     cursor: pointer;
+  }
+  
+  .LoginButton {
+    background-color: rgb(68, 162, 199);
+    color: rgb(18, 86, 126);
+    font-size: 20px;
+    border: none;
+    padding: 8px 20px;
+    cursor: pointer;
+    display: inline-block;
+    margin: 0px 0px;
   }

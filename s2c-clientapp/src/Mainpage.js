@@ -2,22 +2,15 @@
 import React from 'react';
 import './Mainpage.css';
 
-/*
-class Button extends React.Component{
-  render() {
-    <div className="Mainpage">
-       <header className="MainHeader">
-        Sketch 2 Circuit
-        </header>
-        <button className="Login-BTN">
-         LOGIN
-        </button>
-      </div>
-  }
-}
-*/
 
 class Mainpage extends React.Component{
-  return <h1>Hello, {props.name}</h1>;
-
+  render() {
+    return(
+      <div>
+        <p1 className="mainheading">Sketch To Circuit</p1>
+        <button className="LoginButton">Login</button>
+      </div>
+    ) 
+  }
+}
 export default Mainpage;
