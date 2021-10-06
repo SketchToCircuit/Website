@@ -1,0 +1,20 @@
+.Mainpage-header {
+    background-color: #282c34;
+    min-height: 200vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(80px + 7vmin);
+    color: white;
+  }
+
+  .Login-BTN {
+    background-color: black;
+    color: white;
+    font-size: 20px;
+    padding: 10px 60px;
+    border-radius: 5px;
+    margin: 10px 0px;
+    cursor: pointer;
+  }
