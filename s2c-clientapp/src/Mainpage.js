@@ -2,6 +2,7 @@
 import React from 'react';
 import './Mainpage.css';
 
+/*
 class Button extends React.Component{
   render() {
     <div className="Mainpage">
@@ -14,9 +15,9 @@ class Button extends React.Component{
       </div>
   }
 }
+*/
 
 class Mainpage extends React.Component{
-    return( <Button />);
-}
+  return <h1>Hello, {props.name}</h1>;
 
 export default Mainpage;
