@@ -2,27 +2,28 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Mainpage from './Mainpage'
+import Login from './Login'
 
 import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 
 const App = () => {
     return (
         <Router>
-            <div class="topnav">
-                <a class="HomeLink" href="/">SketchtoCircuit</a>
-                <a href="/Login">Login</a>
-                <a href="/About">About</a>
-            </div>
-            
+            <nav class="topnav">
+                <Link to="/Home" className='home-link'>SketchtoCircuit</Link>
+                <Link to="/Login">Login</Link>
+                <Link to="/About">About</Link>
+            </nav>
+
             <Switch>
-                <Route path="/about">
-                    <h1>About</h1>
+                <Route path="/Home">
+                    <h1>Aboutiiiiiii</h1>
                 </Route>
-                <Route path="/users">
-                    <h1>Users</h1>
+                <Route path="/Login">
+                    <Login />
                 </Route>
-                <Route path="/">
-                    <Mainpage/>
+                <Route path="/About">
+                    {/*Platzhalter About*/}
                 </Route>
             </Switch>
         </Router>
