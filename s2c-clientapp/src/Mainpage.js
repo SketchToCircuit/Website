@@ -4,7 +4,8 @@ import './Mainpage.css';
 
 class Mainpage extends React.Component{
     render() {
-      return <h2>Hi, I am a Car!</h2>;
+      return <h2>Home</h2>;
     }
   }
+  
 export default Mainpage;

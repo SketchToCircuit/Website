@@ -1,14 +1,16 @@
 import React from 'react';
 import './About.css';
 
-
-
 class About extends React.Component{
     render() {
-        const aboutText = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
+        const aboutText = "\
+        We - Tim Brunner, Sebastian Pfusterer, Patrick Ziegler - are a small team interested in AI-Development.\r\n\
+        This site is used to help us gather trainingsdata for our thesis: SketchToCircuit\r\n\
+        The goal of SketchToCircuit is to easily convert sketches of electronic circuits to a format understandable by simulation software and are easy to render.";
+
         return (
             <div>
-                <h1>About</h1>
+                <h1>About Us</h1>
                 <p>{aboutText}</p>
             </div>
         );
