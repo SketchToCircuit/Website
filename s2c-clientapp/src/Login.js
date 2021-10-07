@@ -9,7 +9,7 @@ class Login extends React.Component {
     render() {
         return (
         <GoogleLogin
-            clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+            clientId="197355798433-msk8hu5u74nlqsba1gf533flb3dkatgv.apps.googleusercontent.com"
             render={renderProps => (
             <button className='login-button' onClick={renderProps.onClick} disabled={renderProps.disabled}>Login via Google</button>
             )}

@@ -18,7 +18,7 @@ const App = () => {
 
             <Switch>
                 <Route path="/Home">
-                    <h1>Aboutiiiiiii</h1>
+                    <Mainpage />
                 </Route>
                 <Route path="/Login">
                     <Login />
