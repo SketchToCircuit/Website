@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import Mainpage from './Mainpage'
 import Login from './Login'
+import About from './About'
 
 import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 
@@ -23,7 +24,7 @@ const App = () => {
                     <Login />
                 </Route>
                 <Route path="/About">
-                    {/*Platzhalter About*/}
+                    <About />
                 </Route>
             </Switch>
         </Router>
