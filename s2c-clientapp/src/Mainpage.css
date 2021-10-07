@@ -1,4 +1,4 @@
-
+/*
   .mainheading {
     background-color: rgb(68, 162, 199);
     color: rgb(18, 86, 126);
@@ -16,4 +16,9 @@
     cursor: pointer;
     display: inline-block;
     margin: 0px 0px;
+  }
+  */
+  .topnav {
+    background-color: var(--red);
+    overflow: hidden;
   }
