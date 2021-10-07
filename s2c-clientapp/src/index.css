@@ -41,9 +41,16 @@ code {
   color: white;
 }
 
-.home-link{
+.home-link {
   background-color: #147af0;
   color: white;
 }
 
-
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+}
