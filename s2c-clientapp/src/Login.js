@@ -10,17 +10,17 @@ const clientId = '406203004756-j13sirg99go7roat5eqmecn5ue8ahld9.apps.googleuserc
 class Login extends React.Component {
     render() {
         return (
-        <GoogleLogin
+            <GoogleLogin
             clientId={clientId}
             render={renderProps => (
-            <button className='login-button' onClick={renderProps.onClick} disabled={renderProps.disabled}>Login via Google</button>
-            )}
+            <button
+                className='login-button'
+                onClick={renderProps.onClick}
+                disabled={renderProps.disabled}>Login via Google</button>)}
             buttonText="Login"
             onSuccess={responseGoogle}
             onFailure={responseGoogle}
-            cookiePolicy={'single_host_origin'}/>
-        )
-
+            cookiePolicy={'single_host_origin'}/>)
     }
 }
 export default Login;
