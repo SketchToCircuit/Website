@@ -14,7 +14,7 @@ const App = () => {
         <div>
             <Router>
                 <nav className="topnav">
-                    <NavLink activeStyle={{textShadow: "0px 0px 2px" }} exact to="/" className='home-link'>SketchtoCircuit</NavLink>
+                    <NavLink activeStyle={{textShadow: "0px 0px 2px" }} exact to="/" className='home-link'>SketchToCircuit</NavLink>
                     <NavLink activeStyle={{textShadow: "0px 0px 2px" }} to="/About">About</NavLink>
                 </nav>
 
@@ -26,7 +26,7 @@ const App = () => {
             </Router>
 
             <footer>
-                Fußzeile
+                <a>AGB</a>
             </footer>
         </div>
     );

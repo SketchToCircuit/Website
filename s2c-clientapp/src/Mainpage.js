@@ -2,6 +2,7 @@ import React from 'react';
 import './Mainpage.css';
 import Login from './Login'
 import Validation from './Validation';
+import Draw from './Draw'
 
 class Mainpage extends React.Component {
     constructor(props) {
@@ -66,6 +67,8 @@ class Mainpage extends React.Component {
             return <Login ws={this.state.ws}/>;
         } else if (this.state.validate) {
             return <Validation ws={this.state.ws}/>
+        }else if (this.state.draw) {
+            return <Draw ws={this.state.ws} />
         }
     }
 }
