@@ -8,16 +8,16 @@ import Login from './Login'
 import About from './About'
 import NotFound from './NotFound'
 
-import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route, NavLink} from "react-router-dom";
 
 const App = () => {
     return (
         <div>
             <Router>
-                <nav class="topnav">
-                    <Link to="/" className='home-link'>SketchtoCircuit</Link>
-                    <Link to="/Login">Login</Link>
-                    <Link to="/About">About</Link>
+                <nav className="topnav">
+                    <NavLink activeStyle={{textShadow: "0px 0px 2px" }} exact to="/" className='home-link'>SketchtoCircuit</NavLink>
+                    <NavLink activeStyle={{textShadow: "0px 0px 2px" }} to="/Login">Login</NavLink>
+                    <NavLink activeStyle={{textShadow: "0px 0px 2px" }} to="/About">About</NavLink>
                 </nav>
 
                 <Switch>

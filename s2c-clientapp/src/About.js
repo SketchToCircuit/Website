@@ -1,7 +1,7 @@
 import React from 'react';
 import './About.css';
 
-class About extends React.Component{
+class About extends React.Component {
     render() {
         const aboutText = "\
         We - Tim Brunner, Sebastian Pfusterer, Patrick Ziegler - are a small team interested in AI-Development.\r\n\

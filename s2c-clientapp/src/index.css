@@ -36,11 +36,6 @@ code {
   color: black;
 }
 
-.topnav a.active {
-  background-color: #04AA6D;
-  color: white;
-}
-
 .home-link {
   background-color: #147af0;
   color: white;
