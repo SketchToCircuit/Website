@@ -9,6 +9,7 @@ const HttpsServer = require('https');
 
 
   wss.on('connection', function connection(ws, req) {
+    console.log(`Connection from ${req.socket.remoteAddress} with id ${count}`);
     clients.set(ws, count);
     count = count + 1;
     ws.send('something');
@@ -22,7 +23,11 @@ const HttpsServer = require('https');
 
 function receiveData(data, ws)
 {
-  PacketHandler(JSON.parse(data), ws);
+  try
+  {
+    var json = JSON.parse(data);
+  }catch{return;}
+  PacketHandler(json, ws);
 }
 
 function PacketHandler(data, ws)
