@@ -12,17 +12,34 @@ const HttpsServer = require('https');
     clients.set(ws, count);
     count = count + 1;
     ws.send('something');
-    ws.on('message', function incoming(message) {
-      console.log('received: %s', message);
+    ws.on('message', function incoming(data) {
+      receiveData(data, ws)
     });
     ws.on('close', () => {
       clients.delete(ws);
     })
   });
 
+function receiveData(data, ws)
+{
+  PacketHandler(JSON.parse(data), ws);
+}
+
+function PacketHandler(data, ws)
+{
+  switch(data.PacketID)
+  {
+    case '1' : 
+    //Handle Data Function
+    break;
+    default:
+      //ErrorHandling
+  }
+}
 
 function sendData(data, ws) // Send Json data to User
 {
   ws.send(JSON.stringify(data));
 }
+
 console.log("Wss startet");
