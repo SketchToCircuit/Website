@@ -66,7 +66,7 @@ function PacketHandler(data, ws)
   {
     case '2' : 
       sendData('{"AuthTicket":"ABABABABABABABAB","PacketId":"1","Data":{"Test":"1"}}', ws);
-    //Handle Data Function
+    //Handle Data
     break;
     default:
       //ErrorHandling
