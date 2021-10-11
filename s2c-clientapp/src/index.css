@@ -3,6 +3,10 @@
   --sec-background: rgb(41, 90, 131);
 }
 
+.bg{
+  background-image: linear-gradient(110deg, #5ed3f7, #770ece);
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -46,6 +50,7 @@ footer {
   left: 0;
   bottom: 0;
   width: 100%;
+  height: 20px;
   padding: 10px;
   text-align: center;
 }

@@ -11,7 +11,8 @@ class Mainpage extends React.Component {
         this.state = {
             ws: null,
             login: false,   // only temporarly, login detection will get implemented later
-            validate: true  // only temporarly
+            validate: false,
+            draw: true  // only temporarly
         };
     }
 
