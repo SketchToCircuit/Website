@@ -1,0 +1,15 @@
+{
+  "AuthTicket": "ABABABABABABABAB",
+  "PacketId": "1",
+  "Data": {
+    "token": "Google ID"
+  }
+}
+
+{
+  "AuthTicket": "ABABABABABABABAB",
+  "PacketId": "2",
+  "Data": {
+    "?": "?"
+  }
+}
