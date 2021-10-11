@@ -1,5 +1,5 @@
 {
-  "AuthTicket": "ABABABABABABABAB",
+  "AuthTicket": "16 Characters?",
   "PacketId": "1",
   "Data": {
     "token": "Google ID"
@@ -7,7 +7,7 @@
 }
 
 {
-  "AuthTicket": "ABABABABABABABAB",
+  "AuthTicket": "16 Characters?",
   "PacketId": "2",
   "Data": {
     "?": "?"
