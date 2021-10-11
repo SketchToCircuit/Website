@@ -36,10 +36,11 @@ let server = https.createServer(options , (req, res) => {
     ws.on('message', function incoming(data) {
       PacketHandler(data, ws);
     });
+    
     ws.on('close', () => {
-      clients.delete(ws);
+        clients.delete(ws);
     })
-  });
+});
 
 function PacketHandler(data, ws)
 {
