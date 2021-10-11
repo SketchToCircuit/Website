@@ -1,10 +1,10 @@
 const WS = require('ws');
 const HttpsServer = require('https');
 
-//const httpsServer = HttpsServer.createServer({
-//});
+//const httpsServer = HttpsServer.createServer({ 
+//}); // Will be changed to a HTTPS server for Wss secutity
   var count = 1;
-  const wss = new WS.WebSocketServer({ port: 3000 }); //Open WebsocketServer
+  const wss = new WS.WebSocketServer({ port: 3001 }); //Open WebsocketServer
   const clients = new Map(); //Map to store ws instances
 
 
