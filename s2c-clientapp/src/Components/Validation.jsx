@@ -1,5 +1,6 @@
 import React from 'react';
-import './Validation.css';
+
+import '../Styles/Validation.css';
 
 class Validation extends React.Component {
     // Access websocket here with "this.props.ws"

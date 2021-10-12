@@ -1,5 +1,5 @@
 import React from 'react';
-import './About.css';
+import '../Styles/About.css';
 
 class About extends React.Component {
     render() {
@@ -9,7 +9,7 @@ class About extends React.Component {
         The goal of SketchToCircuit is to easily convert sketches of electronic circuits to a format understandable by simulation software and are easy to render.";
 
         return (
-            <div>
+            <div className='about'>
                 <h1>About Us</h1>
                 <p>{aboutText}</p>
             </div>

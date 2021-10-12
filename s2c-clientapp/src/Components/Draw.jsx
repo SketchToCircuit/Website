@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from "react-dom";
-import './Draw.css';
+import '../Styles/Draw.css';
 import CanvasDraw from "react-canvas-draw";
 ReactDOM.render(
 <CanvasDraw/>, document.getElementById("root"));

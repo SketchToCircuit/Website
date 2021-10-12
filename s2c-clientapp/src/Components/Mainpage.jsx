@@ -1,5 +1,5 @@
 import React from 'react';
-import './Mainpage.css';
+
 import Loginpage from './Loginpage'
 import Validation from './Validation';
 import Draw from './Draw'

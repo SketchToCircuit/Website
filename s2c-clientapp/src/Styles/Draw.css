@@ -1,6 +1,6 @@
 
  /*
-  html {
+  .draw html {
     font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
       "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     font-weight: 900;
@@ -10,25 +10,25 @@
   }
   */
   /*
-  body {
+  .draw body {
     background-image: linear-gradient(110deg, #5ed3f7, #6d47d9);
     margin: 50px;
     background-position: fixed;
   }
   */
  /* 
-  span {
+  .draw span {
     background-color: darkgrey;
     padding: 0.3rem;
     font-size: 0.8em;
     font-family: monospace;
   }
   
-  p {
+  .draw p {
     line-height: 1.6em;
   }
   
-  .tools {
+  .draw .tools {
     display: flex;
     justify-content: space-between;
     width: 400px;

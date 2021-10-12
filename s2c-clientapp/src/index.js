@@ -1,15 +1,13 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter as Router, Switch, Route, NavLink} from "react-router-dom";
 
 import './index.css';
 
-import Mainpage from './Mainpage'
-import About from './About'
-import NotFound from './NotFound'
-
+import Mainpage from './Components/Mainpage'
+import About from './Components/About'
+import NotFound from './Components/NotFound'
 import Logout from './Components/Logout'
-
-import {BrowserRouter as Router, Switch, Route, NavLink} from "react-router-dom";
 
 const App = () => {
     const [loggedIn, setLoggedIn] = useState(false);
