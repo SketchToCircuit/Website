@@ -2,7 +2,7 @@
   "AuthTicket": "16 Characters?",
   "PacketId": "1",
   "Data": {
-    "token": "Google ID"
+    "token": "tokenId"
   }
 }
 
