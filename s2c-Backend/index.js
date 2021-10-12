@@ -20,12 +20,11 @@ let server = https.createServer(options , (req, res) => {
   res.end("Websocket EndPoint\n");
 }).listen(config.serverSettings.port); //Create Https Server
 
-  var count = 1;
-  const wss = new WS.Server({server}); //Create WebSocketServer with the Https server
-  const clients = new Map(); //Map to store ws instances
+var count = 1;
+const wss = new WS.Server({server}); //Create WebSocketServer with the Https server
+const clients = new Map(); //Map to store ws instances
 
-
-  wss.on('connection', function connection(ws, req) {
+wss.on('connection', function connection(ws, req) {
     console.log(`Connection from ${req.socket.remoteAddress} with id ${count}`);
     var userObjet = new Object;
     userObjet.google = "";
@@ -36,9 +35,9 @@ let server = https.createServer(options , (req, res) => {
     clients.set(ws, userObjet);
 
     ws.on('message', function incoming(data) {
-      PacketHandler(data, ws);
+        PacketHandler(data, ws);
     });
-    
+
     ws.on('close', () => {
         clients.delete(ws);
     })
@@ -75,17 +74,14 @@ function PacketHandler(data, ws)
   }
 }
 
-function sendData(data, ws) // Send Json data to User
-{
-  if(ws.readyState === WS.OPEN)
-  {
-    ws.send(JSON.stringify(data));
-  }
+function sendData(data, ws) { // Send Json data to User
+    if (ws.readyState === WS.OPEN) {
+        ws.send(JSON.stringify(data));
+    }
 }
 
-function checkAuthTicket(authTicket)
-{
-  return true;
+function checkAuthTicket(authTicket) {
+    return true;
 }
 async function verifyGoogleToken(token) //Google verify token
 {
