@@ -13,7 +13,7 @@ class Mainpage extends React.Component {
         this.state = {
             ws: null,
             validationData: null,    // Data for validation of images from websocket
-            displayPage: ChildComponentEnum.Login // what site should be displayed
+            displayPage: ChildComponentEnum.Draw // what site should be displayed
         };
     }
 
