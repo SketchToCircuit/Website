@@ -4,15 +4,16 @@ import Login from './Login'
 import Validation from './Validation';
 import Draw from './Draw'
 
+const ChildComponentEnum = Object.freeze({Login : 0, Draw : 1, Validation : 2})
+
 class Mainpage extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             ws: null,
-            login: false,   // only temporarly, login detection will get implemented later
-            validate: false,
-            draw: true  // only temporarly
+            validationData: null,    // Data for validation of images from websocket
+            displayPage: ChildComponentEnum.Login // what site should be displayed
         };
     }
 
@@ -21,7 +22,6 @@ class Mainpage extends React.Component {
     }
 
     timeout = 250; // Initial timeout duration as a class variable
-    url = 'ws:/localhost:3000' // Websocket URL
 
     /**
     * @function connect
@@ -29,8 +29,9 @@ class Mainpage extends React.Component {
     */
     connect = () => {
         let that = this; // cache the this
-        var ws = new WebSocket(that.url);
-        var connectInterval;
+        const url = 'wss:/' + window.location.hostname + ':3001';
+        let ws = new WebSocket(url);
+        let connectInterval;
 
         // websocket onopen event listener
         ws.onopen = () => {
@@ -43,7 +44,7 @@ class Mainpage extends React.Component {
         // websocket onclose event listener
         ws.onclose = e => {
             console.log(`Socket is closed. Reconnect will be attempted in ${Math.min(10000 / 1000, (that.timeout + that.timeout) / 1000)} second.`, e.reason);
-            that.timeout = that.timeout + that.timeout; //increment retry interval
+            that.timeout *= 2; //increment retry interval
             connectInterval = setTimeout(this.check, Math.min(10000, that.timeout)); //call check function after timeout
         };
 
@@ -52,6 +53,9 @@ class Mainpage extends React.Component {
             console.error("Socket encountered error: ", err.message, "Closing socket");
             ws.close();
         };
+
+        // message handler
+        ws.onmessage = this.onWsMessage;
     };
 
     /**
@@ -61,15 +65,32 @@ class Mainpage extends React.Component {
         const {ws} = this.state;
         if (!ws || ws.readyState === WebSocket.CLOSED) 
             this.connect(); //check if websocket instance is closed, if so call `connect` function.
-        };
+    };
     
+    /**
+    * handles messages from websocket
+    */
+   onWsMessage = (event) => {
+       const wsData = JSON.parse(event.data);
+       try {
+        if (wsData.data.type === 'VALIDATION') {
+            this.setState({
+                validationData: wsData.data,
+                displayPage: ChildComponentEnum.Validation
+            });
+        }
+       } catch (error) {
+           console.log("Error in Websocket-Message");
+       }
+   };
+
     render() {
-        if (this.state.login) {
-            return <Login ws={this.state.ws}/>;
-        } else if (this.state.validate) {
-            return <Validation ws={this.state.ws}/>
-        }else if (this.state.draw) {
-            return <Draw ws={this.state.ws} />
+        if (this.state.displayPage === ChildComponentEnum.Login) {
+            return <Login ws={this.state.ws} wsData={null}/>;
+        } else if (this.state.displayPage === ChildComponentEnum.Validation) {
+            return <Validation ws={this.state.ws} wsData={this.state.validationData}/>
+        } else if (this.state.displayPage === ChildComponentEnum.Draw) {
+            return <Draw ws={this.state.ws} wsData={null}/>
         }
     }
 }
