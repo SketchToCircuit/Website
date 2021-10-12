@@ -16,7 +16,7 @@ const options = {
 } //Load auth
 
 let server = https.createServer(options , (req, res) => {
-  res.writeHead(200);
+  res.writeHead(401);
   res.end("Websocket EndPoint\n");
 }).listen(config.serverSettings.port); //Create Https Server
 
@@ -26,14 +26,9 @@ const clients = new Map(); //Map to store ws instances
 
 wss.on('connection', function connection(ws, req) {
     console.log(`Connection from ${req.socket.remoteAddress} with id ${count}`);
-    var userObjet = new Object;
-    userObjet.google = "";
-    userObjet.count = count;
-    userObjet.isAuth = false;
-    userObjet.status = {};
+    var userObject = new UserObject(count);
     count = count + 1;
-    clients.set(ws, userObjet);
-
+    clients.set(ws, userObject);
     ws.on('message', function incoming(data) {
         PacketHandler(data, ws);
     });
@@ -57,6 +52,7 @@ function PacketHandler(data, ws)
     if(!checkAuthTicket(data.AuthTicket)) return;
     verifyGoogleToken(data.Data.token)
     .then((payload) => {
+      clients.get(ws).AuthTicket = data.AuthTicket;
       clients.get(ws).google = payload;
       clients.get(ws).isAuth = true;
     })
@@ -68,7 +64,7 @@ function PacketHandler(data, ws)
     case '2' :
     //Database Access for User data <----------------
     var userScore = 16;
-      sendData(`{"AuthTicket":"16 Characters?","PacketId":"1","Data":{"avatar":"${clients.get(ws).google.picture}","username":"${clients.get(ws).google.name}","points":"16"}}`, ws);
+      sendData(`{"AuthTicket":"${clients.get(ws).AuthTicket}","PacketId":"1","Data":{"avatar":"${clients.get(ws).google.picture}","username":"${clients.get(ws).google.name}","points":"${userScore}"}}`, ws);
     break;
     default:
   }
@@ -91,6 +87,15 @@ async function verifyGoogleToken(token) //Google verify token
   });
   const payload = ticket.getPayload();
   return payload;
+}
+
+function UserObject(id)
+{
+  this.AuthTicket = "";
+  this.count = id;
+  this.isAuth = false;
+  this.google = undefined;
+  this.status = {};
 }
 
 console.log("Wss startet");
