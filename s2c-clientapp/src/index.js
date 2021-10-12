@@ -11,7 +11,7 @@ import {BrowserRouter as Router, Switch, Route, NavLink} from "react-router-dom"
 
 const App = () => {
     return (
-        <div className="bg">
+        <div>
             <Router>
                 <nav className="topnav">
                     <NavLink activeStyle={{textShadow: "0px 0px 2px" }} exact to="/" className='home-link'>SketchToCircuit</NavLink>
