@@ -4,20 +4,21 @@ const https = require('https');
 const path = require('path');
 const {OAuth2Client} = require('google-auth-library');
 
-//Heartbeat needs to be done
+const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'setup.cfg')));
 
-const o2id = '197355798433-msk8hu5u74nlqsba1gf533flb3dkatgv.apps.googleusercontent.com'
-const o2Client = new OAuth2Client(o2id);
+//Heartbeat needs to be done <------------
 
-const options = {
-    key: fs.readFileSync(path.join(__dirname, '/priv/selfsigned.key')),
-    cert: fs.readFileSync(path.join(__dirname, '/priv/selfsigned.crt'))
+const o2Client = new OAuth2Client(config.serverSettings.o2Id);
+
+const options = { 
+  key : fs.readFileSync(path.join(__dirname , config.ssl.keyLocation)),
+  cert : fs.readFileSync(path.join(__dirname , config.ssl.certLocation))
 } //Load auth
 
-let server = https.createServer(options, (req, res) => {
-    res.writeHead(200);
-    res.end("Websocket EndPoint\n");
-}).listen(3001); //Create Https Server
+let server = https.createServer(options , (req, res) => {
+  res.writeHead(401);
+  res.end("Websocket EndPoint\n");
+}).listen(config.serverSettings.port); //Create Https Server
 
 var count = 1;
 const wss = new WS.Server({server}); //Create WebSocketServer with the Https server
@@ -25,13 +26,9 @@ const clients = new Map(); //Map to store ws instances
 
 wss.on('connection', function connection(ws, req) {
     console.log(`Connection from ${req.socket.remoteAddress} with id ${count}`);
-    var userObjet = new Object;
-    userObjet.googleId = "";
-    userObjet.count = count;
+    var userObject = new UserObject(count);
     count = count + 1;
-    userObjet.isAuth = false;
-    clients.set(ws, userObjet);
-
+    clients.set(ws, userObject);
     ws.on('message', function incoming(data) {
         PacketHandler(data, ws);
     });
@@ -41,43 +38,36 @@ wss.on('connection', function connection(ws, req) {
     })
 });
 
-function PacketHandler(data, ws) {
-    try
-    {
-        data = JSON.parse(data);
-    } catch {return;}
-
-    if (data.PacketId == undefined) 
-        return;
-    if (data.PacketId == 1 && clients.get(ws).isAuth != true) { //AuthHandle
-        if (data.AuthTicket == undefined) 
-            return;
-        if (data.Data.token == undefined) 
-            return;
-        if (!checkAuthTicket(data.AuthTicket)) 
-            return;
-        verifyGoogleToken(data.Data.token).then((payload) => {
-            clients
-                .get(ws)
-                .googleId = payload.sub;
-            clients
-                .get(ws)
-                .isAuth = true;
-        }).catch((err) => {/*Log?*/
-        });
-    }
-
-    if (clients.get(ws).isAuth != true) 
-        return;
-    switch (data.PacketId) {
-        case
-            '2':
-            sendData('{"AuthTicket":"ABABABABABABABAB","PacketId":"1","Data":{"Test":"1"}}', ws);
-            //Handle Data
-            break;
-        default:
-            //ErrorHandling
-    }
+function PacketHandler(data, ws)
+{
+  try
+  {
+    data = JSON.parse(data);
+  }catch{return;}
+  if(data.PacketId == undefined) return;
+  if(data.PacketId == 1 && clients.get(ws).isAuth != true)//AuthHandle
+  {
+    if(data.AuthTicket == undefined) return;
+    if(data.Data.token == undefined) return;
+    if(!checkAuthTicket(data.AuthTicket)) return;
+    verifyGoogleToken(data.Data.token)
+    .then((payload) => {
+      clients.get(ws).AuthTicket = data.AuthTicket;
+      clients.get(ws).google = payload;
+      clients.get(ws).isAuth = true;
+    })
+    .catch((err) => {console.log(err)/*Log?*/});
+  }
+  if(clients.get(ws).isAuth != true) return;
+  switch(data.PacketId)
+  {
+    case '2' :
+    //Database Access for User data <----------------
+    var userScore = 16;
+      sendData(`{"AuthTicket":"${clients.get(ws).AuthTicket}","PacketId":"1","Data":{"avatar":"${clients.get(ws).google.picture}","username":"${clients.get(ws).google.name}","points":"${userScore}"}}`, ws);
+    break;
+    default:
+  }
 }
 
 function sendData(data, ws) { // Send Json data to User
@@ -89,11 +79,23 @@ function sendData(data, ws) { // Send Json data to User
 function checkAuthTicket(authTicket) {
     return true;
 }
+async function verifyGoogleToken(token) //Google verify token
+{
+  const ticket = await o2Client.verifyIdToken({
+    idToken : token,
+    audience : config.serverSettings.o2Id
+  });
+  const payload = ticket.getPayload();
+  return payload;
+}
 
-async function verifyGoogleToken(token) { //Google verify tokenconst
-    ticket = await o2Client.verifyIdToken({idToken: token, audience: o2id});
-    constpayload = ticket.getPayload();
-    return payload;
+function UserObject(id)
+{
+  this.AuthTicket = "";
+  this.count = id;
+  this.isAuth = false;
+  this.google = undefined;
+  this.status = {};
 }
 
 console.log("Wss startet");
