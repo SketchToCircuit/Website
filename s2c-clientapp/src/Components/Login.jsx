@@ -2,8 +2,6 @@ import React from 'react';
 import {GoogleLogin} from 'react-google-login';
 import { refreshToken } from '../utils/refreshToken';
 
-const clientID = '406203004756-j13sirg99go7roat5eqmecn5ue8ahld9.apps.googleusercontent.com';
-
 function Login(callback)
 {
     const onSuccess = (res) => {
@@ -18,7 +16,7 @@ function Login(callback)
     return (
         <div>
             <GoogleLogin
-                clientId={clientID}
+                clientId={process.env.REACT_APP_O2ID}
                 buttonText="Login"
                 onSuccess={onSuccess}
                 onFailure={onFailure}
