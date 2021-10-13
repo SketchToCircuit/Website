@@ -7,13 +7,15 @@ const {OAuth2Client} = require('google-auth-library');
 const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'setup.cfg')));
 
 //Heartbeat needs to be done <------------
+//#region
+
 
 const o2Client = new OAuth2Client(config.serverSettings.o2Id);
 
 const options = { 
   key : fs.readFileSync(path.join(__dirname , config.ssl.keyLocation)),
   cert : fs.readFileSync(path.join(__dirname , config.ssl.certLocation))
-} //Load auth
+} //Https ssl options
 
 let server = https.createServer(options , (req, res) => {
   res.writeHead(401);
@@ -61,7 +63,8 @@ function PacketHandler(data, ws)
     case '2' :
     //Database Access for User data <----------------
     var userScore = 16;
-      sendData(`{"PacketId":"1","Data":{"avatar":"${clients.get(ws).google.picture}","username":"${clients.get(ws).google.name}","points":"${userScore}"}}`, ws);
+    console.log(clients.get(ws).google);
+    sendData(`{"PacketId":"1","Data":{"avatar":"${clients.get(ws).google.picture}","username":"${clients.get(ws).google.name}","points":"${userScore}"}}`, ws);
     break;
     default:
   }
@@ -69,7 +72,11 @@ function PacketHandler(data, ws)
 
 function sendData(data, ws) { // Send Json data to User
     if (ws.readyState === WS.OPEN) {
-        ws.send(JSON.stringify(data));
+      try
+      {
+        data = JSON.stringify(data);
+      }catch(err) {console.log("Error while preparing data to send")}
+      ws.send(data);
     }
 }
 
@@ -83,12 +90,15 @@ async function verifyGoogleToken(token) //Google verify token
   return payload;
 }
 
-function UserObject(id)
+class UserObject
 {
-  this.count = id;
-  this.isAuth = false;
-  this.google = undefined;
-  this.status = {};
+  constructor(id)
+  {
+    this.id = id;
+    this.isAuth = false;
+    this.google = undefined;
+    this.status = {};
+  }
 }
 
 console.log("Wss startet");
