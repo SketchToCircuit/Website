@@ -4,29 +4,26 @@ const https = require('https');
 const path = require('path');
 const {OAuth2Client} = require('google-auth-library');
 
-const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'setup.cfg')));
-
-//Heartbeat needs to be done <------------
-//#region
-
+const config = JSON.parse(fs.readFileSync(path.join(__dirname, '../setup.cfg')));
 
 const o2Client = new OAuth2Client(config.serverSettings.o2Id);
 
 const options = { 
-  key : fs.readFileSync(path.join(__dirname , config.ssl.keyLocation)),
-  cert : fs.readFileSync(path.join(__dirname , config.ssl.certLocation))
+  key : fs.readFileSync(path.join(__dirname , "../" + config.ssl.keyLocation)),
+  cert : fs.readFileSync(path.join(__dirname , "../" + config.ssl.certLocation))
 } //Https ssl options
 
 let server = https.createServer(options , (req, res) => {
   res.writeHead(401);
   res.end("Websocket EndPoint\n");
-}).listen(config.serverSettings.port); //Create Https Server
+}).listen(config.serverSettings.backendPort); //Create Https Server
 
 var count = 1;
 const wss = new WS.Server({server}); //Create WebSocketServer with the Https server
 const clients = new Map(); //Map to store ws instances
 
 wss.on('connection', function connection(ws, req) {
+  ws.ping()
     console.log(`Connection from ${req.socket.remoteAddress} with id ${count}`);
     var userObject = new UserObject(count);
     count = count + 1;

@@ -16,8 +16,8 @@
 { //UserData
   "PacketId": "1",
   "Data": {
-    "avatar": "${clients.get(ws).google.picture}",
-    "username": "${clients.get(ws).google.name}",
-    "points": "${userScore}"
+    "avatar": "",
+    "username": "",
+    "points": ""
   }
 }
