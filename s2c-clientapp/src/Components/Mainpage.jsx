@@ -107,11 +107,9 @@ class Mainpage extends React.Component {
             }
 
             const ws = this.state.ws;
-            ws.send(JSON.stringify())
+            ws.send(JSON.stringify(data));
 
-            this
-                .props
-                .loginCallback(res);
+            this.props.loginCallback(res);
         }
     }
 

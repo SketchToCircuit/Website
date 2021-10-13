@@ -51,7 +51,7 @@ function PacketHandler(data, ws)
     .then((payload) => {
       clients.get(ws).google = payload;
       clients.get(ws).isAuth = true;
-      config.log(payload);
+      console.log(payload);
     })
     .catch((err) => {console.log(err)/*Log?*/});
   }
