@@ -1,9 +1,7 @@
 import React from 'react';
-import ReactDOM from "react-dom";
-import '../Styles/Draw.css';
 import CanvasDraw from "react-canvas-draw";
-ReactDOM.render(
-<CanvasDraw/>, document.getElementById("root"));
+
+import '../Styles/Draw.css';
 
 class Draw extends React.Component {
     // Access websocket here with "this.props.ws" or if you need it more often:
