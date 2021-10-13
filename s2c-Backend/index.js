@@ -4,7 +4,7 @@ const https = require('https');
 const path = require('path');
 const {OAuth2Client} = require('google-auth-library');
 
-const config = JSON.parse(fs.readFileSync(path.join(__dirname, '../setup.cfg')));
+const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'setup.cfg')));
 
 const o2Client = new OAuth2Client(config.serverSettings.o2Id);
 
