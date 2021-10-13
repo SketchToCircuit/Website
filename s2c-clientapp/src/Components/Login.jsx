@@ -2,11 +2,11 @@ import React from 'react';
 import {GoogleLogin} from 'react-google-login';
 import { refreshToken } from '../utils/refreshToken';
 
-function Login(callback)
+function Login(props)
 {
     const onSuccess = (res) => {
         refreshToken(res);
-        callback.callback(res);
+        props.callback(res);
     };
 
     const onFailure = (res) => {
