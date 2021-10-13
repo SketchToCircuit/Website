@@ -5,8 +5,9 @@ import '../Styles/Mainpage.css'
 import Loginpage from './Loginpage'
 import Validation from './Validation';
 import Draw from './Draw'
+import StartButton from './StartButton';
 
-const ChildComponentEnum = Object.freeze({Login: 0, Draw: 1, Validation: 2})
+const ChildComponentEnum = Object.freeze({Login: 0, Draw: 1, Validation: 2, StartBtn: 3})
 
 class Mainpage extends React.Component {
     timeout = 250; // Initial timeout duration as a class variable
@@ -34,7 +35,11 @@ class Mainpage extends React.Component {
 
     componentWillUnmount() {
         this.didCloseWs = true;
-        this.state.ws.close();
+        try {
+            this.state.ws.close();   
+        } catch (e) {
+            return;
+        }
     }
 
     /**
@@ -76,6 +81,7 @@ class Mainpage extends React.Component {
         // message handler
         ws.onmessage = (event) => {
             const wsData = JSON.parse(event.data);
+            console.log(wsData);
             try {
                 if (wsData.data.type === 'VALIDATION') {
                     this.setState({validationData: wsData.data, displayPage: ChildComponentEnum.Validation});
@@ -97,7 +103,7 @@ class Mainpage extends React.Component {
 
     loginCallback = (res) => {
         if (res.tokenId !== undefined) {
-            this.setState({displayPage: ChildComponentEnum.Validation});
+            this.setState({displayPage: ChildComponentEnum.StartBtn});
 
             const data = {
                 "PacketId": 1,
@@ -115,18 +121,25 @@ class Mainpage extends React.Component {
 
     render() {
         const {ws} = this.state;
-        if (!ws || ws.readyState === WebSocket.CLOSED) {
-            return <div className='main-page'>
-                <h1 >Websocket Error</h1>
-            </div>;
+        if (!ws || ws.readyState !== WebSocket.OPEN) {
+            if (this.timeout > 250) {
+                return (
+                <div className='main-page'>
+                    <h1>Websocket Error</h1>
+                </div>);
+            } else {
+                return null;
+            }
         }
 
         if (this.state.displayPage === ChildComponentEnum.Login) {
-            return <Loginpage
+            return(<Loginpage
                 ws={this.state.ws}
                 wsData={null}
                 loginCallback={this.loginCallback}
-                config={this.props.config}/>;
+                config={this.props.config}/>);
+        } else if (this.state.displayPage === ChildComponentEnum.StartBtn) {
+            return <StartButton ws={this.state.ws}/>
         } else if (this.state.displayPage === ChildComponentEnum.Validation) {
             return <Validation ws={this.state.ws} wsData={this.state.validationData}/>
         } else if (this.state.displayPage === ChildComponentEnum.Draw) {
