@@ -47,12 +47,9 @@ function PacketHandler(data, ws)
   if(data.PacketId == undefined) return;
   if(data.PacketId == 1 && clients.get(ws).isAuth != true)//AuthHandle
   {
-    if(data.AuthTicket == undefined) return;
     if(data.Data.token == undefined) return;
-    if(!checkAuthTicket(data.AuthTicket)) return;
     verifyGoogleToken(data.Data.token)
     .then((payload) => {
-      clients.get(ws).AuthTicket = data.AuthTicket;
       clients.get(ws).google = payload;
       clients.get(ws).isAuth = true;
     })
@@ -64,7 +61,7 @@ function PacketHandler(data, ws)
     case '2' :
     //Database Access for User data <----------------
     var userScore = 16;
-      sendData(`{"AuthTicket":"${clients.get(ws).AuthTicket}","PacketId":"1","Data":{"avatar":"${clients.get(ws).google.picture}","username":"${clients.get(ws).google.name}","points":"${userScore}"}}`, ws);
+      sendData(`{"PacketId":"1","Data":{"avatar":"${clients.get(ws).google.picture}","username":"${clients.get(ws).google.name}","points":"${userScore}"}}`, ws);
     break;
     default:
   }
@@ -76,9 +73,6 @@ function sendData(data, ws) { // Send Json data to User
     }
 }
 
-function checkAuthTicket(authTicket) {
-    return true;
-}
 async function verifyGoogleToken(token) //Google verify token
 {
   const ticket = await o2Client.verifyIdToken({
@@ -91,7 +85,6 @@ async function verifyGoogleToken(token) //Google verify token
 
 function UserObject(id)
 {
-  this.AuthTicket = "";
   this.count = id;
   this.isAuth = false;
   this.google = undefined;

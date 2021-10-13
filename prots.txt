@@ -1,5 +1,5 @@
-{
-  "AuthTicket": "16 Characters?",
+//Client to server
+{ //Auth
   "PacketId": "1",
   "Data": {
     "token": "Google ID"
@@ -7,9 +7,17 @@
 }
 
 {
-  "AuthTicket": "16 Characters?",
   "PacketId": "2",
   "Data": {
     "?": "?"
+  }
+}
+//Server to Client
+{ //UserData
+  "PacketId": "1",
+  "Data": {
+    "avatar": "${clients.get(ws).google.picture}",
+    "username": "${clients.get(ws).google.name}",
+    "points": "${userScore}"
   }
 }
