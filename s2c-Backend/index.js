@@ -2,100 +2,121 @@ const WS = require('ws');
 const fs = require('fs');
 const https = require('https');
 const path = require('path');
-const {OAuth2Client} = require('google-auth-library');
+const {
+  OAuth2Client
+} = require('google-auth-library');
 
 const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'setup.cfg')));
 
 const o2Client = new OAuth2Client(config.serverSettings.o2Id);
 
-const options = { 
-  key : fs.readFileSync(path.join(__dirname , "../" + config.ssl.keyLocation)),
-  cert : fs.readFileSync(path.join(__dirname , "../" + config.ssl.certLocation))
+const options = {
+  key: fs.readFileSync(path.join(__dirname, "../" + config.ssl.keyLocation)),
+  cert: fs.readFileSync(path.join(__dirname, "../" + config.ssl.certLocation))
 } //Https ssl options
 
-let server = https.createServer(options , (req, res) => {
+let server = https.createServer(options, (req, res) => {
   res.writeHead(401);
   res.end("Websocket EndPoint\n");
 }).listen(config.serverSettings.backendPort); //Create Https Server
 
 var count = 1;
-const wss = new WS.Server({server}); //Create WebSocketServer with the Https server
+const wss = new WS.Server({
+  server
+}); //Create WebSocketServer with the Https server
 const clients = new Map(); //Map to store ws instances
 
 wss.on('connection', function connection(ws, req) {
   ws.ping()
-    console.log(`Connection from ${req.socket.remoteAddress} with id ${count}`);
-    var userObject = new UserObject(count);
-    count = count + 1;
-    clients.set(ws, userObject);
-    ws.on('message', function incoming(data) {
-        PacketHandler(data, ws);
-    });
+  console.log(`Connection from ${req.socket.remoteAddress} with id ${count}`);
+  var userObject = new UserObject(count);
+  count = count + 1;
+  clients.set(ws, userObject);
+  ws.on('message', function incoming(data) {
+    PacketHandler(data, ws);
+  });
 
-    ws.on('close', () => {
-        clients.delete(ws);
-    })
+  ws.on('close', () => {
+    clients.delete(ws);
+  })
 });
 
-function PacketHandler(data, ws)
-{
-  try
-  {
+function PacketHandler(data, ws) {
+  try {
     data = JSON.parse(data);
-  }catch{return;}
-  if(data.PacketId == undefined) return;
-  if(data.PacketId == 1 && clients.get(ws).isAuth != true)//AuthHandle
-  {
-    if(data.Data.token == undefined) return;
-    verifyGoogleToken(data.Data.token)
-    .then((payload) => {
-      clients.get(ws).google = payload;
-      clients.get(ws).isAuth = true;
-      console.log(payload);
-    })
-    .catch((err) => {console.log(err)/*Log?*/});
+  } catch {
+    return;
   }
-  if(clients.get(ws).isAuth != true) return;
-  switch(data.PacketId)
+  if (data.PacketId == undefined) return;
+  if (data.PacketId == 1 && clients.get(ws).isAuth != true) //AuthHandle
   {
-    case '2' :
-    //Database Access for User data <----------------
-    var userScore = 16;
-    console.log(clients.get(ws).google);
-    sendData(`{"PacketId":"1","Data":{"avatar":"${clients.get(ws).google.picture}","username":"${clients.get(ws).google.name}","points":"${userScore}"}}`, ws);
-    break;
+    if (data.Data.token == undefined) return;
+    verifyGoogleToken(data.Data.token)
+      .then((payload) => {
+        clients.get(ws).google = payload;
+        clients.get(ws).isAuth = true;
+      })
+      .catch((err) => {
+        console.log(err) /*Log?*/
+      });
+  }
+  if (clients.get(ws).isAuth != true) return;
+  switch (data.PacketId) {
+    case '2':
+      getUserData(ws);
+      break;
+    case '3':
+      decideif(ws);
+    case '4':
+      dataCollection(ws);
     default:
   }
 }
 
+function getUserData(ws) {
+  //Database Access for User data <----------------
+  var userScore = 16;
+  console.log(clients.get(ws).google);
+  sendData(`{"PacketId":"1","Data":{"avatar":"${clients.get(ws).google.picture}","username":"${clients.get(ws).google.name}","points":"${userScore}"}}`, ws);
+}
+
+function decideif(ws)
+{
+  //Logic to decide if draw or val
+}
+
+function dataCollection(ws)
+{
+
+}
+
 function sendData(data, ws) { // Send Json data to User
-    if (ws.readyState === WS.OPEN) {
-      try
-      {
-        data = JSON.stringify(data);
-      }catch(err) {console.log("Error while preparing data to send")}
-      ws.send(data);
+  if (ws.readyState === WS.OPEN) {
+    try {
+      data = JSON.stringify(data);
+    } catch (err) {
+      console.log("Error while preparing data to send")
     }
+    ws.send(data);
+  }
 }
 
 async function verifyGoogleToken(token) //Google verify token
 {
   const ticket = await o2Client.verifyIdToken({
-    idToken : token,
-    audience : config.serverSettings.o2Id
+    idToken: token,
+    audience: config.serverSettings.o2Id
   });
   const payload = ticket.getPayload();
   return payload;
 }
 
-class UserObject
-{
-  constructor(id)
-  {
-    this.id = id;
-    this.isAuth = false;
-    this.google = undefined;
-    this.status = {};
+class UserObject {
+  constructor(id) {
+    this.id = id;//UserID
+    this.isAuth = false;//Is user Authenticated
+    this.google = undefined; //Google token
+    this.status = undefined; //val or draw or non
   }
 }
 
