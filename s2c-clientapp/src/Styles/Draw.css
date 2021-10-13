@@ -1,36 +1,39 @@
+.draw {
+    }
 
- /*
-  .draw html {
-    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
-      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-weight: 900;
-    font-size: 16px;
-    color: var(--black);
-    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.07);
-  }
-  */
-  /*
-  .draw body {
-    background-image: linear-gradient(110deg, #5ed3f7, #6d47d9);
-    margin: 50px;
-    background-position: fixed;
-  }
-  */
- /* 
-  .draw span {
-    background-color: darkgrey;
-    padding: 0.3rem;
-    font-size: 0.8em;
-    font-family: monospace;
-  }
-  
-  .draw p {
-    line-height: 1.6em;
-  }
-  
-  .draw .tools {
-    display: flex;
-    justify-content: space-between;
-    width: 400px;
-  }
-  */
+.canvas-one {
+    position: absolute;
+    top: 10px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.undo-btn {
+    display: inline;
+    background-color: var(--prim-background);
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.next-btn {
+    display: inline;
+    background-color: var(--prim-background);
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    margin: 0;
+    cursor: pointer;
+}
