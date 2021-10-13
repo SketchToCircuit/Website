@@ -17,7 +17,7 @@ class Draw extends React.Component {
         };
     }
 
-    prepareNext = () =>{
+    onButtonNext = () =>{
         var buffer = this.saveableCanvas.canvas.drawing.toDataURL("image/png");
         this.saveableCanvas.clear();
         //pfush because resize is neede (aba a guada Pfush)
@@ -35,7 +35,7 @@ class Draw extends React.Component {
                  <div className="draw-btn">
                     <button className="next-btn"
                     onClick={() => {
-                        this.prepareNext();
+                        this.onButtonNext();
                     }}>
                         {this.state.procedebtntext}
                     </button>
