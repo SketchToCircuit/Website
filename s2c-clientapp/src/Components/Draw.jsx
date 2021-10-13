@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from "react-dom";
-import './Draw.css';
+import '../Styles/Draw.css';
 import CanvasDraw from "react-canvas-draw";
 ReactDOM.render(
 <CanvasDraw/>, document.getElementById("root"));
@@ -32,12 +32,10 @@ class Draw extends React.Component {
             <div className='draw'>
                 <CanvasDraw
                     ref={canvasDraw => (this.saveableCanvas = canvasDraw)}
-                    brushColor={this.state.color}
-                    brushRadius={this.state.brushRadius}
-                    lazyRadius={this.state.lazyRadius}
-                    canvasWidth={this.state.width}
-                    canvasHeight={this.state.height}/>
-                <button
+                    brushColor="#ffc600"
+                    brushRadius="2"
+                    lazyRadius="0"/>
+                <button className="undo-btn"
                     onClick={() => {this.saveableCanvas.undo();}}>
                     Undo
                 </button>

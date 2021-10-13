@@ -1,10 +1,10 @@
 import React from 'react';
-import './Mainpage.css';
-import Login from './Login'
+
+import Loginpage from './Loginpage'
 import Validation from './Validation';
 import Draw from './Draw'
 
-const ChildComponentEnum = Object.freeze({Login : 0, Draw : 1, Validation : 2})
+const ChildComponentEnum = Object.freeze({Login: 0, Draw: 1, Validation: 2})
 
 class Mainpage extends React.Component {
     constructor(props) {
@@ -12,9 +12,17 @@ class Mainpage extends React.Component {
 
         this.state = {
             ws: null,
-            validationData: null,    // Data for validation of images from websocket
+            validationData: null, // Data for validation of images from websocket
             displayPage: ChildComponentEnum.Login // what site should be displayed
         };
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (!this.props.loggedIn && prevProps.loggedIn) {
+            this.setState({
+                displayPage: ChildComponentEnum.Login
+            });
+        }
     }
 
     componentDidMount() {
@@ -65,28 +73,35 @@ class Mainpage extends React.Component {
         const {ws} = this.state;
         if (!ws || ws.readyState === WebSocket.CLOSED) 
             this.connect(); //check if websocket instance is closed, if so call `connect` function.
-    };
+        };
     
     /**
     * handles messages from websocket
     */
-   onWsMessage = (event) => {
-       const wsData = JSON.parse(event.data);
-       try {
-        if (wsData.data.type === 'VALIDATION') {
+    onWsMessage = (event) => {
+        const wsData = JSON.parse(event.data);
+        try {
+            if (wsData.data.type === 'VALIDATION') {
+                this.setState({validationData: wsData.data, displayPage: ChildComponentEnum.Validation});
+            }
+        } catch (error) {
+            console.log("Error in Websocket-Message");
+        }
+    };
+
+    loginCallback = (res) => {
+        if (res.tokenId !== undefined) {
             this.setState({
-                validationData: wsData.data,
                 displayPage: ChildComponentEnum.Validation
             });
+
+            this.props.loginCallback(res);
         }
-       } catch (error) {
-           console.log("Error in Websocket-Message");
-       }
-   };
+    }
 
     render() {
         if (this.state.displayPage === ChildComponentEnum.Login) {
-            return <Login ws={this.state.ws} wsData={null}/>;
+            return <Loginpage ws={this.state.ws} wsData={null} loginCallback={this.loginCallback}/>;
         } else if (this.state.displayPage === ChildComponentEnum.Validation) {
             return <Validation ws={this.state.ws} wsData={this.state.validationData}/>
         } else if (this.state.displayPage === ChildComponentEnum.Draw) {

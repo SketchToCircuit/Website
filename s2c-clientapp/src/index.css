@@ -25,6 +25,8 @@ code {
 .topnav {
   overflow: hidden;
   background-color: var(--prim-background);
+  display: flex;
+  align-items: center;
 }
 
 .topnav a {
@@ -39,6 +41,11 @@ code {
 .topnav a:hover {
   background-color: var(--sec-background);
   color: black;
+}
+
+.topnav .logout {
+  margin-left: auto;
+  margin-right: 5px;
 }
 
 .home-link {

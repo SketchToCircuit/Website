@@ -2,7 +2,7 @@
 { //Auth
   "PacketId": "1",
   "Data": {
-    "token": "Google ID"
+    "token": "tokenId"
   }
 }
 
