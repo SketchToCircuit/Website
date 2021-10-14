@@ -8,6 +8,3 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build stack
-      - uses: sudo-bot/action-docker-compose@latest
-      - with: 
-          cli-arg: up -d
