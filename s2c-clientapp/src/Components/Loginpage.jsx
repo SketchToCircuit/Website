@@ -9,7 +9,10 @@ class Loginpage extends React.Component {
     }
 
     render() {
-        return (<Login className='login-button' callback={this.props.loginCallback} o2Id={this.props.config.clientSettings.o2Id}/>);
+        return (
+            <div className='login-page'>
+                <Login className='login-button' callback={this.props.loginCallback} o2Id={this.props.config.clientSettings.o2Id}/>
+            </div>);
     }
 }
 

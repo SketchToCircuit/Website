@@ -5,8 +5,9 @@ import '../Styles/Mainpage.css'
 import Loginpage from './Loginpage'
 import Validation from './Validation';
 import Draw from './Draw'
+import StartButton from './StartButton';
 
-const ChildComponentEnum = Object.freeze({Login: 0, Draw: 1, Validation: 2})
+const ChildComponentEnum = Object.freeze({Login: 0, Draw: 1, Validation: 2, StartBtn: 3})
 
 class Mainpage extends React.Component {
     timeout = 250; // Initial timeout duration as a class variable
@@ -22,19 +23,27 @@ class Mainpage extends React.Component {
         };
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if (!this.props.loggedIn && prevProps.loggedIn) {
-            this.setState({displayPage: ChildComponentEnum.Login});
-        }
-    }
-
     componentDidMount() {
         this.connect();
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (!this.props.loggedIn && prevProps.loggedIn) {
+            this.setState({displayPage: ChildComponentEnum.Login});
+            
+            this.didCloseWs = true;
+            this.state.ws.close();
+            this.connect();
+        }
+    }
+
     componentWillUnmount() {
         this.didCloseWs = true;
-        this.state.ws.close();
+        try {
+            this.state.ws.close();   
+        } catch (e) {
+            return;
+        }
     }
 
     /**
@@ -51,7 +60,10 @@ class Mainpage extends React.Component {
         ws.onopen = () => {
             console.log("Connected websocket main component");
             this.didCloseWs = false;
-            this.setState({ws: ws});
+            this.setState({
+                ws: ws,
+                displayPage: ChildComponentEnum.Login
+            });
             that.timeout = 250; // reset timer to 250 on open of websocket connection
             clearTimeout(connectInterval); // clear Interval on on open of websocket connection
         };
@@ -76,6 +88,7 @@ class Mainpage extends React.Component {
         // message handler
         ws.onmessage = (event) => {
             const wsData = JSON.parse(event.data);
+            console.log(wsData);
             try {
                 if (wsData.data.type === 'VALIDATION') {
                     this.setState({validationData: wsData.data, displayPage: ChildComponentEnum.Validation});
@@ -97,36 +110,31 @@ class Mainpage extends React.Component {
 
     loginCallback = (res) => {
         if (res.tokenId !== undefined) {
-            this.setState({displayPage: ChildComponentEnum.Validation});
+            this.setState({displayPage: ChildComponentEnum.StartBtn});
 
             const data = {
-                "PacketId": 1,
+                "PacketId": 101,
                 "Data": {
                     "token": res.tokenId
                 }
             }
 
-            const ws = this.state.ws;
-            ws.send(JSON.stringify(data));
+            this.state.ws.send(JSON.stringify(data));
 
             this.props.loginCallback(res);
         }
     }
 
     render() {
-        const {ws} = this.state;
-        if (!ws || ws.readyState === WebSocket.CLOSED) {
-            return <div className='main-page'>
-                <h1 >Websocket Error</h1>
-            </div>;
+        const ws = this.state.ws;
+        if (!ws || ws.readyState !== WebSocket.OPEN) {
+            return null;
         }
 
         if (this.state.displayPage === ChildComponentEnum.Login) {
-            return <Loginpage
-                ws={this.state.ws}
-                wsData={null}
-                loginCallback={this.loginCallback}
-                config={this.props.config}/>;
+            return(<Loginpage loginCallback={this.loginCallback} config={this.props.config}/>);
+        } else if (this.state.displayPage === ChildComponentEnum.StartBtn) {
+            return <StartButton ws={this.state.ws}/>
         } else if (this.state.displayPage === ChildComponentEnum.Validation) {
             return <Validation ws={this.state.ws} wsData={this.state.validationData}/>
         } else if (this.state.displayPage === ChildComponentEnum.Draw) {
