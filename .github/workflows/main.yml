@@ -6,7 +6,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: sudo-bot/action-docker-compose@cd01e23bd7a852c4c419d8cb4bcdaa324b5de819
       - uses: actions/checkout@v2
       - name: Build stack
-      - run: docker-compose up -d
+        uses: sudo-bot/action-docker-compose@cd01e23bd7a852c4c419d8cb4bcdaa324b5de819
+      - name: start
+        run: docker-compose up -d
