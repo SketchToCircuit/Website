@@ -1,0 +1,11 @@
+name: CI to Docker
+on:
+  push:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build stack
+        run: docker-compose up -d
