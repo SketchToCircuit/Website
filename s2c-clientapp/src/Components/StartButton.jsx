@@ -13,7 +13,7 @@ class StartButton extends React.Component {
             return;
         } else {
             const data = {
-                "PacketId": 3,
+                "PacketId": 103,
                 "Data": {}
             }
 
