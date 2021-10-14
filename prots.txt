@@ -39,3 +39,12 @@ Packet-IDs with offset 200 (starting at 201)
     "points": integer
   }
 }
+
+- Validation or Drawing:
+
+{
+  "PacketId": "202",
+  "Data": {
+    "what": "VALIDATION" / "DRAW"
+  }
+}

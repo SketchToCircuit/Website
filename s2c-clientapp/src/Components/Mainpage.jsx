@@ -87,11 +87,18 @@ class Mainpage extends React.Component {
 
         // message handler
         ws.onmessage = (event) => {
-            const wsData = JSON.parse(event.data);
-            console.log(wsData);
             try {
-                if (wsData.data.type === 'VALIDATION') {
-                    this.setState({validationData: wsData.data, displayPage: ChildComponentEnum.Validation});
+                const wsData = JSON.parse(event.data);
+                console.log(wsData);
+
+                if (wsData.PacketId === 202) {
+                    if (wsData.Data.what === "VALIDATION") {
+                        this.setState({displayPage: ChildComponentEnum.Validation});
+                    } else if (wsData.Data.what === "DRAW") {
+                        this.setState({displayPage: ChildComponentEnum.Draw});
+                    } else {
+                        this.setState({displayPage: ChildComponentEnum.StartBtn});
+                    }
                 }
             } catch (error) {
                 console.log("Error in Websocket-Message");
