@@ -11,8 +11,8 @@ const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'setup.cfg')));
 const o2Client = new OAuth2Client(config.serverSettings.o2Id);
 
 const options = {
-  key: fs.readFileSync(path.join(__dirname, "../" + config.ssl.keyLocation)),
-  cert: fs.readFileSync(path.join(__dirname, "../" + config.ssl.certLocation))
+  key: fs.readFileSync(path.join(__dirname, config.ssl.keyLocation)),
+  cert: fs.readFileSync(path.join(__dirname, config.ssl.certLocation))
 } //Https ssl options
 
 let server = https.createServer(options, (req, res) => {
