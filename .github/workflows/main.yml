@@ -3,9 +3,9 @@ on:
   push:
     branches: [ master ]
 jobs:
-  test-unit:
+  s2c:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Docker compose
-        run: docker-compose -f docker-compose.yml up -d
+        run: docker-compose -f docker-compose.yml up
