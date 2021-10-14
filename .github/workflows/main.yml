@@ -3,11 +3,9 @@ on:
   push:
     branches: [ master ]
 jobs:
-  build:
+  test-unit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Build stack
-        uses: sudo-bot/action-docker-compose@cd01e23bd7a852c4c419d8cb4bcdaa324b5de819
-      - name: start
-        run: docker-compose up -d
+      - name: Docker compose
+        run: docker-compose -f docker-compose.yml -f docker-compose.ci.yml up -d
