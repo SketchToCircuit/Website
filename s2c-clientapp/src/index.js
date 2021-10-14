@@ -1,17 +1,56 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter as Router, Switch, Route, NavLink} from "react-router-dom";
+
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+
+import Mainpage from './Components/Mainpage';
+import About from './Components/About';
+import NotFound from './Components/NotFound';
+import Logout from './Components/Logout';
+
+import config from './config.json'
+
+const App = () => {
+    const [loggedIn, setLoggedIn] = useState(false);
+    
+    const loginCallback = (res) => {
+        if (res.tokenId !== undefined) {
+            setLoggedIn(true);
+        } else {
+            setLoggedIn(false);
+        }
+    }
+
+    const logoutCallback = () => {
+        setLoggedIn(false);
+    }
+
+    return (
+        <div>
+            <Router>
+                <nav className="topnav">
+                    <NavLink activeStyle={{textShadow: "0px 0px 2px" }} exact to="/" className='home-link'>SketchToCircuit</NavLink>
+                    <NavLink activeStyle={{textShadow: "0px 0px 2px" }} to="/About">About</NavLink>
+                    {loggedIn ? <div className="logout"><Logout callback={logoutCallback} o2Id={config.clientSettings.o2Id}/></div> : null}
+                </nav>
+
+                <Switch>
+                    <Route exact path="/" render={(props) => <Mainpage {...props} loginCallback={loginCallback} loggedIn={loggedIn} config={config}/>}/>
+                    <Route path="/About" component={About}/>
+                    <Route component={NotFound}/>
+                </Switch>
+            </Router>
+
+            <footer>
+                <a>AGB</a>
+            </footer>
+        </div>
+    );
+}
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+<React.StrictMode>
+    <App/>
+</React.StrictMode>,
+document.getElementById('root'));

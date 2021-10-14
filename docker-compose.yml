@@ -1,0 +1,53 @@
+version: "3.7"
+
+services:
+  
+  backend:
+    image: node:16-alpine3.11
+    command: sh -c  "yarn install && yarn run start"
+    ports:
+      - 3001:3001
+    working_dir: /code
+    build: 
+      context: ./s2c-Backend
+    volumes:
+      - ./s2c-Backend:/code
+      - ./SSL:/SSL
+    networks:
+      - backend
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secret
+      MYSQL_DB: s2c
+
+  clientapp:
+    image: node:16-alpine3.11
+    command: sh -c  "yarn install && yarn run start"
+    ports:
+      - 3000:3000
+    working_dir: /code
+    build: 
+      context: ./s2c-clientapp
+    volumes:
+      - ./s2c-clientapp:/code
+      - ./SSL:/SSL
+
+  mysql:
+    image: mysql:8.0
+    networks:
+      - backend
+    volumes:
+      - s2c-mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: s2c
+
+volumes:
+  s2c-mysql-data:
+networks:
+  backend:
+
+
+
+

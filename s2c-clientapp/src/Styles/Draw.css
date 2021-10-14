@@ -1,0 +1,36 @@
+.draw-btn {
+    display: inline;
+}
+
+.canvas-one {
+    display: flex;
+    margin: auto;
+}
+
+.undo-btn {
+    display: inline;
+    background-color: var(--prim-background);
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.next-btn {
+    display: inline;
+    background-color: var(--prim-background);
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    margin: 0;
+    cursor: pointer;
+}

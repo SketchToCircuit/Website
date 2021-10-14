@@ -1,0 +1,11 @@
+.about h1 {
+    text-align: center;
+    color: black;
+}
+
+.about p {
+    text-align: center;
+    white-space: pre-line;
+    padding-left: 10%;
+    padding-right: 10%;
+}
