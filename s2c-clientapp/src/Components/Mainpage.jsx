@@ -19,7 +19,7 @@ class Mainpage extends React.Component {
         this.state = {
             ws: null,
             validationData: null, // Data for validation of images from websocket
-            displayPage: ChildComponentEnum.Login // what site should be displayed
+            displayPage: ChildComponentEnum.Draw // what site should be displayed
         };
     }
 
@@ -120,6 +120,7 @@ class Mainpage extends React.Component {
     }
 
     render() {
+        /*
         const {ws} = this.state;
         if (!ws || ws.readyState !== WebSocket.OPEN) {
             if (this.timeout > 250) {
@@ -130,7 +131,7 @@ class Mainpage extends React.Component {
             } else {
                 return null;
             }
-        }
+        }*/
 
         if (this.state.displayPage === ChildComponentEnum.Login) {
             return(<Loginpage
