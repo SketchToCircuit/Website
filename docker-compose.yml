@@ -4,11 +4,10 @@ services:
   
   backend:
     image: node:16-alpine3.11
-    command: sh -c  "yarn install && yarn run start"
     ports:
       - 3001:3001
-    working_dir: /code
     build: 
+      dockerfile: ./Dockerfile
       context: ./s2c-Backend
     volumes:
       - ./s2c-Backend:/code
@@ -23,11 +22,10 @@ services:
 
   clientapp:
     image: node:16-alpine3.11
-    command: sh -c  "yarn install && yarn run start"
     ports:
       - 3000:3000
-    working_dir: /code
     build: 
+      dockerfile: ./Dockerfile
       context: ./s2c-clientapp
     volumes:
       - ./s2c-clientapp:/code
