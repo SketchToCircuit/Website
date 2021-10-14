@@ -110,7 +110,17 @@ function getUserData(ws) {
 
 function decideIfDraw(ws) {
     //Logic to decide if draw or val
-    console.log("Decide if...");
+    let data = { "PacketId" : 202, "Data" : {
+        "what": ""
+    }}
+
+    if (Math.random() > 0.5) {
+        data.Data.what = "VALIDATION";
+    } else {
+        data.Data.what = "DRAW";
+    }
+
+    sendData(data, ws);
 }
 
 function dataCollection(ws) {
