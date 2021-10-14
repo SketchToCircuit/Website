@@ -9,6 +9,7 @@ services:
     build: 
       dockerfile: ./Dockerfile
       context: ./s2c-Backend
+    command: sh -c "yarn install && yarn run start"
     volumes:
       - ./s2c-Backend:/code
       - ./SSL:/SSL
@@ -27,6 +28,7 @@ services:
     build: 
       dockerfile: ./Dockerfile
       context: ./s2c-clientapp
+    command: sh -c "yarn install && yarn run start"
     volumes:
       - ./s2c-clientapp:/code
       - ./SSL:/SSL
