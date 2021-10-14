@@ -1,5 +1,5 @@
 FROM node:16-alpine3.11
 WORKDIR /code
-RUN yarn install
 EXPOSE 3001
-CMD ["ls"]
+RUN yarn install
+CMD ["yarn" , "run", "start"]
