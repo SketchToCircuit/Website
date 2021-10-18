@@ -18,7 +18,8 @@ class Mainpage extends React.Component {
 
         this.state = {
             ws: null,
-            validationData: null, // Data for validation of images from websocket
+            validationData: null,
+            drawData: null,
             displayPage: ChildComponentEnum.Draw // what site should be displayed
         };
     }
@@ -43,6 +44,24 @@ class Mainpage extends React.Component {
             this.state.ws.close();   
         } catch (e) {
             return;
+        }
+    }
+
+    onDrawTaskMsg(data) {
+        if (this.state.displayPage === ChildComponentEnum.StartBtn) {
+            this.setState({
+                displayPage: ChildComponentEnum.Draw,
+                drawData: data
+            });
+        }
+    }
+
+    onValidationTaskaMsg(data) {
+        if (this.state.displayPage === ChildComponentEnum.StartBtn) {
+            this.setState({
+                displayPage: ChildComponentEnum.Validation,
+                validationData: data
+            });
         }
     }
 
@@ -91,14 +110,17 @@ class Mainpage extends React.Component {
                 const wsData = JSON.parse(event.data);
                 console.log(wsData);
 
-                if (wsData.PacketId === 202) {
-                    if (wsData.Data.what === "VALIDATION") {
-                        this.setState({displayPage: ChildComponentEnum.Validation});
-                    } else if (wsData.Data.what === "DRAW") {
-                        this.setState({displayPage: ChildComponentEnum.Draw});
-                    } else {
-                        this.setState({displayPage: ChildComponentEnum.StartBtn});
-                    }
+                switch (wsData.PacketId) {
+                    case 202:
+                        this.onDrawTaskMsg(wsData.Data);
+                        break;
+
+                    case 203:
+                        this.onValidationTaskaMsg(wsData.Data);
+                        break;
+
+                    default:
+                        break;
                 }
             } catch (error) {
                 console.log("Error in Websocket-Message");
@@ -145,7 +167,7 @@ class Mainpage extends React.Component {
         } else if (this.state.displayPage === ChildComponentEnum.Validation) {
             return <Validation ws={this.state.ws} wsData={this.state.validationData}/>
         } else if (this.state.displayPage === ChildComponentEnum.Draw) {
-            return <Draw ws={this.state.ws} wsData={null}/>
+            return <Draw ws={this.state.ws} wsData={this.state.drawData}/>
         }
     }
 }

@@ -28,6 +28,7 @@ Packet-IDs with offset 100 (starting at 101)
 }
 
 // Finished pictures
+
 {
   "PacketId": 104,
   "Data": {
@@ -71,5 +72,16 @@ Packet-IDs with offset 200 (starting at 201)
       "text": "string",
       "img": "string"
     },
+  }
+}
+
+// Validation
+
+{
+  "PacketId": 203,
+  "Data": {
+    "hintText": "string",
+    "hintImg": "string",
+    "valImg": "string"
   }
 }
