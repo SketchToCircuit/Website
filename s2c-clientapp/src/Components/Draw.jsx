@@ -18,6 +18,8 @@ class Draw extends React.Component {
     }
 
     onButtonNext = () => {
+        console.log(this.saveableCanvas.canvas.interface);
+
         var buffer = this
             .saveableCanvas
             .canvas

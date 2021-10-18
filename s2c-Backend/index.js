@@ -82,16 +82,55 @@ function PacketHandler(data, ws) {
             getUserData(ws);
             break;
         case 103:
-            decideIfDraw(ws);
+            decideIfDrawVal(ws);
             break;
         case 104:
-            dataCollection(ws);
+            onImgReceive(data.Data, ws);
             break;
+        case 105:
+            onValReceive(data.Data, ws);
         default:
             return false;
     }
 
     return true;
+}
+
+function onValReceive(dataIn, ws) {
+    if (dataIn.count >= 1 && dataIn.count < 5) {
+        var dataOut = {"PacketId" : 203, "Data": {
+            "hintText": "Hint2",
+            "hintImg": "logo192.png",
+            "valImg": "logo512.png"
+        }};
+
+        sendData(data, ws);
+    }
+
+    // ToDo save to database
+}
+
+function onImgReceive(dataIn, ws) {
+    if (dataIn.count >= 1 && dataIn.count < 5) {
+        var dataOut = { "PacketId": 202,   "Data": {
+            "type": "",
+        
+            "ComponentHint": {
+              "text": "",
+              "img": ""
+            },
+        
+            "LabelHint": {
+              "text": "",
+              "img": ""
+            },
+          }
+        };
+
+        sendData(data, ws);
+    }
+
+    // ToDo save images
 }
 
 function getUserData(ws) {
@@ -108,23 +147,32 @@ function getUserData(ws) {
     sendData(data, ws);
 }
 
-function decideIfDraw(ws) {
-    //Logic to decide if draw or val
-    let data = { "PacketId" : 202, "Data" : {
-        "what": ""
-    }}
+function decideIfDrawVal(ws) {
+    var data = {}
 
     if (Math.random() > 0.5) {
-        data.Data.what = "VALIDATION";
+        data = { "PacketId": 202,   "Data": {
+            "type": "",
+        
+            "ComponentHint": {
+              "text": "",
+              "img": ""
+            },
+        
+            "LabelHint": {
+              "text": "",
+              "img": ""
+            },
+        }};
     } else {
-        data.Data.what = "DRAW";
+        data = {"PacketId" : 203, "Data": {
+            "hintText": "Hint",
+            "hintImg": "logo192.png",
+            "valImg": "logo512.png"
+        }};
     }
 
     sendData(data, ws);
-}
-
-function dataCollection(ws) {
-
 }
 
 function sendData(data, ws) { // Send Json data to User
