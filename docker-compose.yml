@@ -4,6 +4,7 @@ services:
   
   backend:
     image: node:16-alpine3.11
+    restart: unless-stopped
     ports:
       - 3001:3001
     build: ./s2c-Backend/
@@ -21,6 +22,7 @@ services:
 
   clientapp:
     image: node:16-alpine3.11
+    restart: unless-stopped
     ports:
       - 3000:3000
     build: ./s2c-clientapp/
@@ -31,6 +33,7 @@ services:
 
   mysql:
     image: mysql:8.0
+    restart: unless-stopped
     networks:
       - backend
     volumes:
@@ -38,7 +41,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: s2c
-      
 volumes:
   s2c-mysql-data:
 networks:
