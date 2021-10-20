@@ -1,6 +1,6 @@
 const WS = require('ws');
 const fs = require('fs');
-const https = require('https');
+const http = require('http');
 const path = require('path');
 const {OAuth2Client} = require('google-auth-library');
 
@@ -8,15 +8,10 @@ const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'setup.cfg')));
 
 const o2Client = new OAuth2Client(config.serverSettings.o2Id);
 
-const options = {
-  key: fs.readFileSync(path.join(__dirname, config.ssl.keyLocation)),
-  cert: fs.readFileSync(path.join(__dirname, config.ssl.certLocation))
-} //Https ssl options
-
-let server = https.createServer(options, (req, res) => {
+let server = http.createServer((req, res) => {
     res.writeHead(401);
     res.end("Websocket EndPoint\n");
-}).listen(config.serverSettings.backendPort); //Create Https Server
+}).listen(config.serverSettings.backendPort); //Create Http Server
 
 var count = 1;
 const wss = new WS.Server({server}); //Create WebSocketServer with the Https server
