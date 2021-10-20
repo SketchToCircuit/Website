@@ -173,6 +173,8 @@ class Mainpage extends React.Component {
     }
 
     render() {
+        return <Draw ws={this.state.ws} wsData={null}/>
+        
         const ws = this.state.ws;
         if (!ws || ws.readyState !== WebSocket.OPEN) {
             return null;
