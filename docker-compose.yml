@@ -42,7 +42,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: s2c
-
+      
 volumes:
   s2c-mysql-data:
 networks:
