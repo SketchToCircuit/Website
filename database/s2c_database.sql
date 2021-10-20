@@ -30,7 +30,7 @@ USE `s2c_database`;
 --
 
 CREATE TABLE `google_user` (
-  `google_id` int(11) NOT NULL,
+  `google_id` varchar(20) NOT NULL,
   `untrusted` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Hat der Benutzer schon einmal etwas falsch gemacht?'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -43,8 +43,8 @@ CREATE TABLE `google_user` (
 CREATE TABLE `images` (
   `image_id` int(11) NOT NULL,
   `image_path` varchar(4096) NOT NULL,
-  `drawer_id` int(11) NOT NULL COMMENT 'Google ID des Zeichners',
-  `validator_id` int(11) NOT NULL COMMENT 'Google ID des Validierers',
+  `drawer_id` varchar(20) NOT NULL COMMENT 'Google ID des Zeichners',
+  `validator_id` varchar(20) NOT NULL COMMENT 'Google ID des Validierers',
   `looked_at` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Wurde es bereits angeschaut?',
   `validated` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Als korrekt markiert?',
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
@@ -67,22 +67,6 @@ ALTER TABLE `images`
   ADD PRIMARY KEY (`image_id`),
   ADD KEY `drawer_id` (`drawer_id`),
   ADD KEY `validator_id` (`validator_id`);
-
---
--- AUTO_INCREMENT für exportierte Tabellen
---
-
---
--- AUTO_INCREMENT für Tabelle `google_user`
---
-ALTER TABLE `google_user`
-  MODIFY `google_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT für Tabelle `images`
---
-ALTER TABLE `images`
-  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints der exportierten Tabellen

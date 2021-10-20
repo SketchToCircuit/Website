@@ -4,10 +4,6 @@ import Login from './Login';
 import '../Styles/Loginpage.css';
 
 class Loginpage extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <div className='login-page'>

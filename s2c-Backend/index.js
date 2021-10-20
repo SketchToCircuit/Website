@@ -73,6 +73,21 @@ wss.on('connection', function connection(ws, req) {
     })
 });
 
+// Add googleId to database
+function dbAddUser(googleId) {
+    var query = "SELECT * FROM google_user WHERE google_id = ?;";
+    database.query(query, [googleId], function(err, result) {
+        if (!err && result && !result.length) {
+            query = "INSERT INTO google_user(google_id, untrusted) VALUES(?, FALSE);";
+            database.query(query, [googleId], function(err, result) {
+                if (err) {
+                    return false;
+                }
+            })
+        }
+    });
+}
+
 function PacketHandler(data, ws) {
     try {
         data = JSON.parse(data);
@@ -82,20 +97,21 @@ function PacketHandler(data, ws) {
         return false;
 
     if (data.PacketId == 101 && clients.get(ws).isAuth != true) {
-        if (data.Data.token == undefined) 
+        if (!data.Data.token) 
             return false;
-        return verifyGoogleToken(data.Data.token).then((payload) => {
-            clients
-                .get(ws)
-                .google = payload;
-            clients
-                .get(ws)
-                .isAuth = true;
-            return true;
+
+        verifyGoogleToken(data.Data.token).then((payload) => {
+            clients.get(ws).google = payload;
+            clients.get(ws).isAuth = true;
+
+            // payload.sub is the googleId
+            dbAddUser(payload.sub);
         }).catch((err) => {
             console.log(err);
-            return false;
+            clients.get(ws).isAuth = false;
         });
+
+        return true;
     }
 
     if (!clients.get(ws).isAuth) {

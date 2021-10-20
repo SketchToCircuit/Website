@@ -3,10 +3,6 @@ import React from 'react';
 import '../Styles/StartButton.css';
 
 class StartButton extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     onBtnClick = () => {
         const ws = this.props.ws;
         if (!ws || ws.readyState !== WebSocket.OPEN) {
