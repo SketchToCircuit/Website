@@ -1,11 +1,10 @@
 name: CI to Docker
-runs-on: [self-hosted, linux, ARM64]
 on:
   push:
     branches: [ master ]
 jobs:
   s2c:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, ARM64]
     steps:
       - uses: actions/checkout@v2
       - name: Docker compose
