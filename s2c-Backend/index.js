@@ -62,7 +62,7 @@ function PacketHandler(data, ws) {
         data = JSON.parse(data);
     } catch {return false;}
 
-    if (data.PacketId == undefined) 
+    if (!data.PacketId) 
         return false;
 
     if (data.PacketId == 101 && clients.get(ws).isAuth != true) {
@@ -145,43 +145,6 @@ function onImgReceive(dataIn, ws) {
     // ToDo save images
 
     return true;
-}
-
-function onValReceive(dataIn, ws) {
-    if (dataIn.count >= 1 && dataIn.count < 5) {
-        var dataOut = {"PacketId" : 203, "Data": {
-            "hintText": "Hint2",
-            "hintImg": "logo192.png",
-            "valImg": "logo512.png"
-        }};
-
-        sendData(data, ws);
-    }
-
-    // ToDo save to database
-}
-
-function onImgReceive(dataIn, ws) {
-    if (dataIn.count >= 1 && dataIn.count < 5) {
-        var dataOut = { "PacketId": 202,   "Data": {
-            "type": "",
-        
-            "ComponentHint": {
-              "text": "",
-              "img": ""
-            },
-        
-            "LabelHint": {
-              "text": "",
-              "img": ""
-            },
-          }
-        };
-
-        sendData(data, ws);
-    }
-
-    // ToDo save images
 }
 
 function getUserData(ws) {
