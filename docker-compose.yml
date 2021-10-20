@@ -4,12 +4,11 @@ services:
   
   backend:
     image: node:16-alpine3.11
+    restart: unless-stopped
     ports:
       - 3001:3001
-    build: 
-      dockerfile: ./Dockerfile
-      context: ./s2c-Backend
-    command: sh -c "yarn install && yarn run start"
+    build: ./s2c-Backend/
+    command: sh -c "yarn install && yarn start"
     volumes:
       - ./s2c-Backend:/code
     networks:
@@ -22,17 +21,17 @@ services:
 
   clientapp:
     image: node:16-alpine3.11
+    restart: unless-stopped
     ports:
       - 3000:3000
-    build: 
-      dockerfile: ./Dockerfile
-      context: ./s2c-clientapp
-    command: sh -c "yarn install && yarn run start"
+    build: ./s2c-clientapp/
+    command: sh -c "yarn install && yarn start"
     volumes:
       - ./s2c-clientapp:/code
 
   mysql:
     image: mysql:8.0
+    restart: unless-stopped
     networks:
       - backend
     volumes:
@@ -40,12 +39,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: s2c
-
 volumes:
   s2c-mysql-data:
 networks:
   backend:
-
-
-
-
