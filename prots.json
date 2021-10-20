@@ -39,6 +39,16 @@ Packet-IDs with offset 100 (starting at 101)
   }
 }
 
+// Validated
+{
+  "PacketId": 105,
+  "Data": {
+    "imgId": integer,
+    "count": integer,
+    "validated": true/false
+  }
+}
+
 /*
 Server to Client:
 ---------------------
@@ -82,6 +92,7 @@ Packet-IDs with offset 200 (starting at 201)
   "Data": {
     "hintText": "string",
     "hintImg": "string",
-    "valImg": "string"
+    "valImg": "string",
+    "imgId": integer
   }
 }

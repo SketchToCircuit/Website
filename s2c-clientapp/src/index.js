@@ -15,7 +15,7 @@ const App = () => {
     const [loggedIn, setLoggedIn] = useState(false);
     
     const loginCallback = (res) => {
-        if (res.tokenId !== undefined) {
+        if (res && res.tokenId) {
             setLoggedIn(true);
         } else {
             setLoggedIn(false);

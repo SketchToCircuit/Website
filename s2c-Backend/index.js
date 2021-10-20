@@ -38,9 +38,17 @@ wss.on('connection', function connection(ws, req) {
     clients.set(ws, userObject);
 
     ws.on('message', function incoming(data) {
-       if(!PacketHandler(data, ws)) {
-           console.log(`Couldn't handle data: ${JSON.stringify(JSON.parse(data))}`);
-       }
+        var success = false;
+
+        try {
+            success = PacketHandler(data, ws);
+        } catch (error) {
+            success = false;
+        }
+        
+        if (!success) {
+            console.log(`Couldn't handle data: ${JSON.stringify(JSON.parse(data))}`);
+        }
     });
 
     ws.on('close', () => {
@@ -57,7 +65,7 @@ function PacketHandler(data, ws) {
     if (data.PacketId == undefined) 
         return false;
 
-    if (data.PacketId == 101 && clients.get(ws).isAuth != true) { //AuthHandle
+    if (data.PacketId == 101 && clients.get(ws).isAuth != true) {
         if (data.Data.token == undefined) 
             return false;
         return verifyGoogleToken(data.Data.token).then((payload) => {
@@ -74,44 +82,46 @@ function PacketHandler(data, ws) {
         });
     }
 
-    if (!clients.get(ws).isAuth) 
+    if (!clients.get(ws).isAuth) {
+        console.log("User is unauthorized");
         return false;
+    }     
 
     switch (data.PacketId) {
         case 102:
-            getUserData(ws);
-            break;
+            return getUserData(ws);
         case 103:
-            decideIfDrawVal(ws);
-            break;
+            return decideIfDrawVal(ws);
         case 104:
-            onImgReceive(data.Data, ws);
-            break;
+            return onImgReceive(data.Data, ws);
         case 105:
-            onValReceive(data.Data, ws);
+            return onValReceive(data.Data, ws);
         default:
             return false;
     }
+}
+
+function onValReceive(dataIn, ws) {
+    if (dataIn.count >= 0 && dataIn.count < 5) {
+        var dataOut = {"PacketId" : 203, "Data": {
+            "hintText": "Hint" + (dataIn.count + 1),
+            "hintImg": "logo192.png",
+            "valImg": "logo512.png",
+            "imgId": 1234
+        }};
+    
+        sendData(dataOut, ws);
+    } else {
+        return false;
+    }
+
+    // ToDo save to database
 
     return true;
 }
 
-function onValReceive(dataIn, ws) {
-    if (dataIn.count >= 1 && dataIn.count < 5) {
-        var dataOut = {"PacketId" : 203, "Data": {
-            "hintText": "Hint2",
-            "hintImg": "logo192.png",
-            "valImg": "logo512.png"
-        }};
-
-        sendData(data, ws);
-    }
-
-    // ToDo save to database
-}
-
 function onImgReceive(dataIn, ws) {
-    if (dataIn.count >= 1 && dataIn.count < 5) {
+    if (dataIn.count >= 0 && dataIn.count < 5) {
         var dataOut = { "PacketId": 202,   "Data": {
             "type": "",
         
@@ -128,9 +138,13 @@ function onImgReceive(dataIn, ws) {
         };
 
         sendData(data, ws);
+    } else {
+        return false;
     }
 
     // ToDo save images
+
+    return true;
 }
 
 function getUserData(ws) {
@@ -145,6 +159,8 @@ function getUserData(ws) {
     }};
 
     sendData(data, ws);
+
+    return true;
 }
 
 function decideIfDrawVal(ws) {
@@ -166,13 +182,16 @@ function decideIfDrawVal(ws) {
         }};
     } else {
         data = {"PacketId" : 203, "Data": {
-            "hintText": "Hint",
+            "hintText": "Hint0",
             "hintImg": "logo192.png",
-            "valImg": "logo512.png"
+            "valImg": "logo512.png",
+            "imgId": 1234
         }};
     }
 
     sendData(data, ws);
+
+    return true;
 }
 
 function sendData(data, ws) { // Send Json data to User
