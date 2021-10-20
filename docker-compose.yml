@@ -3,14 +3,13 @@ version: "3.7"
 services:
   
   backend:
-    user: github
     image: node:16-alpine3.11
     ports:
       - 3001:3001
     build: 
       dockerfile: ./Dockerfile
       context: ./s2c-Backend
-    command: sh -c "yarn install && yarn run start"
+    #command: sh -c "yarn install && yarn run start"
     volumes:
       - ./s2c-Backend:/code
       - ./SSL:/SSL
@@ -23,20 +22,18 @@ services:
       MYSQL_DB: s2c
 
   clientapp:
-    user: github
     image: node:16-alpine3.11
     ports:
       - 3000:3000
     build: 
       dockerfile: ./Dockerfile
       context: ./s2c-clientapp
-    command: sh -c "yarn install && yarn run start"
+    #command: sh -c "yarn install && yarn run start"
     volumes:
       - ./s2c-clientapp:/code
       - ./SSL:/SSL
 
   mysql:
-    user: github
     image: mysql:8.0
     networks:
       - backend
