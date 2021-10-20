@@ -4,7 +4,7 @@ on:
     branches: [ master ]
 jobs:
   s2c:
-    runs-on: [self-hosted, linux, ARM64]
+    runs-on: [self-hosted]
     steps:
       - uses: actions/checkout@v2
       - name: Docker compose
