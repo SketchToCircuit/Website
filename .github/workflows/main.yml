@@ -6,9 +6,9 @@ jobs:
   s2c:
     runs-on: [self-hosted]
     steps:
+      - uses: actions/checkout@v2
       - name: Close old Containers
         run: docker-compose down
-      - uses: actions/checkout@v2
       - name: Docker compose
         run: docker-compose up -d
       - name: Check containers
