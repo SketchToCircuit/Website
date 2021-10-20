@@ -12,7 +12,6 @@ services:
     command: sh -c "yarn install && yarn run start"
     volumes:
       - ./s2c-Backend:/code
-      - ./SSL:/SSL
     networks:
       - backend
     environment:
@@ -31,7 +30,6 @@ services:
     command: sh -c "yarn install && yarn run start"
     volumes:
       - ./s2c-clientapp:/code
-      - ./SSL:/SSL
 
   mysql:
     image: mysql:8.0
