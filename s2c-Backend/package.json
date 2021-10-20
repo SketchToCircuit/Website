@@ -12,6 +12,7 @@
   "dependencies": {
     "google-auth-library": "^7.10.0",
     "mysql": "^2.18.1",
-    "ws": "^8.2.3"
+    "ws": "^8.2.3",
+    "yarn": "^1.22.17"
   }
 }

@@ -1,6 +1,6 @@
 const WS = require('ws');
 const fs = require('fs');
-const https = require('https');
+const http = require('http');
 const path = require('path');
 const {OAuth2Client} = require('google-auth-library');
 const mysql = require('mysql');
@@ -24,18 +24,13 @@ database.connect(function(err) {
   console.log("Connected to database!");
 });
 
-const https_options = {
-  key: fs.readFileSync(path.join(__dirname, config.ssl.keyLocation)),
-  cert: fs.readFileSync(path.join(__dirname, config.ssl.certLocation))
-} //Https ssl options
-
-let server = https.createServer(https_options, (req, res) => {
+let server = http.createServer((req, res) => {
     res.writeHead(401);
     res.end("Websocket EndPoint\n");
-}).listen(config.serverSettings.backendPort); //Create Https Server
+}).listen(config.serverSettings.backendPort); //Create Http Server
 
 var count = 1;
-const wss = new WS.Server({server}); //Create WebSocketServer with the Https server
+const wss = new WS.Server({server}); //Create WebSocketServer with the Http server
 const clients = new Map(); //Map to store ws instances
 
 function getUniqueId(count) {
