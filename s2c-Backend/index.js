@@ -43,8 +43,12 @@ function getUniqueId(count) {
 }
 
 function getBase64Img(relPath) {
-    var img = fs.readFileSync(path.join(__dirname, relPath));
-    return 'data:image/png;base64,' + img.toString('base64');
+    try {
+        var img = fs.readFileSync(path.join(__dirname, relPath));
+        return 'data:image/jpeg;base64,' + img.toString('base64');
+    } catch (error) {
+        return '';
+    }
 }
 
 wss.on('connection', function connection(ws, req) {
