@@ -5,4 +5,5 @@
 
 .validation img {
     width: 50%;
+    max-height: 500px;
 }

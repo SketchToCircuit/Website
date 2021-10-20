@@ -77,7 +77,7 @@ wss.on('connection', function connection(ws, req) {
     })
 });
 
-// Add googleId to database
+// add googleId to database
 function dbAddUser(googleId) {
     var query = "SELECT * FROM google_user WHERE google_id = ?;";
     database.query(query, [googleId], function(err, result) {
@@ -98,19 +98,32 @@ function dbAddUser(googleId) {
 
 // get data for validation from database and filesystem
 function getValidationData(callback) {
-    var valData = new Object();
-
-    var query = "SELECT * FROM images, component_types WHERE looked_at = FALSE AND component_type = component_id ORDER BY RAND() LIMIT 1;";
+    // order by random number to select random image
+    // (RAND() + 1) * (looked_at + 1) -> already validated images will always have a higher "sorting number" -> only taken if no others are left
+    var query = "SELECT * FROM images, component_types WHERE component_type = component_id ORDER BY ((RAND() + 1) * (looked_at + 1)) LIMIT 1;";
 
     database.query(query, function(err, result) {
         if (err) {
             console.log(err);
         } else if (result.length >= 1) {
+            var valData = new Object();
             valData.hintText = result[0].val_hint;
             valData.hintImg = getBase64Img(result[0].hint_img);
             valData.valImg = getBase64Img(result[0].image_path);
+            valData.imgId = result[0].image_id;
 
             return callback(valData);
+        }
+    });
+}
+
+// set the validation status of this img
+function setValidated(imgId, validated, googleId) {
+    var query = "UPDATE images SET validated = ?, validator_id = ?, looked_at = TRUE WHERE image_id = ?;";
+
+    database.query(query, [validated, googleId, imgId], function(err, result) {
+        if (err) {
+            console.log(err);
         }
     });
 }
@@ -167,18 +180,20 @@ function PacketHandler(data, ws) {
 }
 
 function onValReceive(dataIn, ws) {
-    getValidationData(function(valData) {
-        if (dataIn.count >= 0 && dataIn.count < 5) {
+    if (dataIn.count >= 0 && dataIn.count < 5) {
+        setValidated(dataIn.imgId, dataIn.validated, clients.get(ws).google.sub);
+
+        getValidationData(function(valData) {
             var dataOut = { "PacketId" : 203, "Data": {
                 "hintText": valData.hintText,
                 "hintImg": valData.hintImg,
                 "valImg": valData.valImg,
-                "imgId": 1234
+                "imgId": valData.imgId
             }};
         
             sendData(dataOut, ws);
-        }
-    });
+        });
+    }
 }
 
 function onImgReceive(dataIn, ws) {
@@ -248,7 +263,7 @@ function decideIfDrawVal(ws) {
                 "hintText": valData.hintText,
                 "hintImg": valData.hintImg,
                 "valImg": valData.valImg,
-                "imgId": 1234
+                "imgId": valData.imgId
             }};
         
             sendData(dataOut, ws);
