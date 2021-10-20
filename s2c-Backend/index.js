@@ -42,6 +42,11 @@ function getUniqueId(count) {
     return (Math.floor(Math.random() * 1000) * 10 + count);
 }
 
+function getBase64Img(relPath) {
+    var img = fs.readFileSync(path.join(__dirname, relPath));
+    return 'data:image/png;base64,' + img.toString('base64');
+}
+
 wss.on('connection', function connection(ws, req) {
     ws.ping()
 
@@ -103,8 +108,8 @@ function getValidationData(callback) {
             console.log(err);
         } else if (result.length >= 1) {
             valData.hintText = result[0].val_hint;
-            valData.hintImg = result[0].hint_img;
-            valData.valImg = result[0].image_path;
+            valData.hintImg = getBase64Img(result[0].hint_img);
+            valData.valImg = getBase64Img(result[0].image_path);
 
             return callback(valData);
         }
