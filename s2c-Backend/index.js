@@ -15,7 +15,7 @@ const options = {
 
 let server = https.createServer(options, (req, res) => {
     res.writeHead(401);
-    res.end("Websocket EndPoint\n");
+    res.end("Websocket EndPoint :)\n");
 }).listen(config.serverSettings.backendPort); //Create Https Server
 
 var count = 1;
