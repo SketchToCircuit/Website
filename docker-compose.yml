@@ -7,6 +7,7 @@ services:
     ports:
       - 3001:3001
     build: ./s2c-Backend/
+    command: sh -c "yarn install && yarn start"
     volumes:
       - ./s2c-Backend:/code
       - ./SSL:/SSL
@@ -23,6 +24,7 @@ services:
     ports:
       - 3000:3000
     build: ./s2c-clientapp/
+    command: sh -c "yarn install && yarn start"
     volumes:
       - ./s2c-clientapp:/code
       - ./SSL:/SSL
