@@ -286,4 +286,4 @@ class UserObject
     }
 }
 
-console.log("WSS startet");
+console.log("Wss startet");
