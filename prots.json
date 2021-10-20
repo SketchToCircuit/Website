@@ -1,0 +1,98 @@
+/*
+Client to Server:
+---------------------
+Packet-IDs with offset 100 (starting at 101)
+*/
+
+// Login with Google-Token:
+
+{
+  "PacketId": 101,
+  "Data": {
+    "token" : "tokenId (string)"
+  }
+}
+
+// Request user Data
+
+{
+  "PacketId": 102,
+  "Data": {}
+}
+
+// Start the validation or drawing process
+
+{
+  "PacketId": 103,
+  "Data": {}
+}
+
+// Finished pictures
+
+{
+  "PacketId": 104,
+  "Data": {
+    "count": integer,
+    "type": "string",
+    "compontentImg": "base64 DataUrl",
+    "labelImg": "base64 DataUrl"
+  }
+}
+
+// Validated
+{
+  "PacketId": 105,
+  "Data": {
+    "imgId": integer,
+    "count": integer,
+    "validated": true/false
+  }
+}
+
+/*
+Server to Client:
+---------------------
+Packet-IDs with offset 200 (starting at 201)
+*/
+
+// User-Data
+
+{
+  "PacketId": 201,
+  "Data": {
+    "avatar": "string",
+    "username": "string",
+    "points": integer
+  }
+}
+
+// Drawing
+
+{
+  "PacketId": 202,
+  "Data": {
+    "type": "string",
+
+    "ComponentHint": {
+      "text": "string",
+      "img": "string"
+    },
+
+    "LabelHint": {
+      "text": "string",
+      "img": "string"
+    },
+  }
+}
+
+// Validation
+
+{
+  "PacketId": 203,
+  "Data": {
+    "hintText": "string",
+    "hintImg": "string",
+    "valImg": "string",
+    "imgId": integer
+  }
+}

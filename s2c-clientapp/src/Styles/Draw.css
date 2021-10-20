@@ -2,7 +2,18 @@
     display: inline;
 }
 
-.canvas-one {
+.wraping-div{
+ display: flex;
+}
+
+.hint-div{
+ margin-left: 0px;
+ margin-top: auto;
+ margin-bottom: auto;
+}
+
+.canvas{
+    margin-top: 10px;
     display: flex;
     margin: auto;
 }
@@ -34,3 +45,15 @@
     margin: 0;
     cursor: pointer;
 }
+
+.hint-picture {
+    height: auto;
+    margin-right: auto;
+    margin-left: 0px;
+    background-color: aliceblue;
+}
+
+.instruction-paragraph{
+    text-align: center;
+}
+

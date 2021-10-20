@@ -18,8 +18,9 @@ class Mainpage extends React.Component {
 
         this.state = {
             ws: null,
-            validationData: null, // Data for validation of images from websocket
-            displayPage: ChildComponentEnum.Login // what site should be displayed
+            validationData: null,
+            drawData: null,
+            displayPage: ChildComponentEnum.Login
         };
     }
 
@@ -38,17 +39,53 @@ class Mainpage extends React.Component {
     }
 
     componentWillUnmount() {
-        this.didCloseWs = true;
-        try {
-            this.state.ws.close();   
-        } catch (e) {
-            return;
+        if (this.state.ws) {
+            this.didCloseWs = true;
+            this.state.ws.close(); 
         }
+    }
+
+    onDrawTaskMsg(data) {
+        if (this.state.displayPage === ChildComponentEnum.StartBtn) {
+            this.setState({
+                displayPage: ChildComponentEnum.Draw,
+                drawData: data
+            });
+        } else if (this.state.displayPage === ChildComponentEnum.Draw) {
+            this.setState({
+                drawData: data
+            });
+        }
+    }
+
+    onValidationTaskMsg(data) {
+        if (this.state.displayPage === ChildComponentEnum.StartBtn) {
+            this.setState({
+                displayPage: ChildComponentEnum.Validation,
+                validationData: data
+            });
+        } else if (this.state.displayPage === ChildComponentEnum.Validation) {
+            this.setState({
+                validationData: data
+            });
+        }
+    }
+
+    onDrawValFinished = () => {
+        this.setState({
+            displayPage: ChildComponentEnum.Login,
+            validationData: null,
+            drawData: null,
+        });
+
+        this.didCloseWs = true;
+        this.state.ws.close();
+        this.connect();
     }
 
     /**
     * @function connect
-    * This function establishes the connect with the websocket and also ensures constant reconnection if connection closes
+    * This function establishes the connection with the websocket and also ensures constant reconnection if connection closes
     */
     connect = () => {
         let that = this; // cache the this
@@ -91,14 +128,17 @@ class Mainpage extends React.Component {
                 const wsData = JSON.parse(event.data);
                 console.log(wsData);
 
-                if (wsData.PacketId === 202) {
-                    if (wsData.Data.what === "VALIDATION") {
-                        this.setState({displayPage: ChildComponentEnum.Validation});
-                    } else if (wsData.Data.what === "DRAW") {
-                        this.setState({displayPage: ChildComponentEnum.Draw});
-                    } else {
-                        this.setState({displayPage: ChildComponentEnum.StartBtn});
-                    }
+                switch (wsData.PacketId) {
+                    case 202:
+                        this.onDrawTaskMsg(wsData.Data);
+                        break;
+
+                    case 203:
+                        this.onValidationTaskMsg(wsData.Data);
+                        break;
+
+                    default:
+                        break;
                 }
             } catch (error) {
                 console.log("Error in Websocket-Message");
@@ -116,7 +156,7 @@ class Mainpage extends React.Component {
     };
 
     loginCallback = (res) => {
-        if (res.tokenId !== undefined) {
+        if (res && res.tokenId) {
             this.setState({displayPage: ChildComponentEnum.StartBtn});
 
             const data = {
@@ -127,9 +167,9 @@ class Mainpage extends React.Component {
             }
 
             this.state.ws.send(JSON.stringify(data));
-
-            this.props.loginCallback(res);
         }
+
+        this.props.loginCallback(res);
     }
 
     render() {
@@ -143,9 +183,9 @@ class Mainpage extends React.Component {
         } else if (this.state.displayPage === ChildComponentEnum.StartBtn) {
             return <StartButton ws={this.state.ws}/>
         } else if (this.state.displayPage === ChildComponentEnum.Validation) {
-            return <Validation ws={this.state.ws} wsData={this.state.validationData}/>
+            return <Validation ws={this.state.ws} wsData={this.state.validationData} onFinished={this.onDrawValFinished}/>
         } else if (this.state.displayPage === ChildComponentEnum.Draw) {
-            return <Draw ws={this.state.ws} wsData={null}/>
+            return <Draw ws={this.state.ws} wsData={this.state.drawData}/>
         }
     }
 }
