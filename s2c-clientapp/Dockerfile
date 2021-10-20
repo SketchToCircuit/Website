@@ -1,6 +1,9 @@
+# syntax=docker/dockerfile:2
 FROM node:16-alpine3.11
 WORKDIR /code
-ADD ./package.json ./yarn.* /tmp/
-EXPOSE 3001
-RUN ["yarn", "install"]
-RUN ["yarn", "start"]
+RUN apk add --no-cache gcc musl-dev linux-headers
+COPY package.json package.json
+RUN yarn install
+EXPOSE 3000
+COPY . .
+CMD ["yarn", "start"]

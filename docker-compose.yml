@@ -6,10 +6,7 @@ services:
     image: node:16-alpine3.11
     ports:
       - 3001:3001
-    build: 
-      dockerfile: ./Dockerfile
-      context: ./s2c-Backend
-    #command: sh -c "yarn install && yarn run start"
+    build: ./s2c-Backend/
     volumes:
       - ./s2c-Backend:/code
       - ./SSL:/SSL
@@ -25,10 +22,7 @@ services:
     image: node:16-alpine3.11
     ports:
       - 3000:3000
-    build: 
-      dockerfile: ./Dockerfile
-      context: ./s2c-clientapp
-    #command: sh -c "yarn install && yarn run start"
+    build: ./s2c-clientapp/
     volumes:
       - ./s2c-clientapp:/code
       - ./SSL:/SSL
