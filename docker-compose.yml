@@ -12,7 +12,8 @@ services:
     command: sh -c "yarn install && yarn start"
     volumes:
       - ./s2c-Backend:/code
-      - /mnt/hdd2/Sketch2Circuit/data:/code/data
+      - ../data:/code/data
+      #- /mnt/hdd2/Sketch2Circuit/data:/code/data
     networks:
       - backend
     environment:
@@ -33,12 +34,14 @@ services:
       - ./s2c-clientapp:/code
 
   mysql:
+    user: root
     image: mysql:8.0
     restart: unless-stopped
     networks:
       - backend
     volumes:
-      - /mnt/hdd2/Sketch2Circuit/mysqldata:/var/lib/mysql
+      - ./database:/databasefile
+      - s2c-mysql-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: s2c
