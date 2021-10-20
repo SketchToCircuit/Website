@@ -147,6 +147,43 @@ function onImgReceive(dataIn, ws) {
     return true;
 }
 
+function onValReceive(dataIn, ws) {
+    if (dataIn.count >= 1 && dataIn.count < 5) {
+        var dataOut = {"PacketId" : 203, "Data": {
+            "hintText": "Hint2",
+            "hintImg": "logo192.png",
+            "valImg": "logo512.png"
+        }};
+
+        sendData(data, ws);
+    }
+
+    // ToDo save to database
+}
+
+function onImgReceive(dataIn, ws) {
+    if (dataIn.count >= 1 && dataIn.count < 5) {
+        var dataOut = { "PacketId": 202,   "Data": {
+            "type": "",
+        
+            "ComponentHint": {
+              "text": "",
+              "img": ""
+            },
+        
+            "LabelHint": {
+              "text": "",
+              "img": ""
+            },
+          }
+        };
+
+        sendData(data, ws);
+    }
+
+    // ToDo save images
+}
+
 function getUserData(ws) {
     //Database Access for User data <----------------
     var userScore = 16;
