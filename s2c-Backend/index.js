@@ -3,17 +3,33 @@ const fs = require('fs');
 const https = require('https');
 const path = require('path');
 const {OAuth2Client} = require('google-auth-library');
+const mysql = require('mysql');
 
 const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'setup.cfg')));
 
 const o2Client = new OAuth2Client(config.serverSettings.o2Id);
 
-const options = {
+let database = mysql.createConnection({
+    host: config.database.host,
+    user: config.database.user,
+    password: config.database.password,
+    database: config.database.database
+});
+  
+database.connect(function(err) {
+  if (err) {
+      console.log("DB-Error: " + err);
+      return;
+  }
+  console.log("Connected to database!");
+});
+
+const https_options = {
   key: fs.readFileSync(path.join(__dirname, config.ssl.keyLocation)),
   cert: fs.readFileSync(path.join(__dirname, config.ssl.certLocation))
 } //Https ssl options
 
-let server = https.createServer(options, (req, res) => {
+let server = https.createServer(https_options, (req, res) => {
     res.writeHead(401);
     res.end("Websocket EndPoint\n");
 }).listen(config.serverSettings.backendPort); //Create Https Server
