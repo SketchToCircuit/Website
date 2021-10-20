@@ -1,2 +1,2 @@
 # Website
-Website zur Trainingsdatensammlung 
+Website zur Trainingsdatensammlung
