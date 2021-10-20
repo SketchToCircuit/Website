@@ -47,7 +47,3 @@ volumes:
   s2c-mysql-data:
 networks:
   backend:
-
-
-
-
