@@ -3,7 +3,7 @@ version: "3.7"
 services:
   
   backend:
-    user: node
+    user: root
     image: node:16-alpine3.11
     restart: unless-stopped
     ports:
@@ -22,7 +22,7 @@ services:
       MYSQL_DB: s2c
 
   clientapp:
-    user: node
+    user: root
     image: node:16-alpine3.11
     restart: unless-stopped
     ports:
@@ -38,8 +38,7 @@ services:
     networks:
       - backend
     volumes:
-      - s2c-mysql-data:/var/lib/mysql
-      - /mnt/hdd2/Sketch2Circuit/mysqldata:/code/data
+      - /mnt/hdd2/Sketch2Circuit/mysqldata:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: s2c
