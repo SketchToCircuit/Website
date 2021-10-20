@@ -77,13 +77,36 @@ wss.on('connection', function connection(ws, req) {
 function dbAddUser(googleId) {
     var query = "SELECT * FROM google_user WHERE google_id = ?;";
     database.query(query, [googleId], function(err, result) {
+        if (err) {
+            console.log(err);
+        }
+
         if (!err && result && !result.length) {
             query = "INSERT INTO google_user(google_id, untrusted) VALUES(?, FALSE);";
             database.query(query, [googleId], function(err, result) {
                 if (err) {
-                    return false;
+                    console.log(err);
                 }
             })
+        }
+    });
+}
+
+// get data for validation from database and filesystem
+function getValidationData(callback) {
+    var valData = new Object();
+
+    var query = "SELECT * FROM images, component_types WHERE looked_at = FALSE AND component_type = component_id ORDER BY RAND() LIMIT 1;";
+
+    database.query(query, function(err, result) {
+        if (err) {
+            console.log(err);
+        } else if (result.length >= 1) {
+            valData.hintText = result[0].val_hint;
+            valData.hintImg = result[0].hint_img;
+            valData.valImg = result[0].image_path;
+
+            return callback(valData);
         }
     });
 }
@@ -121,35 +144,37 @@ function PacketHandler(data, ws) {
 
     switch (data.PacketId) {
         case 102:
-            return getUserData(ws);
+            getUserData(ws);
+            break;
         case 103:
-            return decideIfDrawVal(ws);
+            decideIfDrawVal(ws);
+            break;
         case 104:
-            return onImgReceive(data.Data, ws);
+            onImgReceive(data.Data, ws);
+            break;
         case 105:
-            return onValReceive(data.Data, ws);
+            onValReceive(data.Data, ws);
+            break;
         default:
             return false;
     }
+
+    return true;
 }
 
 function onValReceive(dataIn, ws) {
-    if (dataIn.count >= 0 && dataIn.count < 5) {
-        var dataOut = {"PacketId" : 203, "Data": {
-            "hintText": "Hint" + (dataIn.count + 1),
-            "hintImg": "logo192.png",
-            "valImg": "logo512.png",
-            "imgId": 1234
-        }};
-    
-        sendData(dataOut, ws);
-    } else {
-        return false;
-    }
-
-    // ToDo save to database
-
-    return true;
+    getValidationData(function(valData) {
+        if (dataIn.count >= 0 && dataIn.count < 5) {
+            var dataOut = { "PacketId" : 203, "Data": {
+                "hintText": valData.hintText,
+                "hintImg": valData.hintImg,
+                "valImg": valData.valImg,
+                "imgId": 1234
+            }};
+        
+            sendData(dataOut, ws);
+        }
+    });
 }
 
 function onImgReceive(dataIn, ws) {
@@ -169,7 +194,7 @@ function onImgReceive(dataIn, ws) {
           }
         };
 
-        sendData(data, ws);
+        sendData(dataOut, ws);
     } else {
         return false;
     }
@@ -196,10 +221,9 @@ function getUserData(ws) {
 }
 
 function decideIfDrawVal(ws) {
-    var data = {}
 
     if (Math.random() > 0.5) {
-        data = { "PacketId": 202,   "Data": {
+        var dataOut = { "PacketId": 202,   "Data": {
             "type": "",
         
             "ComponentHint": {
@@ -212,16 +236,20 @@ function decideIfDrawVal(ws) {
               "img": ""
             },
         }};
-    } else {
-        data = {"PacketId" : 203, "Data": {
-            "hintText": "Hint0",
-            "hintImg": "logo192.png",
-            "valImg": "logo512.png",
-            "imgId": 1234
-        }};
-    }
 
-    sendData(data, ws);
+        sendData(dataOut, ws);
+    } else {
+        getValidationData(function(valData) {
+            var dataOut = { "PacketId" : 203, "Data": {
+                "hintText": valData.hintText,
+                "hintImg": valData.hintImg,
+                "valImg": valData.valImg,
+                "imgId": 1234
+            }};
+        
+            sendData(dataOut, ws);
+        });
+    }
 
     return true;
 }
@@ -254,4 +282,4 @@ class UserObject
     }
 }
 
-console.log("Wss startet");
+console.log("WSS startet");
