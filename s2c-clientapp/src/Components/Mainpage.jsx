@@ -89,7 +89,7 @@ class Mainpage extends React.Component {
     */
     connect = () => {
         let that = this; // cache the this
-        const url = 'wss:/' + window.location.hostname;
+        const url = 'wss:/' + window.location.hostname + '/api';
         let ws = new WebSocket(url);
         let connectInterval;
 
