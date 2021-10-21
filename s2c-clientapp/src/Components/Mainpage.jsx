@@ -192,7 +192,7 @@ class Mainpage extends React.Component {
         } else if (this.state.displayPage === ChildComponentEnum.Validation) {
             return <Validation ws={this.state.ws} wsData={this.state.validationData} onFinished={this.onDrawValFinished}/>
         } else if (this.state.displayPage === ChildComponentEnum.Draw) {
-            return <Draw ws={this.state.ws} wsData={this.state.drawData}/>
+            return <Draw ws={this.state.ws} wsData={this.state.drawData} onFinished={this.onDrawValFinished}/>
         }
     }
 }

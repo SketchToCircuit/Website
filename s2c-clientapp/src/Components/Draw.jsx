@@ -30,6 +30,8 @@ class Draw extends React.Component {
                            hinttext: this.props.wsData.ComponentHint.text,
                            type: this.props.type });
         }
+
+        console.log("Poinst===>" + this.saveableCanvas.points.length);
     }
 
     onButtonNext = () => {
@@ -81,10 +83,9 @@ class Draw extends React.Component {
                 batchcount: state.batchcount + 1
             }));
 
-            if(this.state.batchcount === 5)
+            if(this.state.batchcount >= 5)
             {
-                //callback hier um page zu wechseln
-                return;
+                this.props.onFinished();
             }
         }
     }
@@ -110,9 +111,7 @@ class Draw extends React.Component {
                     <button
                         className="undo-btn"
                         onClick={() => {
-                        this
-                            .saveableCanvas
-                            .undo();
+                        this.saveableCanvas.undo();
                     }}>
                         Undo
                     </button>
@@ -122,6 +121,7 @@ class Draw extends React.Component {
                     <CanvasDraw ref={canvasDraw => (this.saveableCanvas = canvasDraw)} brushColor="#000000" brushRadius={2} lazyRadius={0} //min is 300px by 300px even older 4:3 screens can resolve this(i hope)
                         canvasWidth={this.state.canvdimension} canvasHeight={this.state.canvdimension} //bs if somebody looks at it
                         imgSrc={this.state.backgroundpic}/>
+                        <progress id="file" value={this.saveableCanvas.points.length} max="100"> 32% </progress>
                 </div>
 
                 <div className="hint-div">
