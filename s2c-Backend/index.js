@@ -99,7 +99,7 @@ function dbAddUser(googleId) {
 // get data for validation from database and filesystem
 function getValidationData(callback) {
     // order by random number to select random image
-    // (RAND() + 1) * (looked_at + 1) -> already validated images will always have a higher "sorting number" -> only taken if no others are left
+    // (RAND() + 1) * ( ) -> already validated images will always have a higher "sorting number" -> only taken if no others are left
     var query = "SELECT * FROM images, component_types WHERE component_type = component_id ORDER BY ((RAND() + 1) * (looked_at + 1)) LIMIT 1;";
 
     database.query(query, function(err, result) {
@@ -202,13 +202,13 @@ function onImgReceive(dataIn, ws) {
             "type": "",
         
             "ComponentHint": {
-              "text": "",
-              "img": ""
+              "text": "Hint 1",
+              "img": "logo192.png"
             },
         
             "LabelHint": {
-              "text": "",
-              "img": ""
+              "text": "hint 2",
+              "img": "logo192.png"
             },
           }
         };
@@ -241,19 +241,19 @@ function getUserData(ws) {
 
 function decideIfDrawVal(ws) {
 
-    if (Math.random() > 0.5) {
+    if (Math.random() > 0.0) {
         var dataOut = { "PacketId": 202,   "Data": {
             "type": "",
         
             "ComponentHint": {
-              "text": "",
-              "img": ""
+              "text": "hint 3",
+              "img": "logo192.png"
             },
         
             "LabelHint": {
-              "text": "",
-              "img": ""
-            },
+              "text": "hint 4",
+              "img": "logo192.png"
+            }, 
         }};
 
         sendData(dataOut, ws);
