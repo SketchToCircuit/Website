@@ -179,9 +179,7 @@ class Mainpage extends React.Component {
         this.props.loginCallback(res);
     }
 
-    render() {
-        //return <Draw ws={this.state.ws} wsData={null}/>
-        
+    render() {   
         const ws = this.state.ws;
         if (!ws || ws.readyState !== WebSocket.OPEN) {
             return null;

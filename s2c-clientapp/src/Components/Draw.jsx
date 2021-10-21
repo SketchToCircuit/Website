@@ -12,13 +12,13 @@ class Draw extends React.Component {
         super(props)
 
         this.state = {
-            hintpicture: "",
-            hinttext: "",
+            hintpicture: props.wsData.ComponentHint.img,
+            hinttext: props.wsData.ComponentHint.text,
             isfirstDrawn: false,
             procedebtntext: "Next",
             backgroundpic: "",
             canvdimension: window.innerHeight * 0.8,
-            batchcount: 0,
+            batchcount: 1,
             type: ""
         };
     }
@@ -45,9 +45,6 @@ class Draw extends React.Component {
                 hintpicture: this.props.wsData.LabelHint.img,
                 canvdimension: this.state.canvdimension + 1
             }));
-            this.setState((state) => ({
-                canvdimension: this.state.canvdimension - 1
-            }));
 
         } else if (this.state.isfirstDrawn) {
 
@@ -56,6 +53,10 @@ class Draw extends React.Component {
                 procedebtntext: "Next",
                 isfirstDrawn: false,
                 canvdimension: this.state.canvdimension + 1
+            }));
+
+            this.setState((state) => ({
+                canvdimension: this.state.canvdimension - 1
             }));
 
             const data = {
@@ -76,6 +77,10 @@ class Draw extends React.Component {
                 return;
             }
 
+            this.setState((state) => ({
+                batchcount: state.batchcount + 1
+            }));
+
             if(this.state.batchcount === 5)
             {
                 //callback hier um page zu wechseln
@@ -85,9 +90,13 @@ class Draw extends React.Component {
     }
 
     render() {
+        
         if (!this.props.wsData) {
-            return null;
+            return(
+                     <h1>Ufff No Data</h1>
+            );
         }
+
         return (
             <div className="wraping-div">
                 <div className="draw-btn">
