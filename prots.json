@@ -34,7 +34,7 @@ Packet-IDs with offset 100 (starting at 101)
   "Data": {
     "count": integer,
     "type": "string",
-    "compontentImg": "base64 DataUrl",
+    "componentImg": "base64 DataUrl",
     "labelImg": "base64 DataUrl"
   }
 }

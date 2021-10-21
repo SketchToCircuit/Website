@@ -1,6 +1,8 @@
-R_H_<x>: Resistor horizontale
-R_V_<x>: Resistor vertical
+R_H: Resistor horizontale
+R_V: Resistor vertical
 
-<type>_<x>_label: Label image
+File-system layout:
 
-File format: *.jpg
+../Images/Hints: all hint Images
+../Images/<type>/<x>.<format>: all component images with ascending number x
+../Images/<type>_label/<x>.<format>: all label images with ascending number x

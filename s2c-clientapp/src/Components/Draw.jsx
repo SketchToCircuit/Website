@@ -17,19 +17,16 @@ class Draw extends React.Component {
             backgroundpic: "",
             canvdimension: window.innerHeight * 0.8,
             batchcount: 1,
-            type: ""
+            type: props.wsData.type
         };
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.wsData !== this.props.wsData) {
-            // Backend isnt allowed to send the same task twice
             this.setState({hintpicture: this.props.wsData.ComponentHint.img, 
                            hinttext: this.props.wsData.ComponentHint.text,
-                           type: this.props.type });
+                           type: this.props.wsData.type });
         }
-
-        console.log("Poinst===>" + this.saveableCanvas.points.length);
     }
 
     onButtonNext = () => {
@@ -64,12 +61,10 @@ class Draw extends React.Component {
                 "Data": {
                     "count": this.state.batchcount,
                     "type": this.state.type,
-                    "compontentImg": this.componentimage,
+                    "componentImg": this.componentimage,
                     "labelImg": this.saveableCanvas.canvas.drawing.toDataURL("image/png")
                 }
             }
-
-            this.saveableCanvas.clear();
 
             try {
                 this.props.ws.send(JSON.stringify(data));
@@ -77,14 +72,16 @@ class Draw extends React.Component {
                 return;
             }
 
-            this.setState((state) => ({
-                batchcount: state.batchcount + 1
-            }));
+            this.saveableCanvas.clear();
 
             if(this.state.batchcount >= 5)
             {
                 this.props.onFinished();
             }
+
+            this.setState((state) => ({
+                batchcount: state.batchcount + 1
+            }));
         }
     }
 

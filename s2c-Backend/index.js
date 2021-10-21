@@ -5,6 +5,7 @@ const path = require('path');
 const {OAuth2Client} = require('google-auth-library');
 const mysql = require('mysql');
 const Jimp = require('jimp');
+const util = require('util');
 
 const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'setup.cfg')));
 
@@ -39,10 +40,15 @@ function getUniqueId(count) {
     return (Math.floor((Math.random() + 1) * 10000) * 10 + count);
 }
 
-function getBase64Img(relPath) {
+async function getBase64Img(relPath) {
     try {
-        let img = fs.readFileSync(path.join(__dirname, relPath));
-        return 'data:image/jpeg;base64,' + img.toString('base64');
+        let absPath = path.join(__dirname, relPath);
+        let img = await Jimp.read(path.join(__dirname, relPath));
+        let ext = absPath.split('.').pop().toLowerCase();
+        if (ext === 'jpg') {
+            ext = 'jpeg';
+        }
+        return 'data:image/'+ ext +';base64,' + await img.getBase64Async(Jimp.AUTO);
     } catch (error) {
         console.log(error);
         return '';
@@ -64,6 +70,22 @@ async function getCombinedBase64Img(pathA, pathB) {
     }
 }
 
+// store image at relative path (<path> doesn't need an extension)
+async function saveBase64Image(dataString, relPath) {
+    try {
+        let matches = dataString.match(/^data:image\/([A-Za-z]+);base64,(.+)$/);
+        if (matches.length !== 3) {
+            return;
+        }
+        relPath += '.' + matches[1];
+        await util.promisify(fs.writeFile)(path.join(__dirname, relPath), Buffer.from(matches[2], 'base64'), );
+        return relPath
+    } catch (e) {
+        console.log(e);
+        return '';
+    }
+}
+
 wss.on('connection', function connection(ws, req) {
     ws.ping()
 
@@ -71,12 +93,12 @@ wss.on('connection', function connection(ws, req) {
     count += 1;
 
     console.log(`Connection from ${req.socket.remoteAddress} with id ${id}`);
-    var userObject = new UserObject(id);
+    let userObject = new UserObject(id);
 
     clients.set(ws, userObject);
 
     ws.on('message', function incoming(data) {
-        var success = false;
+        let success = false;
 
         try {
             success = PacketHandler(data, ws);
@@ -97,15 +119,15 @@ wss.on('connection', function connection(ws, req) {
 
 // add googleId to database
 function dbAddUser(googleId) {
-    var query = "SELECT * FROM google_user WHERE google_id = ?;";
-    database.query(query, [googleId], function(err, result) {
+    let query = "SELECT * FROM google_user WHERE google_id = ?;";
+    database.query(query, [googleId], (err, result) => {
         if (err) {
             console.log(err);
         }
 
         if (!err && result && !result.length) {
             query = "INSERT INTO google_user(google_id, untrusted) VALUES(?, FALSE);";
-            database.query(query, [googleId], function(err, result) {
+            database.query(query, [googleId], (err, result) => {
                 if (err) {
                     console.log(err);
                 }
@@ -118,16 +140,16 @@ function dbAddUser(googleId) {
 function getValidationData(callback) {
     // order by random number to select random image
     // (RAND() + 1) * ( ) -> already validated images will always have a higher "sorting number" -> only taken if no others are left
-    var query = "SELECT * FROM images, component_types WHERE component_type = component_id ORDER BY ((RAND() + 1) * (looked_at + 1)) LIMIT 1;";
+    let query = "SELECT * FROM images, component_types WHERE component_type = component_id ORDER BY ((RAND() + 1) * (looked_at + 1)) LIMIT 1;";
 
-    database.query(query, function(err, result) {
+    database.query(query, (err, result) => {
         if (err) {
             console.log(err);
         } else if (result.length >= 1) {
             async function combineData(r) {
-                var valData = new Object();
+                let valData = new Object();
                 valData.hintText = r.val_hint;
-                valData.hintImg = getBase64Img(r.hint_img);
+                valData.hintImg = await getBase64Img(r.hint_img);
                 valData.valImg = await getCombinedBase64Img(r.component_path, r.label_path);
                 valData.imgId = r.image_id;
                 return valData;
@@ -140,9 +162,9 @@ function getValidationData(callback) {
 
 // set the validation status of this img
 function setValidated(imgId, validated, googleId) {
-    var query = "UPDATE images SET validated = ?, validator_id = ?, looked_at = TRUE WHERE image_id = ?;";
+    let query = "UPDATE images SET validated = ?, validator_id = ?, looked_at = TRUE WHERE image_id = ?;";
 
-    database.query(query, [validated, googleId, imgId], function(err, result) {
+    database.query(query, [validated, googleId, imgId], (err, result) => {
         if (err) {
             console.log(err);
         }
@@ -151,11 +173,46 @@ function setValidated(imgId, validated, googleId) {
 
 function storeDrawnImage(data) {
     // Check if type is valid
+    let query = "SELECT * FROM component_types WHERE file_prefix = ?;";
+    database.query(query, [data.type], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else if (result.length >= 1) {
+            onTypeValid();
+        }
+    });
 
+    onTypeValid = () => {
+        fs.readdir(config.components.saveFolder + data.type + '/', (err, files) => {
+            if (!err) {
+                let highestId = 0;
+                for (let i = 0; i < files.length; i++) {
+                    let matches = files[i].match(/([0-9]+)/);
+
+                    if (matches.length >= 1) {
+                        let number = parseInt(matches[0]);
+
+                        if (number > highestId) {
+                            highestId = number;
+                        }
+                    }
+                }
+
+                onFoundHighestNumber(highestId);
+            } else {
+                console.log(err);
+            }
+        });
+    }
+
+    onFoundHighestNumber = async (number) => {
+        let compPath = await saveBase64Image(data.componentImg, config.components.saveFolder + data.type + '/' + number);
+        let labelPath = await saveBase64Image(data.labelImg, config.components.saveFolder + data.type + '_label' + '/' + number);
+    }
 }
 
 function PacketHandler(data, ws) {
-    var client = clients.get(ws);
+    let client = clients.get(ws);
 
     try {
         data = JSON.parse(data);
@@ -212,7 +269,7 @@ function onValReceive(dataIn, ws, client) {
         setValidated(dataIn.imgId, dataIn.validated, client.google.sub);
 
         getValidationData(function(valData) {
-            var dataOut = { "PacketId" : 203, "Data": {
+            let dataOut = { "PacketId" : 203, "Data": {
                 "hintText": valData.hintText,
                 "hintImg": valData.hintImg,
                 "valImg": valData.valImg,
@@ -230,8 +287,8 @@ function onImgReceive(dataIn, ws, client) {
     if (client.drawVal === "draw" && dataIn.count >= 1 && dataIn.count <= 5 && dataIn.count === client.count + 1) {
         storeDrawnImage(dataIn);
 
-        var dataOut = { "PacketId": 202,   "Data": {
-            "type": "",
+        let dataOut = { "PacketId": 202,   "Data": {
+            "type": "R_V",
         
             "ComponentHint": {
               "text": "Hint 1",
@@ -254,7 +311,7 @@ function onImgReceive(dataIn, ws, client) {
 
 function getUserData(ws, client) {
     //Database Access for User data <----------------
-    var userScore = 16;
+    let userScore = 16;
     console.log(client.google);
 
     const data = { "PacketId" : 201, "Data" : {
@@ -275,8 +332,8 @@ function decideIfDrawVal(ws, client) {
     }
 
     if (Math.random() > 0.5) {
-        var dataOut = { "PacketId": 202,   "Data": {
-            "type": "",
+        let dataOut = { "PacketId": 202,   "Data": {
+            "type": "R_V",
         
             "ComponentHint": {
               "text": "hint 3",
@@ -295,7 +352,7 @@ function decideIfDrawVal(ws, client) {
         client.drawVal = "draw";
     } else {
         getValidationData(function(valData) {
-            var dataOut = { "PacketId" : 203, "Data": {
+            let dataOut = { "PacketId" : 203, "Data": {
                 "hintText": valData.hintText,
                 "hintImg": valData.hintImg,
                 "valImg": valData.valImg,
