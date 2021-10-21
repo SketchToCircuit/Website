@@ -241,7 +241,7 @@ function getUserData(ws) {
 
 function decideIfDrawVal(ws) {
 
-    if (Math.random() > 0.0) {
+    if (Math.random() > 0.5) {
         var dataOut = { "PacketId": 202,   "Data": {
             "type": "",
         
