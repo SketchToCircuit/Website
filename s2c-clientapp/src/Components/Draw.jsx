@@ -76,7 +76,7 @@ class Draw extends React.Component {
                 return;
             }
 
-            if(this.state.batchcount == 5)
+            if(this.state.batchcount === 5)
             {
                 //callback hier um page zu wechseln
                 return;
@@ -120,7 +120,8 @@ class Draw extends React.Component {
                     <img
                         src={this.state.hintpicture}
                         className="hint-picture"
-                        width={this.state.canvdimension * 0.8}/>
+                        width={this.state.canvdimension * 0.8}
+                        alt=''/>
                 </div>
 
             </div>
