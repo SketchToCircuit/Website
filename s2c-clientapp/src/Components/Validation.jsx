@@ -7,7 +7,7 @@ class Validation extends React.Component {
         super(props)
 
         this.state = {
-            count: 0,
+            count: 1,
             enabledBtn: true
         };
     }
@@ -27,7 +27,7 @@ class Validation extends React.Component {
         } catch (e) {
         }
 
-        if (this.state.count >= 4) {
+        if (this.state.count >= 5) {
             this.props.onFinished();
         }
 

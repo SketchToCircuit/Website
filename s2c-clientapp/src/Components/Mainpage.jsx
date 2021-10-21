@@ -7,7 +7,7 @@ import Validation from './Validation';
 import Draw from './Draw'
 import StartButton from './StartButton';
 
-const ChildComponentEnum = Object.freeze({Login: 0, Draw: 1, Validation: 2, StartBtn: 3})
+const ChildComponentEnum = Object.freeze({Login: 0, Draw: 1, Validation: 2, StartBtn: 3});
 
 class Mainpage extends React.Component {
     timeout = 250; // Initial timeout duration as a class variable
@@ -26,6 +26,7 @@ class Mainpage extends React.Component {
 
     componentDidMount() {
         this.connect();
+        this.props.setShowNav(true);
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -35,6 +36,12 @@ class Mainpage extends React.Component {
             this.didCloseWs = true;
             this.state.ws.close();
             this.connect();
+        }
+
+        if (this.state.displayPage === ChildComponentEnum.Login || this.state.displayPage === ChildComponentEnum.StartBtn) {
+            this.props.setShowNav(true);
+        } else {
+            this.props.setShowNav(false);
         }
     }
 
@@ -89,7 +96,7 @@ class Mainpage extends React.Component {
     */
     connect = () => {
         let that = this; // cache the this
-        const url = 'wss:/' + window.location.hostname + ':3001';
+        const url = 'ws:/' + window.location.hostname + ':3001';
         let ws = new WebSocket(url);
         let connectInterval;
 
