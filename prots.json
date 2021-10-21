@@ -62,7 +62,8 @@ Packet-IDs with offset 200 (starting at 201)
   "Data": {
     "avatar": "string",
     "username": "string",
-    "points": integer
+    "points": integer,
+    "unique": integer
   }
 }
 
@@ -82,6 +83,8 @@ Packet-IDs with offset 200 (starting at 201)
       "text": "string",
       "img": "string"
     },
+
+    "unique": integer
   }
 }
 
@@ -93,6 +96,7 @@ Packet-IDs with offset 200 (starting at 201)
     "hintText": "string",
     "hintImg": "string",
     "valImg": "string",
-    "imgId": integer
+    "imgId": integer,
+    "unique": integer
   }
 }

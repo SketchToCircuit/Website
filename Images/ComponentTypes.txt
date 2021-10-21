@@ -1,2 +1,6 @@
-R_H: Resistor horizontale
-R_V: Resistor vertical
+R_H_<x>: Resistor horizontale
+R_V_<x>: Resistor vertical
+
+<type>_<x>_label: Label image
+
+File format: *.jpg

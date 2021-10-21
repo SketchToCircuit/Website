@@ -4,6 +4,7 @@ const http = require('http');
 const path = require('path');
 const {OAuth2Client} = require('google-auth-library');
 const mysql = require('mysql');
+const Jimp = require('jimp');
 
 const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'setup.cfg')));
 
@@ -17,11 +18,12 @@ let database = mysql.createConnection({
 });
   
 database.connect(function(err) {
-  if (err) {
-      console.log("DB-Error: " + err);
-      return;
-  }
-  console.log("Connected to database!");
+    if (err) {
+        console.log("DB-Error: " + err);
+        return;
+    }
+
+    console.log("Connected to database!");
 });
 
 let server = http.createServer((req, res) => {
@@ -29,19 +31,35 @@ let server = http.createServer((req, res) => {
     res.end("Websocket EndPoint\n");
 }).listen(config.serverSettings.backendPort); //Create Http Server
 
-var count = 1;
+let count = 1;
 const wss = new WS.Server({server}); //Create WebSocketServer with the Http server
 const clients = new Map(); //Map to store ws instances
 
 function getUniqueId(count) {
-    return (Math.floor(Math.random() * 1000) * 10 + count);
+    return (Math.floor((Math.random() + 1) * 10000) * 10 + count);
 }
 
 function getBase64Img(relPath) {
     try {
-        var img = fs.readFileSync(path.join(__dirname, relPath));
+        let img = fs.readFileSync(path.join(__dirname, relPath));
         return 'data:image/jpeg;base64,' + img.toString('base64');
     } catch (error) {
+        console.log(error);
+        return '';
+    }
+}
+
+async function getCombinedBase64Img(pathA, pathB) {
+    try {
+        let imgA = await Jimp.read(path.join(__dirname, pathA));
+        let imgB = await Jimp.read(path.join(__dirname, pathB));
+        imgA.composite(imgB, 0, 0, {
+            mode: Jimp.BLEND_DARKEN
+        });
+        let result = await imgA.getBase64Async(Jimp.AUTO);
+        return result;   
+    } catch (e) {
+        console.log(e);
         return '';
     }
 }
@@ -106,13 +124,16 @@ function getValidationData(callback) {
         if (err) {
             console.log(err);
         } else if (result.length >= 1) {
-            var valData = new Object();
-            valData.hintText = result[0].val_hint;
-            valData.hintImg = getBase64Img(result[0].hint_img);
-            valData.valImg = getBase64Img(result[0].image_path);
-            valData.imgId = result[0].image_id;
+            async function combineData(r) {
+                var valData = new Object();
+                valData.hintText = r.val_hint;
+                valData.hintImg = getBase64Img(r.hint_img);
+                valData.valImg = await getCombinedBase64Img(r.component_path, r.label_path);
+                valData.imgId = r.image_id;
+                return valData;
+            }
 
-            return callback(valData);
+            combineData(result[0]).then((valData) => {callback(valData);});
         }
     });
 }
@@ -128,7 +149,14 @@ function setValidated(imgId, validated, googleId) {
     });
 }
 
+function storeDrawnImage(data) {
+    // Check if type is valid
+
+}
+
 function PacketHandler(data, ws) {
+    var client = clients.get(ws);
+
     try {
         data = JSON.parse(data);
     } catch {return false;}
@@ -136,19 +164,19 @@ function PacketHandler(data, ws) {
     if (!data.PacketId) 
         return false;
 
-    if (data.PacketId == 101 && clients.get(ws).isAuth != true) {
+    if (data.PacketId == 101 && client.isAuth != true) {
         if (!data.Data.token) 
             return false;
 
         verifyGoogleToken(data.Data.token).then((payload) => {
-            clients.get(ws).google = payload;
-            clients.get(ws).isAuth = true;
+            client.google = payload;
+            client.isAuth = true;
 
             // payload.sub is the googleId
             dbAddUser(payload.sub);
         }).catch((err) => {
             console.log(err);
-            clients.get(ws).isAuth = false;
+            client.isAuth = false;
         });
 
         return true;
@@ -161,16 +189,16 @@ function PacketHandler(data, ws) {
 
     switch (data.PacketId) {
         case 102:
-            getUserData(ws);
+            getUserData(ws, client);
             break;
         case 103:
-            decideIfDrawVal(ws);
+            decideIfDrawVal(ws, client);
             break;
         case 104:
-            onImgReceive(data.Data, ws);
+            onImgReceive(data.Data, ws, client);
             break;
         case 105:
-            onValReceive(data.Data, ws);
+            onValReceive(data.Data, ws, client);
             break;
         default:
             return false;
@@ -179,25 +207,29 @@ function PacketHandler(data, ws) {
     return true;
 }
 
-function onValReceive(dataIn, ws) {
-    if (dataIn.count >= 0 && dataIn.count < 5) {
-        setValidated(dataIn.imgId, dataIn.validated, clients.get(ws).google.sub);
+function onValReceive(dataIn, ws, client) {
+    if (client.drawVal === "val" && dataIn.count >= 1 && dataIn.count <= 5 && dataIn.count === client.count + 1) {
+        setValidated(dataIn.imgId, dataIn.validated, client.google.sub);
 
         getValidationData(function(valData) {
             var dataOut = { "PacketId" : 203, "Data": {
                 "hintText": valData.hintText,
                 "hintImg": valData.hintImg,
                 "valImg": valData.valImg,
-                "imgId": valData.imgId
+                "imgId": valData.imgId,
+                "unique": Math.floor((Math.random() + 1) * 10000)
             }};
         
             sendData(dataOut, ws);
+            client.count += 1;
         });
     }
 }
 
-function onImgReceive(dataIn, ws) {
-    if (dataIn.count >= 0 && dataIn.count < 5) {
+function onImgReceive(dataIn, ws, client) {
+    if (client.drawVal === "draw" && dataIn.count >= 1 && dataIn.count <= 5 && dataIn.count === client.count + 1) {
+        storeDrawnImage(dataIn);
+
         var dataOut = { "PacketId": 202,   "Data": {
             "type": "",
         
@@ -210,28 +242,26 @@ function onImgReceive(dataIn, ws) {
               "text": "hint 2",
               "img": "logo192.png"
             },
+
+            "unique": Math.floor((Math.random() + 1) * 10000)
           }
         };
 
         sendData(dataOut, ws);
-    } else {
-        return false;
+        client.count += 1;
     }
-
-    // ToDo save images
-
-    return true;
 }
 
-function getUserData(ws) {
+function getUserData(ws, client) {
     //Database Access for User data <----------------
     var userScore = 16;
-    console.log(clients.get(ws).google);
+    console.log(client.google);
 
     const data = { "PacketId" : 201, "Data" : {
-        "avatar" : clients.get(ws).google.picture,
-        "username" : clients.get(ws).google.name,
-        "points" : userScore
+        "avatar" : client.google.picture,
+        "username" : client.google.name,
+        "points" : userScore,
+        "unique": Math.floor((Math.random() + 1) * 10000)
     }};
 
     sendData(data, ws);
@@ -239,7 +269,10 @@ function getUserData(ws) {
     return true;
 }
 
-function decideIfDrawVal(ws) {
+function decideIfDrawVal(ws, client) {
+    if (client.drawVal) {
+        return;
+    }
 
     if (Math.random() > 0.5) {
         var dataOut = { "PacketId": 202,   "Data": {
@@ -253,24 +286,27 @@ function decideIfDrawVal(ws) {
             "LabelHint": {
               "text": "hint 4",
               "img": "logo192.png"
-            }, 
+            },
+
+            "unique": Math.floor((Math.random() + 1) * 10000)
         }};
 
         sendData(dataOut, ws);
+        client.drawVal = "draw";
     } else {
         getValidationData(function(valData) {
             var dataOut = { "PacketId" : 203, "Data": {
                 "hintText": valData.hintText,
                 "hintImg": valData.hintImg,
                 "valImg": valData.valImg,
-                "imgId": valData.imgId
+                "imgId": valData.imgId,
+                "unique": Math.floor((Math.random() + 1) * 10000)
             }};
         
             sendData(dataOut, ws);
+            client.drawVal = "val";
         });
     }
-
-    return true;
 }
 
 function sendData(data, ws) { // Send Json data to User
@@ -297,7 +333,8 @@ class UserObject
         this.id = id; //UserID this.
         this.isAuth = false; //Is user Authenticated this.
         this.google = undefined; //Google token this.
-        this.status = undefined; //val or draw or non
+        this.drawVal = undefined; //val or draw or non
+        this.count = 0; // How many images have been drawn/validated?
     }
 }
 

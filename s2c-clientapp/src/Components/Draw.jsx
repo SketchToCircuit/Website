@@ -3,10 +3,8 @@ import CanvasDraw from "react-canvas-draw";
 
 import '../Styles/Draw.css';
 
-var componentimage;
 class Draw extends React.Component {
-    // Access websocket here with "this.props.ws" or if you need it more often:
-    // "const {ws} = this.props" und dann mit "ws."
+    componentimage = null;
 
     constructor(props) {
         super(props)
@@ -25,7 +23,7 @@ class Draw extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.wsData !== this.props.wsData) {
-            //backend isnt aloowed to send the same task twice
+            // Backend isnt allowed to send the same task twice
             this.setState({hintpicture: this.props.wsData.ComponentHint.img, 
                            hinttext: this.props.wsData.ComponentHint.text,
                            type: this.props.type });
@@ -36,11 +34,11 @@ class Draw extends React.Component {
 
     onButtonNext = () => {
         if (!this.state.isfirstDrawn) {
-            componentimage = this.saveableCanvas.canvas.drawing.toDataURL("image/png");
+            this.componentimage = this.saveableCanvas.canvas.drawing.toDataURL("image/png");
             this.saveableCanvas.clear();
             // pfush because resize is needed to update canvas since it doesnt update (aba aguada Pfush)
             this.setState((state) => ({
-                backgroundpic: componentimage,
+                backgroundpic: this.componentimage,
                 procedebtntext: "Finish",
                 isfirstDrawn: true,
                 hinttext: this.props.wsData.LabelHint.text,
@@ -66,7 +64,7 @@ class Draw extends React.Component {
                 "Data": {
                     "count": this.state.batchcount,
                     "type": this.state.type,
-                    "compontentImg": componentimage,
+                    "compontentImg": this.componentimage,
                     "labelImg": this.saveableCanvas.canvas.drawing.toDataURL("image/png")
                 }
             }
@@ -121,7 +119,7 @@ class Draw extends React.Component {
                     <CanvasDraw ref={canvasDraw => (this.saveableCanvas = canvasDraw)} brushColor="#000000" brushRadius={2} lazyRadius={0} //min is 300px by 300px even older 4:3 screens can resolve this(i hope)
                         canvasWidth={this.state.canvdimension} canvasHeight={this.state.canvdimension} //bs if somebody looks at it
                         imgSrc={this.state.backgroundpic}/>
-                        <progress id="file" value={this.saveableCanvas.points.length} max="100"> 32% </progress>
+                        <progress id="file" value="50" max="100"> 32% </progress>
                 </div>
 
                 <div className="hint-div">
