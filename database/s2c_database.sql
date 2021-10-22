@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 22. Okt 2021 um 10:57
+-- Erstellungszeit: 22. Okt 2021 um 11:51
 -- Server-Version: 10.4.18-MariaDB
 -- PHP-Version: 8.0.3
 
@@ -30,20 +30,21 @@ SET time_zone = "+00:00";
 CREATE TABLE `component_types` (
   `component_id` int(11) NOT NULL,
   `file_prefix` varchar(16) NOT NULL COMMENT 'Prefix for saving the image file',
-  `draw_hint` varchar(256) NOT NULL COMMENT 'Text hint displayed during drawing',
+  `draw_hint` varchar(256) NOT NULL COMMENT 'Text hint displayed during first stage drawing (component only).',
   `val_hint` varchar(256) NOT NULL COMMENT 'Text hint displayed during validation',
-  `hint_img` varchar(4096) NOT NULL COMMENT 'File path to hint image'
+  `component_hint_img` varchar(4096) NOT NULL COMMENT 'File path to hint image with only the component (no label). Used for first stage of drawing.',
+  `labeled_hint_img` varchar(4096) NOT NULL COMMENT 'File path to labeled hint image. (Used as hint durcing validation and in the second stage of drawing\r\n)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Daten für Tabelle `component_types`
 --
 
-INSERT INTO `component_types` (`component_id`, `file_prefix`, `draw_hint`, `val_hint`, `hint_img`) VALUES
-(1, 'R_H', 'Bitte zeichnen Sie einen horizontal gelegenen Widerstand!', 'Ist hier ein horizontaler Widerstand abgebildet?', '../Images/Hints/R_H.jpg'),
-(2, 'R_V', 'Bitte zeichnen Sie einen vertikal gelegenen Widerstand!', 'Ist hier ein vertikaler Widerstand abgebildet?', '../Images/Hints/R_V.jpg'),
-(3, 'C_H', 'Bitte zeichnen Sie einen horizontal gelegenen Kondensator!', 'Ist hier ein horizontaler Kondensator abgebildet?', '../Images/Hints/C_H.jpg'),
-(4, 'C_V', 'Bitte zeichnen Sie einen vertikal gelegenen Kondensator!', 'Ist hier ein vertikaler Kondensator abgebildet?', '../Images/Hints/C_V.jpg');
+INSERT INTO `component_types` (`component_id`, `file_prefix`, `draw_hint`, `val_hint`, `component_hint_img`, `labeled_hint_img`) VALUES
+(1, 'R_H', 'Bitte zeichnen Sie einen horizontal gelegenen Widerstand!', 'Ist hier ein horizontaler Widerstand abgebildet?', './data/Hints/R_H.jpg', './data/Hints/R_H_labeled.jpg'),
+(2, 'R_V', 'Bitte zeichnen Sie einen vertikal gelegenen Widerstand!', 'Ist hier ein vertikaler Widerstand abgebildet?', './data/Hints/R_V.jpg', './data/Hints/R_V_labeled.jpg'),
+(3, 'C_H', 'Bitte zeichnen Sie einen horizontal gelegenen Kondensator!', 'Ist hier ein horizontaler Kondensator abgebildet?', './data/Hints/C_H.jpg', './data/Hints/C_H_labeled.jpg'),
+(4, 'C_V', 'Bitte zeichnen Sie einen vertikal gelegenen Kondensator!', 'Ist hier ein vertikaler Kondensator abgebildet?', './data/Hints/C_V.jpg', './data/Hints/C_V_labeled.jpg');
 
 -- --------------------------------------------------------
 

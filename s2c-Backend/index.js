@@ -149,7 +149,7 @@ function getValidationData(callback) {
             async function combineData(r) {
                 let valData = new Object();
                 valData.hintText = r.val_hint;
-                valData.hintImg = await getBase64Img(r.hint_img);
+                valData.hintImg = await getBase64Img(r.labeled_hint_img);
                 valData.valImg = await getCombinedBase64Img(r.component_path, r.label_path);
                 valData.imgId = r.image_id;
                 return valData;
@@ -159,6 +159,15 @@ function getValidationData(callback) {
         }
     });
 }
+
+// TODO
+// write simillar function to get the hint text and hint images for drawing
+// use "ORDER BY RAND() LIMIT 1" to select a random component type from component_types
+// type = result[0].file_prefix
+// ComponentHint.text = result[0].draw_hint
+// ComponentHint.img = await getBase64Img(result[0].component_hint_img);
+// LabelHint.text = "Bitte zeichnen Sie die Beschriftung für dieses Bauteil!" (kein Datenbankeintrag, da eigentlich immer gleich, aber trotzdem offen gelassen, falls Backend doch unterschiedliche Texte senden will)
+// LabelHint.img = await getBase64Img(result[0].labeled_hint_img);
 
 // set the validation status of this img
 function setValidated(imgId, validated, googleId) {
@@ -283,7 +292,7 @@ function onValReceive(dataIn, ws, client) {
                 "hintImg": valData.hintImg,
                 "valImg": valData.valImg,
                 "imgId": valData.imgId,
-                "unique": Math.floor((Math.random() + 1) * 10000)
+                "unique": Math.floor((Math.random() + 1) * 10000)       // Pfusch, um im frontend bei zwei gleichen Validierungsaufgaben (gleiches Bild und gleicher Text) trotzdem zwischen unterschiedlichen Paketen zu unterscheiden, ohne im ws.on an die Child-Components eine weitere Variable zum state-change mitgeben zu müssen. Es ist pfusch, aber war die einfachste Möglichkeit im Backend des Problem vom Pfusti zu lösen :-)
             }};
         
             sendData(dataOut, ws);
@@ -295,6 +304,9 @@ function onValReceive(dataIn, ws, client) {
 function onImgReceive(dataIn, ws, client) {
     if (client.drawVal === "draw" && dataIn.count >= 1 && dataIn.count <= 5 && dataIn.count === client.count + 1) {
         storeDrawnImage(dataIn);
+
+        // TODO
+        // write function to get data from database
 
         let dataOut = { "PacketId": 202,   "Data": {
             "type": "R_V",
@@ -340,7 +352,16 @@ function decideIfDrawVal(ws, client) {
         return;
     }
 
+    // TODO
+    // maybe get the number of validated images and decide according to these, if we should validate or draw
+    // not necessary at the moment
+    // may even make debugging harder
+
     if (Math.random() > 0.5) {
+        // TODO
+        // write function to get hints from database
+        // similar to getValidationData
+
         let dataOut = { "PacketId": 202,   "Data": {
             "type": "R_V",
         
