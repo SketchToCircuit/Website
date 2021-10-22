@@ -3,6 +3,7 @@ version: "3.7"
 services:
   
   backend:
+    user: root
     image: node:16-alpine3.11
     restart: unless-stopped
     ports:
@@ -11,6 +12,8 @@ services:
     command: sh -c "yarn install && yarn start"
     volumes:
       - ./s2c-Backend:/code
+      - ../data:/code/data
+      #- /mnt/hdd2/Sketch2Circuit/data:/code/data
     networks:
       - backend
     environment:
@@ -20,6 +23,7 @@ services:
       MYSQL_DB: s2c
 
   clientapp:
+    user: root
     image: node:16-alpine3.11
     restart: unless-stopped
     ports:
@@ -30,11 +34,13 @@ services:
       - ./s2c-clientapp:/code
 
   mysql:
+    user: root
     image: mysql:8.0
     restart: unless-stopped
     networks:
       - backend
     volumes:
+      - ./database:/databasefile
       - s2c-mysql-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: secret
