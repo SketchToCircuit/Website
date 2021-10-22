@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 21. Okt 2021 um 13:06
+-- Erstellungszeit: 22. Okt 2021 um 10:57
 -- Server-Version: 10.4.18-MariaDB
 -- PHP-Version: 8.0.3
 
@@ -41,7 +41,9 @@ CREATE TABLE `component_types` (
 
 INSERT INTO `component_types` (`component_id`, `file_prefix`, `draw_hint`, `val_hint`, `hint_img`) VALUES
 (1, 'R_H', 'Bitte zeichnen Sie einen horizontal gelegenen Widerstand!', 'Ist hier ein horizontaler Widerstand abgebildet?', '../Images/Hints/R_H.jpg'),
-(2, 'R_V', 'Bitte zeichnen Sie einen vertikal gelegenen Widerstand!', 'Ist hier ein vertikaler Widerstand abgebildet?', '../Images/Hints/R_V.jpg');
+(2, 'R_V', 'Bitte zeichnen Sie einen vertikal gelegenen Widerstand!', 'Ist hier ein vertikaler Widerstand abgebildet?', '../Images/Hints/R_V.jpg'),
+(3, 'C_H', 'Bitte zeichnen Sie einen horizontal gelegenen Kondensator!', 'Ist hier ein horizontaler Kondensator abgebildet?', '../Images/Hints/C_H.jpg'),
+(4, 'C_V', 'Bitte zeichnen Sie einen vertikal gelegenen Kondensator!', 'Ist hier ein vertikaler Kondensator abgebildet?', '../Images/Hints/C_V.jpg');
 
 -- --------------------------------------------------------
 
@@ -81,14 +83,6 @@ CREATE TABLE `images` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Daten für Tabelle `images`
---
-
-INSERT INTO `images` (`image_id`, `component_path`, `label_path`, `component_type`, `drawer_id`, `validator_id`, `looked_at`, `validated`, `timestamp`) VALUES
-(1, '../Images/R_H_1.jpg', '../Images/R_H_1_label.jpg', 1, '11527227101223895204', '118029624248768760033', 1, 0, '2021-10-20 13:44:02'),
-(2, '../Images/R_V_1.jpg', '../Images/R_V_1_label.jpg', 2, '11527227101223895204', '118029624248768760033', 1, 0, '2021-10-20 14:54:15');
-
---
 -- Indizes der exportierten Tabellen
 --
 
@@ -121,7 +115,7 @@ ALTER TABLE `images`
 -- AUTO_INCREMENT für Tabelle `component_types`
 --
 ALTER TABLE `component_types`
-  MODIFY `component_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `component_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT für Tabelle `images`

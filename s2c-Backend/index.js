@@ -171,7 +171,7 @@ function setValidated(imgId, validated, googleId) {
     });
 }
 
-function storeDrawnImage(data) {
+function storeDrawnImage(data, client) {
     // Check if type is valid
     let query = "SELECT * FROM component_types WHERE file_prefix = ?;";
     database.query(query, [data.type], (err, result) => {
@@ -183,9 +183,13 @@ function storeDrawnImage(data) {
     });
 
     onTypeValid = () => {
+
+        // TODO check if folder (config.components.saveFolder + data.type + '/') and (config.components.saveFolder + data.type + '_label' + '/') do exist. If necessary create them
+
+        // check already saved images and get highest file name number and use it as the filenmae for the next image
         fs.readdir(config.components.saveFolder + data.type + '/', (err, files) => {
             if (!err) {
-                let highestId = 0;
+                let highestId = -1;
                 for (let i = 0; i < files.length; i++) {
                     let matches = files[i].match(/([0-9]+)/);
 
@@ -198,7 +202,7 @@ function storeDrawnImage(data) {
                     }
                 }
 
-                onFoundHighestNumber(highestId);
+                onFoundHighestNumber(highestId + 1);
             } else {
                 console.log(err);
             }
@@ -208,6 +212,10 @@ function storeDrawnImage(data) {
     onFoundHighestNumber = async (number) => {
         let compPath = await saveBase64Image(data.componentImg, config.components.saveFolder + data.type + '/' + number);
         let labelPath = await saveBase64Image(data.labelImg, config.components.saveFolder + data.type + '_label' + '/' + number);
+
+        // TODO
+        // store data in database
+        // insert into images, set values component_path, label_path (already in correct format in above variables), drawer_id to client.google.sub
     }
 }
 
