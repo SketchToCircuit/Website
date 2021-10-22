@@ -215,7 +215,8 @@ function storeDrawnImage(data, client) {
 
         // TODO
         // store data in database
-        // insert into images, set values component_path, label_path (already in correct format in above variables), drawer_id to client.google.sub
+        // insert into images, set values component_path, label_path (already in correct format in above variables), drawer_id to client.google.sub, component_type
+        // component_type is the component_id from the table component_types where file_prefix is data.type
     }
 }
 
