@@ -36,12 +36,7 @@ function decideIfDrawVal(ws, client, database) {
         return;
     }
 
-    // TODO
-    // maybe get the number of validated images and decide according to these, if we should validate or draw
-    // not necessary at the moment
-    // may even make debugging harder
-
-    if (Math.random() > 0.5) {
+    function sendDraw() {
         database.getDrawData((drawData) => {
             let dataOut = {
                 "PacketId": 202,
@@ -65,8 +60,10 @@ function decideIfDrawVal(ws, client, database) {
             sendData(dataOut, ws);
             client.drawVal = "draw";
         });
-    } else {
-        database.getValidationData((valData) => {
+    }
+
+    function sendVal() {
+        database.getValidationData(client.google.sub, (valData) => {
             let dataOut = {
                 "PacketId": 203,
                 "Data": {
@@ -82,6 +79,8 @@ function decideIfDrawVal(ws, client, database) {
             client.drawVal = "val";
         });
     }
+
+    database.decideDrawValFromDB(sendDraw, sendVal);
 }
 
 function onImgReceive(dataIn, ws, client, database, base64Helper) {
@@ -163,7 +162,7 @@ function storeDrawnImage(data, client ,database, base64Helper) {
 function onValReceive(dataIn, ws, client, database) {
     if (client.drawVal === "val" && dataIn.count >= 1 && dataIn.count <= 5 && dataIn.count === client.count + 1) {
         database.setValidated(dataIn.imgId, dataIn.validated, client.google.sub);
-        database.getValidationData(function (valData) {
+        database.getValidationData(client.google.sub, function (valData) {
             let dataOut = {
                 "PacketId": 203,
                 "Data": {
