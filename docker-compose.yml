@@ -11,15 +11,21 @@ services:
     build: ./s2c-Backend
     command: sh -c "yarn install && yarn start"
     volumes:
-      - data:/data
+      - /home/hauminix/diplom/data:/data
       - ./s2c-Backend:/code
     networks:
       - backend
     environment:
+      HINTFOLDER: /data/hints/
+      SAVEFOLDER: /data/saved/
+      BACKENDPORT: 3001
+      O2ID: 406203004756-j13sirg99go7roat5eqmecn5ue8ahld9.apps.googleusercontent.com
       MYSQL_HOST: mysql
       MYSQL_USER: root
       MYSQL_PASSWORD: secret
       MYSQL_DB: s2c
+    depends_on:
+      - mysql
 
   clientapp:
     user: root
@@ -31,20 +37,24 @@ services:
     command: sh -c "yarn install && yarn start"
     volumes:
       - ./s2c-clientapp:/code
+    depends_on:
+      - backend
 
   mysql:
     user: root
     image: mysql:8.0
     restart: unless-stopped
+    ports:
+      - 3306:3306
     networks:
       - backend
     volumes:
       - s2c-mysql-data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: s2c
 volumes:
   s2c-mysql-data:
-  data:
 networks:
   backend:
