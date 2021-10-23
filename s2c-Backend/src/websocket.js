@@ -157,11 +157,6 @@ function storeDrawnImage(data, client ,database, base64Helper) {
         let labelPath = await base64Helper.saveBase64Image(data.labelImg, env.SAVEFOLDER + data.type + '_label' + '/' + number);
         console.log(compPath, labelPath);
         database.storeImage(compPath, labelPath, client.google.sub, data.type);
-
-        // TODO
-        // store data in database
-        // insert into images, set values component_path, label_path (already in correct format in above variables), drawer_id to client.google.sub, component_type
-        // component_type is the component_id from the table component_types where file_prefix is data.type
     }
 }
 
