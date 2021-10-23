@@ -99,13 +99,13 @@ function PacketHandler(data, ws) {
             websocket.getUserData(ws, client, database);
             break;
         case 103:
-            websocket.decideIfDrawVal(ws, client, database);
+            websocket.decideIfDrawVal(ws, client, database, base64Helper);
             break;
         case 104:
             websocket.onImgReceive(data.Data, ws, client, database, base64Helper);
             break;
         case 105:
-            websocket.onValReceive(data.Data, ws, client, database);
+            websocket.onValReceive(data.Data, ws, client, database, base64Helper);
             break;
         default:
             return false;

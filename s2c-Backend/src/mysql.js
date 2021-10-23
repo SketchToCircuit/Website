@@ -44,7 +44,7 @@ function AddUser(googleId) {
 }
 
 // get data for validation from database and filesystem
-function getValidationData(callback) {
+function getValidationData(base64Helper ,callback) {
     // order by random number to select random image
     // (RAND() + 1) * ( ) -> already validated images will always have a higher "sorting number" -> only taken if no others are left
     let query = "SELECT * FROM images, component_types WHERE component_type = component_id ORDER BY ((RAND() + 1) * (looked_at + 1)) LIMIT 1;";
@@ -55,8 +55,8 @@ function getValidationData(callback) {
             async function combineData(r) {
                 let valData = new Object();
                 valData.hintText = r.val_hint;
-                valData.hintImg = await getBase64Img(r.labeled_hint_img);
-                valData.valImg = await getCombinedBase64Img(r.component_path, r.label_path);
+                valData.hintImg = await base64Helper.getBase64Img(r.labeled_hint_img);
+                valData.valImg = await base64Helper.getCombinedBase64Img(r.component_path, r.label_path);
                 valData.imgId = r.image_id;
                 return valData;
             }
@@ -68,7 +68,7 @@ function getValidationData(callback) {
     });
 }
 
-function getDrawData(callback) {
+function getDrawData(base64Helper,callback) {
     let query = "SELECT * FROM component_types ORDER BY RAND() LIMIT 1;";
     database.query(query, (err, result) => {
         if (err) {
@@ -78,9 +78,9 @@ function getDrawData(callback) {
                 let drawData = new Object();
                 drawData.type = r.file_prefix;
                 drawData.componentText = r.draw_hint;
-                drawData.componentImg = await getBase64Img(r.component_hint_img);
+                drawData.componentImg = await base64Helper.getBase64Img(r.component_hint_img);
                 drawData.labelText = "Bitte zeichnen Sie die Beschriftung für dieses Bauteil!";
-                drawData.labelImg = await getBase64Img(r.labeled_hint_img);
+                drawData.labelImg = await base64Helper.getBase64Img(r.labeled_hint_img);
                 return drawData;
             }
 
