@@ -68,6 +68,29 @@ function getValidationData(callback) {
     });
 }
 
+function getDrawData(callback) {
+    let query = "SELECT * FROM component_types ORDER BY RAND() LIMIT 1;";
+    database.query(query, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else if (result.length >= 1) {
+            async function combineData(r) {
+                let drawData = new Object();
+                drawData.type = r.file_prefix;
+                drawData.componentText = r.draw_hint;
+                drawData.componentImg = await getBase64Img(r.component_hint_img);
+                drawData.labelText = "Bitte zeichnen Sie die Beschriftung für dieses Bauteil!";
+                drawData.labelImg = await getBase64Img(r.labeled_hint_img);
+                return drawData;
+            }
+
+            combineData(result[0]).then((drawData) => {
+                callback(drawData);
+            });
+        }
+    });
+}
+
 function setValidated(imgId, validated, googleId) {
     let query = "UPDATE images SET validated = ?, validator_id = ?, looked_at = TRUE WHERE image_id = ?;";
 
@@ -92,7 +115,7 @@ function checkType(type, callback)
 
 function storeImage(component_path, label_path, drawer_id, component_type)
 {
-    let query = mysql.format("insert into images(component_path, label_path, drawer_id, component_type) values(?, ?, ?, (select component_id from component_types where file_prefix = ?));", [component_path, label_path, drawer_id, component_type]);
+    let query = mysql.format("insert into images(component_path, label_path, drawer_id, component_type) values(?, ?, ?, (select component_id from component_types where file_prefix = ? limit 1));", [component_path, label_path, drawer_id, component_type]);
     database.query(query,(err, result) => {
         if(err) {console.log(err)};
     });
@@ -102,6 +125,7 @@ module.exports = {
     init,
     AddUser,
     getValidationData,
+    getDrawData,
     setValidated,
     checkType,
     storeImage

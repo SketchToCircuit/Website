@@ -42,34 +42,31 @@ function decideIfDrawVal(ws, client, database) {
     // may even make debugging harder
 
     if (Math.random() > 0.5) {
-        // TODO
-        // write function to get hints from database
-        // similar to getValidationData
+        database.getDrawData((drawData) => {
+            let dataOut = {
+                "PacketId": 202,
+                "Data": {
+                    "type": drawData.type,
+    
+                    "ComponentHint": {
+                        "text": drawData.componentText,
+                        "img":  drawData.componentImg
+                    },
+    
+                    "LabelHint": {
+                        "text": drawData.labelText,
+                        "img": drawData.labelImg
+                    },
+    
+                    "unique": Math.floor((Math.random() + 1) * 10000)
+                }
+            };
 
-        let dataOut = {
-            "PacketId": 202,
-            "Data": {
-                "type": "R_V",
-
-                "ComponentHint": {
-                    "text": "hint 3",
-                    "img": "logo192.png"
-                },
-
-                "LabelHint": {
-                    "text": "hint 4",
-                    "img": "logo192.png"
-                },
-
-                "unique": Math.floor((Math.random() + 1) * 10000)
-            }
-        };
-
-        sendData(dataOut, ws);
-        client.drawVal = "draw";
+            sendData(dataOut, ws);
+            client.drawVal = "draw";
+        });
     } else {
-        database.getValidationData(function (valData) {
-            console.log(valData);
+        database.getValidationData((valData) => {
             let dataOut = {
                 "PacketId": 203,
                 "Data": {
@@ -91,30 +88,29 @@ function onImgReceive(dataIn, ws, client, database, base64Helper) {
     if (client.drawVal === "draw" && dataIn.count >= 1 && dataIn.count <= 5 && dataIn.count === client.count + 1) {
         storeDrawnImage(dataIn, client ,database, base64Helper);
 
-        // TODO
-        // write function to get Hint data from database 
+        database.getDrawData((drawData) => {
+            let dataOut = {
+                "PacketId": 202,
+                "Data": {
+                    "type": drawData.type,
+    
+                    "ComponentHint": {
+                        "text": drawData.componentText,
+                        "img":  drawData.componentImg
+                    },
+    
+                    "LabelHint": {
+                        "text": drawData.labelText,
+                        "img": drawData.labelImg
+                    },
+    
+                    "unique": Math.floor((Math.random() + 1) * 10000)
+                }
+            };
 
-        let dataOut = {
-            "PacketId": 202,
-            "Data": {
-                "type": "R_V",
-
-                "ComponentHint": {
-                    "text": "Hint 1",
-                    "img": "logo192.png"
-                },
-
-                "LabelHint": {
-                    "text": "hint 2",
-                    "img": "logo192.png"
-                },
-
-                "unique": Math.floor((Math.random() + 1) * 10000)
-            }
-        };
-
-        sendData(dataOut, ws);
-        client.count += 1;
+            sendData(dataOut, ws);
+            client.count += 1;
+        });
     }
 }
 

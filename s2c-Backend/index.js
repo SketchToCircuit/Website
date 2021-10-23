@@ -114,15 +114,4 @@ function PacketHandler(data, ws) {
     return true;
 }
 
-// TODO
-// write simillar function to get the hint text and hint images for drawing
-// use "ORDER BY RAND() LIMIT 1" to select a random component type from component_types
-// type = result[0].file_prefix
-// ComponentHint.text = result[0].draw_hint
-// ComponentHint.img = await getBase64Img(result[0].component_hint_img);
-// LabelHint.text = "Bitte zeichnen Sie die Beschriftung für dieses Bauteil!" (kein Datenbankeintrag, da eigentlich immer gleich, aber trotzdem offen gelassen, falls Backend doch unterschiedliche Texte senden will)
-// LabelHint.img = await getBase64Img(result[0].labeled_hint_img);
-
-// set the validation status of this img
-
 console.log("Wss startet");
