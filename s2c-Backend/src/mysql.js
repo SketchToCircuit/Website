@@ -67,10 +67,10 @@ function AddUser(googleId) {
 }
 
 // get data for validation from database and filesystem
-function getValidationData(base64Helper ,callback) {
+function getValidationData(base64Helper, googleId, callback) {
     // order by random number to select random image
-    // (RAND() + 1) * ( ) -> already validated images will always have a higher "sorting number" -> only taken if no others are left
-    let query = "SELECT * FROM images, component_types WHERE component_type = component_id ORDER BY ((RAND() + 1) * (looked_at + 1)) LIMIT 1;";
+    let query = "SELECT * FROM images, component_types WHERE component_type = component_id AND NOT looked_at AND drawer_id != ? ORDER BY RAND() LIMIT 1;";
+    query = mysql.format(query, googleId);
     database.query(query, (err, result) => {
         if (err) {
             console.log(err);
@@ -114,6 +114,37 @@ function getDrawData(base64Helper,callback) {
     });
 }
 
+function decideDrawValFromDB(googleId, onDraw, onValidate) {
+    let query = "SELECT COUNT(*) AS num FROM images WHERE NOT looked_at AND drawer_id != ?;"
+    query = mysql.format(query, googleId);
+    database.query(query, (err, result) => {
+        if (err) {
+            console.log(err);
+            onDraw();
+        } else {
+            let drawProb;
+            // at least 5 pictures have to be available for 
+            if (result[0].num < 5) {
+                onDraw();
+            } else {
+                // 5 images to validate: 90% chance to draw
+                const fewImgDrawProb = 0.9;
+                // more than 20 imges to validate: 30% chance to draw
+                const lotImgDrawProb = 0.3;
+
+                let normalizedNum = Math.min(Math.max((result[0].num - 5) / 15.0, 0.0), 1.0);
+                drawProb = normalizedNum * (lotImgDrawProb - fewImgDrawProb) + fewImgDrawProb;
+
+                if (Math.random() < drawProb) {
+                    onDraw();
+                } else {
+                    onValidate();
+                }
+            }
+        }
+    });
+}
+
 function setValidated(imgId, validated, googleId) {
     let query = "UPDATE images SET validated = ?, validator_id = ?, looked_at = TRUE WHERE image_id = ?;";
 
@@ -151,5 +182,6 @@ module.exports = {
     getDrawData,
     setValidated,
     checkType,
-    storeImage
+    storeImage,
+    decideDrawValFromDB
 }
