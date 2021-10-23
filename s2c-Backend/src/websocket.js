@@ -31,13 +31,13 @@ function getUserData(ws, client, database) {
     return true;
 }
 
-function decideIfDrawVal(ws, client, database) {
+function decideIfDrawVal(ws, client, database, base64Helper) {
     if (client.drawVal) {
         return;
     }
 
     function sendDraw() {
-        database.getDrawData((drawData) => {
+        database.getDrawData(base64Helper, (drawData) => {
             let dataOut = {
                 "PacketId": 202,
                 "Data": {
@@ -56,14 +56,13 @@ function decideIfDrawVal(ws, client, database) {
                     "unique": Math.floor((Math.random() + 1) * 10000)
                 }
             };
-
             sendData(dataOut, ws);
             client.drawVal = "draw";
         });
     }
 
     function sendVal() {
-        database.getValidationData(client.google.sub, (valData) => {
+        database.getValidationData(base64Helper, client.google.sub, (valData) => {
             let dataOut = {
                 "PacketId": 203,
                 "Data": {
@@ -74,20 +73,19 @@ function decideIfDrawVal(ws, client, database) {
                     "unique": Math.floor((Math.random() + 1) * 10000)
                 }
             };
-
             sendData(dataOut, ws);
             client.drawVal = "val";
         });
     }
 
-    database.decideDrawValFromDB(sendDraw, sendVal);
+    database.decideDrawValFromDB(client.google.sub, sendDraw, sendVal);
 }
 
 function onImgReceive(dataIn, ws, client, database, base64Helper) {
     if (client.drawVal === "draw" && dataIn.count >= 1 && dataIn.count <= 5 && dataIn.count === client.count + 1) {
         storeDrawnImage(dataIn, client ,database, base64Helper);
 
-        database.getDrawData((drawData) => {
+        database.getDrawData(base64Helper,(drawData) => {
             let dataOut = {
                 "PacketId": 202,
                 "Data": {
@@ -154,15 +152,16 @@ function storeDrawnImage(data, client ,database, base64Helper) {
     onFoundHighestNumber = async (number) => {
         let compPath = await base64Helper.saveBase64Image(data.componentImg, env.SAVEFOLDER + data.type + '/' + number);
         let labelPath = await base64Helper.saveBase64Image(data.labelImg, env.SAVEFOLDER + data.type + '_label' + '/' + number);
-        console.log(compPath, labelPath);
         database.storeImage(compPath, labelPath, client.google.sub, data.type);
     }
 }
 
-function onValReceive(dataIn, ws, client, database) {
+function onValReceive(dataIn, ws, client, database, base64Helper) {
+    console.log(dataIn);
     if (client.drawVal === "val" && dataIn.count >= 1 && dataIn.count <= 5 && dataIn.count === client.count + 1) {
         database.setValidated(dataIn.imgId, dataIn.validated, client.google.sub);
-        database.getValidationData(client.google.sub, function (valData) {
+
+        database.getValidationData(base64Helper, client.google.sub, function (valData) {
             let dataOut = {
                 "PacketId": 203,
                 "Data": {

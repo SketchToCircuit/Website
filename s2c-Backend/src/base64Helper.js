@@ -3,15 +3,14 @@ const util = require('util');
 const fs = require('fs');
 const path = require('path');
 
-async function getBase64Img(relPath) {
+async function getBase64Img(absPath) {
     try {
-        let absPath = path.join(__dirname, relPath);
-        let img = await Jimp.read(path.join(__dirname, relPath));
+        let img = await Jimp.read(absPath);
         let ext = absPath.split('.').pop().toLowerCase();
         if (ext === 'jpg') {
             ext = 'jpeg';
         }
-        return 'data:image/' + ext + ';base64,' + await img.getBase64Async(Jimp.AUTO);
+        return await img.getBase64Async(Jimp.AUTO);
     } catch (error) {
         console.log(error);
         return '';
@@ -20,8 +19,8 @@ async function getBase64Img(relPath) {
 
 async function getCombinedBase64Img(pathA, pathB) {
     try {
-        let imgA = await Jimp.read(path.join(__dirname, pathA));
-        let imgB = await Jimp.read(path.join(__dirname, pathB));
+        let imgA = await Jimp.read(pathA);
+        let imgB = await Jimp.read(pathB);
         imgA.composite(imgB, 0, 0, {
             mode: Jimp.BLEND_DARKEN
         });
