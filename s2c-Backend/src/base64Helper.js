@@ -10,7 +10,7 @@ async function getBase64Img(absPath) {
         if (ext === 'jpg') {
             ext = 'jpeg';
         }
-        return 'data:image/' + ext + ';base64,' + await img.getBase64Async(Jimp.AUTO);
+        return await img.getBase64Async(Jimp.AUTO);
     } catch (error) {
         console.log(error);
         return '';
