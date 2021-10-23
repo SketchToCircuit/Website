@@ -16,6 +16,7 @@ services:
     networks:
       - backend
     environment:
+      COMPONENTCFG: /code/component_types.cfg
       HINTFOLDER: /data/hints/
       SAVEFOLDER: /data/saved/
       BACKENDPORT: 3001

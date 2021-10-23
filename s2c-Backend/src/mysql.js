@@ -1,6 +1,7 @@
 const { env } = require('process');
 const mysql = require('mysql');
 const waitPort = require('wait-port');
+const fs = require('fs');
 
 var database;
 
@@ -21,7 +22,29 @@ async function init() {
             return;
         }
         console.log("Connected to database!");
+        loadData();
     });
+}
+
+async function loadData()
+{
+    let deleteQuery = "DELETE FROM component_types"
+    let data = JSON.parse(fs.readFileSync(env.COMPONENTCFG));
+    database.query(deleteQuery, (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+    });
+    let query = "INSERT INTO component_types(component_id, file_prefix, draw_hint, val_hint, component_hint_img, labeled_hint_img) VALUES(?,?,?,?,?,?);";
+    for(var prop in data)
+    {
+        database.query(query, [data[prop].component_id, data[prop].file_prefix, data[prop].draw_hint, data[prop].val_hint, data[prop].component_hint_img, data[prop].labeled_hint_img], (err, result) => {
+            if (err) {
+                console.log(err);
+            }
+        });
+        //console.log(data[prop].component_id);
+    }
 }
 
 // add googleId to database
