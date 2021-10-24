@@ -9,8 +9,6 @@ import About from './Components/About';
 import NotFound from './Components/NotFound';
 import Logout from './Components/Logout';
 
-import config from './config.json'
-
 const App = () => {
     const [loggedIn, setLoggedIn] = useState(false);
     const [showNav, setShowNav] = useState(true);
