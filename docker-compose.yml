@@ -30,6 +30,8 @@ services:
     command: sh -c "yarn install && yarn build && yarn serve -s build -l 3000"
     volumes:
       - ./s2c-clientapp:/code
+    env_file:
+      - clientapp.env
     depends_on:
       - backend
 
