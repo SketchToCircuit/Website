@@ -15,16 +15,8 @@ services:
       - ./s2c-Backend:/code
     networks:
       - backend
-    environment:
-      COMPONENTCFG: /code/component_types.cfg
-      HINTFOLDER: /data/hints/
-      SAVEFOLDER: /data/saved/
-      BACKENDPORT: 3001
-      O2ID: 406203004756-j13sirg99go7roat5eqmecn5ue8ahld9.apps.googleusercontent.com
-      MYSQL_HOST: mysql
-      MYSQL_USER: root
-      MYSQL_PASSWORD: secret
-      MYSQL_DB: s2c
+    env_file:
+      - backend.env
     depends_on:
       - mysql
 
