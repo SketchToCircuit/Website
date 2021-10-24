@@ -44,12 +44,12 @@ const App = () => {
                         <nav className="topnav">
                             <NavLink activeStyle={{textShadow: "0px 0px 2px" }} exact to="/" className='home-link'>SketchToCircuit</NavLink>
                             <NavLink activeStyle={{textShadow: "0px 0px 2px" }} to="/About">About</NavLink>
-                            {loggedIn ? <div className="logout"><Logout callback={logoutCallback} o2Id={config.clientSettings.o2Id}/></div> : null}
+                            {loggedIn ? <div className="logout"><Logout callback={logoutCallback}/></div> : null}
                         </nav> : null
                 }
 
                 <Switch>
-                    <Route exact path="/" render={(props) => <Mainpage {...props} loginCallback={loginCallback} loggedIn={loggedIn} config={config} setShowNav={updateShowNav}/>}/>
+                    <Route exact path="/" render={(props) => <Mainpage {...props} loginCallback={loginCallback} loggedIn={loggedIn} setShowNav={updateShowNav}/>}/>
                     <Route path="/About" component={About}/>
                     <Route component={NotFound}/>
                 </Switch>
