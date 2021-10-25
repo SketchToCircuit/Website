@@ -29,9 +29,7 @@ const CountDownTimer = ({Secs, onTimeIsOver}) => {
 
     
     return (
-        <div>
-            <p>{`:${secs.toString().padStart(2, '0')}`}</p> 
-        </div>
+        <div>{secs.toString().padStart(2, '0')}</div>
     );
 }
 

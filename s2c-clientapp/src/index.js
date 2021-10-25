@@ -1,6 +1,6 @@
 import React, {useState,} from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter as Router, Switch, Route, NavLink, useLocation} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route, NavLink} from "react-router-dom";
 
 import './index.css';
 
@@ -28,12 +28,12 @@ const App = () => {
 
     const updateShowNav = (val) => {
         if (showNav !== val) {
-            setShowNav(val);
+            //setShowNav(val);
         }
     }
 
     if (window.location.pathname !== '/') {
-        updateShowNav(true);
+        //updateShowNav(true);
     }
 
     return (

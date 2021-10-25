@@ -96,24 +96,24 @@ class Draw extends React.Component {
         }
 
         return (
-            <div className="wraping-div">
+            <div className="draw">
+                <div className="top">
+                    <div className="btns-timer">
+                        <button
+                            className="next-btn"
+                            onClick={() => {
+                            this.onButtonNext();
+                        }}> {this.state.procedebtntext} </button>
 
-                <div className="draw-btn">
-                    <CountDownTimer Secs={10} onTimeIsOver={this.onButtonNext}/>
-                    <button
-                        className="next-btn"
-                        onClick={() => {
-                        this.onButtonNext();
-                    }}>
-                        {this.state.procedebtntext}
-                    </button>
-                    <button
-                        className="undo-btn"
-                        onClick={() => {
-                        this.saveableCanvas.undo();
-                    }}>
-                        Undo
-                    </button>
+                        <button
+                            className="undo-btn"
+                            onClick={() => {
+                            this.saveableCanvas.undo();
+                        }}> Undo </button>
+                        
+                        <CountDownTimer Secs={10} onTimeIsOver={this.onButtonNext}/>
+                    </div>
+                    <p className="instruction-paragraph">{this.state.hinttext}</p>
                 </div>
 
                 <div className="canvas">
@@ -123,7 +123,6 @@ class Draw extends React.Component {
                 </div>
 
                 <div className="hint-div">
-                    <p className="instruction-paragraph">Please Draw this {this.state.hinttext}</p>
                     <img
                         src={this.state.hintpicture}
                         className="hint-picture"

@@ -1,25 +1,42 @@
-.draw-btn {
+.draw .top {
+    overflow: hidden;
+    background-color: var(--prim-background);
+}
+
+.draw .instruction-paragraph {
+    color: white;
+    margin-left: 20px;
+    margin-right: 20px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.draw .btns-timer {
+    margin: 10px;
+}
+
+.draw .btns-timer div {
+    display: inline-block;
+}
+
+.draw .draw-btn {
     margin-top: 0px;
     background-color: var(--prim-background);
 }
 
-.wraping-div{
- display: flex;
-}
-
-.hint-div{
+.draw .hint-div{
  margin-left: 0px;
  margin-top: auto;
  margin-bottom: auto;
 }
 
-.canvas{
+.draw .canvas{
     margin-top: auto;
     display: flex;
     margin: auto;
 }
 
-.undo-btn {
+.draw .undo-btn {
     display: inline;
     background-color: var(--prim-background);
     border: none;
@@ -33,7 +50,7 @@
     cursor: pointer;
 }
 
-.next-btn {
+.draw .next-btn {
     display: inline;
     background-color: var(--prim-background);
     border: none;
@@ -47,14 +64,14 @@
     cursor: pointer;
 }
 
-.hint-picture {
+.draw .hint-picture {
     height: auto;
     margin-right: auto;
     margin-left: 0px;
     background-color: aliceblue;
 }
 
-.instruction-paragraph{
-    text-align: center;
+.draw .instruction-paragraph{
+   
 }
 

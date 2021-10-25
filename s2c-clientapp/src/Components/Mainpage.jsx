@@ -34,8 +34,12 @@ class Mainpage extends React.Component {
             this.setState({displayPage: ChildComponentEnum.Login});
             
             this.didCloseWs = true;
-            this.state.ws.close();
-            this.connect();
+            try {
+                this.state.ws.close();
+                this.connect();
+            } catch (error) {
+                console.log(error);
+            }
         }
 
         if (this.state.displayPage === ChildComponentEnum.Login || this.state.displayPage === ChildComponentEnum.StartBtn) {
@@ -185,7 +189,7 @@ class Mainpage extends React.Component {
             "type": "Resistor",
         
             "ComponentHint": {
-              "text": "bitte Zeichnen sie",
+              "text": "bitte Zeichnen sie einen horizontal gelgenen Widerstand!!",
               "img": "logo192.png"
             },
         
