@@ -1,6 +1,7 @@
 import React from 'react';
 import CanvasDraw from "react-canvas-draw";
 
+import './Timer';
 import '../Styles/Draw.css';
 
 class Draw extends React.Component {
@@ -15,7 +16,7 @@ class Draw extends React.Component {
             isfirstDrawn: false,
             procedebtntext: "Next",
             backgroundpic: "",
-            canvdimension: window.innerHeight * 0.8,
+            canvdimension: window.innerWidth * 0.8,
             batchcount: 1,
             type: props.wsData.type
         };
@@ -95,6 +96,7 @@ class Draw extends React.Component {
 
         return (
             <div className="wraping-div">
+
                 <div className="draw-btn">
                     <button
                         className="next-btn"
@@ -114,9 +116,8 @@ class Draw extends React.Component {
 
                 <div className="canvas">
                     <CanvasDraw ref={canvasDraw => (this.saveableCanvas = canvasDraw)} brushColor="#000000" brushRadius={2} lazyRadius={0} //min is 300px by 300px even older 4:3 screens can resolve this(i hope)
-                        canvasWidth={this.state.canvdimension} canvasHeight={this.state.canvdimension} //bs if somebody looks at it
+                        canvasWidth={this.state.canvdimension} canvasHeight={this.state.canvdimension}
                         imgSrc={this.state.backgroundpic}/>
-                        <progress id="file" value="50" max="100"> 32% </progress>
                 </div>
 
                 <div className="hint-div">

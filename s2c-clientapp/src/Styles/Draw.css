@@ -1,5 +1,6 @@
 .draw-btn {
-    display: inline;
+    margin-top: 0px;
+    background-color: var(--prim-background);
 }
 
 .wraping-div{
