@@ -1,7 +1,8 @@
 import React from 'react';
 import CanvasDraw from "react-canvas-draw";
 
-import './Timer';
+
+import CountDownTimer from './Timer';
 import '../Styles/Draw.css';
 
 class Draw extends React.Component {
@@ -18,7 +19,7 @@ class Draw extends React.Component {
             backgroundpic: "",
             canvdimension: window.innerWidth * 0.8,
             batchcount: 1,
-            type: props.wsData.type
+            type: props.wsData.type,
         };
     }
 
@@ -70,7 +71,7 @@ class Draw extends React.Component {
             try {
                 this.props.ws.send(JSON.stringify(data));
             } catch (error) {
-                return;
+                console.log(error);
             }
 
             this.saveableCanvas.clear();
@@ -98,6 +99,7 @@ class Draw extends React.Component {
             <div className="wraping-div">
 
                 <div className="draw-btn">
+                    <CountDownTimer Secs={10} onTimeIsOver={this.onButtonNext}/>
                     <button
                         className="next-btn"
                         onClick={() => {
