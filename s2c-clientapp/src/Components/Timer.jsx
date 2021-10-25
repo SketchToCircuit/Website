@@ -1,3 +1,4 @@
+/*
 import React from 'react';
 import CanvasDraw from "react-canvas-draw";
 
@@ -12,3 +13,4 @@ class Timer extends React.Component{
 }
 
 export default Timer;
+*/
