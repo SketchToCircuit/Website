@@ -96,7 +96,7 @@ class Mainpage extends React.Component {
     */
     connect = () => {
         let that = this; // cache the this
-        const url = 'ws:/' + window.location.hostname + ':3001';
+        const url = 'wss:/' + window.location.hostname + '/api';
         let ws = new WebSocket(url);
         let connectInterval;
 
@@ -186,7 +186,7 @@ class Mainpage extends React.Component {
         }
 
         if (this.state.displayPage === ChildComponentEnum.Login) {
-            return(<Loginpage loginCallback={this.loginCallback} config={this.props.config}/>);
+            return(<Loginpage loginCallback={this.loginCallback}/>);
         } else if (this.state.displayPage === ChildComponentEnum.StartBtn) {
             return <StartButton ws={this.state.ws}/>
         } else if (this.state.displayPage === ChildComponentEnum.Validation) {
