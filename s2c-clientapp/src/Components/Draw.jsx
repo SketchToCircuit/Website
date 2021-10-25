@@ -17,9 +17,10 @@ class Draw extends React.Component {
             isfirstDrawn: false,
             procedebtntext: "Next",
             backgroundpic: "",
-            canvdimension: window.innerWidth * 0.8,
+            canvdimension: window.innerWidth ,
             batchcount: 1,
             type: props.wsData.type,
+            resetTimer: false
         };
     }
 
@@ -42,9 +43,10 @@ class Draw extends React.Component {
                 isfirstDrawn: true,
                 hinttext: this.props.wsData.LabelHint.text,
                 hintpicture: this.props.wsData.LabelHint.img,
+                resetTimer: true,
                 canvdimension: this.state.canvdimension + 1
             }));
-
+            
         } else if (this.state.isfirstDrawn) {
 
             this.setState((state) => ({
@@ -111,7 +113,7 @@ class Draw extends React.Component {
                             this.saveableCanvas.undo();
                         }}> Undo </button>
                         
-                        <CountDownTimer Secs={10} onTimeIsOver={this.onButtonNext}/>
+                        <CountDownTimer Secs={10} onTimeIsOver={this.onButtonNext} className="timer" onreset={this.state.resetTimer} />
                     </div>
                     <p className="instruction-paragraph">{this.state.hinttext}</p>
                 </div>
@@ -120,15 +122,17 @@ class Draw extends React.Component {
                     <CanvasDraw ref={canvasDraw => (this.saveableCanvas = canvasDraw)} brushColor="#000000" brushRadius={2} lazyRadius={0} //min is 300px by 300px even older 4:3 screens can resolve this(i hope)
                         canvasWidth={this.state.canvdimension} canvasHeight={this.state.canvdimension}
                         imgSrc={this.state.backgroundpic}/>
-                </div>
 
                 <div className="hint-div">
                     <img
                         src={this.state.hintpicture}
                         className="hint-picture"
-                        width={this.state.canvdimension * 0.8}
+                        width={this.state.canvdimension * 0.1}
                         alt=''/>
                 </div>
+
+                </div>
+
 
             </div>
         );

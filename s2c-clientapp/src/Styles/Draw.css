@@ -3,6 +3,11 @@
     background-color: var(--prim-background);
 }
 
+.draw .timer {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .draw .instruction-paragraph {
     color: white;
     margin-left: 20px;
@@ -12,7 +17,8 @@
 }
 
 .draw .btns-timer {
-    margin: 10px;
+    margin: 5px;
+    margin-left: auto;
 }
 
 .draw .btns-timer div {
@@ -45,7 +51,7 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 10px;
+    font-size: 15px;
     margin: 0;
     cursor: pointer;
 }
@@ -59,7 +65,7 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 10px;
+    font-size: 15px;
     margin: 0;
     cursor: pointer;
 }

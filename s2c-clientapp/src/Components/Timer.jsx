@@ -1,12 +1,19 @@
 import React from 'react'
 import '../Styles/Timer.css';
 
-const CountDownTimer = ({Secs, onTimeIsOver}) => {
-   
+const CountDownTimer = ({Secs, onTimeIsOver, onreset}) => {
     const [secs, setTime] = React.useState(Secs);
+    
+    const reset = () => setTime(Secs);
+
     
 
     const tick = () => {
+
+        if(onreset)
+        {
+            reset();
+        }
    
         if (secs <= 0)
         {
@@ -19,8 +26,6 @@ const CountDownTimer = ({Secs, onTimeIsOver}) => {
         }
     };
     
-    const reset = () => setTime(Secs);
-
     React.useEffect(() => {
         // ever second so every thousand mili seconds
         const timerId = setInterval(() => tick(), 1000);
@@ -29,7 +34,7 @@ const CountDownTimer = ({Secs, onTimeIsOver}) => {
 
     
     return (
-        <div>{secs.toString().padStart(2, '0')}</div>
+        <div className="timer">{secs.toString().padStart(2, '0')}</div>
     );
 }
 
