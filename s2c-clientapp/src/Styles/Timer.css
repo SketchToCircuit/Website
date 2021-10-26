@@ -1,7 +1,7 @@
-
 .timer {
     background-color: aliceblue;
     padding-left: 10px;
     padding-right: 10px;
     color: var(--prim-background);
+    font-size: 15px;
 }

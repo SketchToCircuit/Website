@@ -103,17 +103,13 @@ class Draw extends React.Component {
             <div className="draw">
                 <div className="top">
                     <div className="btns-timer">
-                        <button
-                            className="next-btn"
-                            onClick={() => {
-                            this.onButtonNext();
-                        }}> {this.state.procedebtntext} </button>
-
-                        <button
-                            className="undo-btn"
-                            onClick={() => {
+                        <button onClick={this.onButtonNext}>{this.state.procedebtntext}</button>
+                        <button onClick={() => {
+                        try {
                             this.saveableCanvas.undo();
-                        }}> Undo </button>
+                        } catch (e) {
+                            return
+                        }}}>Undo</button>
                         
                         <CountDownTimer Secs={10} onTimeIsOver={this.onButtonNext} className="timer" onreset={this.state.resetTimer} ref={this.timerRef}/>
                     </div>
