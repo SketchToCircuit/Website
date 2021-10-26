@@ -13,7 +13,6 @@ const App = () => {
     const [loggedIn, setLoggedIn] = useState(false);
     const [showNav, setShowNav] = useState(true);
     
-    
     const loginCallback = (res) => {
         if (res && res.tokenId) {
             setLoggedIn(true);
@@ -39,13 +38,12 @@ const App = () => {
     return (
         <div>
             <Router>
-                {
-                    showNav ? 
-                        <nav className="topnav">
-                            <NavLink activeStyle={{textShadow: "0px 0px 2px" }} exact to="/" className='home-link'>SketchToCircuit</NavLink>
-                            <NavLink activeStyle={{textShadow: "0px 0px 2px" }} to="/About">About</NavLink>
-                            {loggedIn ? <div className="logout"><Logout callback={logoutCallback}/></div> : null}
-                        </nav> : null
+                {showNav ? 
+                    <nav className="topnav">
+                        <NavLink activeStyle={{textShadow: "0px 0px 2px" }} exact to="/" className='home-link'>SketchToCircuit</NavLink>
+                        <NavLink activeStyle={{textShadow: "0px 0px 2px" }} to="/About">About</NavLink>
+                        {loggedIn ? <div className="logout"><Logout callback={logoutCallback}/></div> : null}
+                    </nav> : null
                 }
 
                 <Switch>
