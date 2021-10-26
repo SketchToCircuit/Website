@@ -21,7 +21,7 @@ class StartButton extends React.Component {
         return (
             <div>
                 <p className='start-text'>
-                    You will either have to draw an image of an electrical component or tell us if the correct component get's displayed<br/><br/>
+                    You will either have to draw something in a given time or tell us if you see the correct image.<br/><br/>
                     If you need help you can click the small image to get a bigger preview.
                 </p>
                 <button className='start-button' onClick={() => this.onBtnClick()}><span>Start!</span></button>

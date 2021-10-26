@@ -74,11 +74,27 @@
     position: fixed;
     right: 0;
     bottom: 0;
-    width: 10%;
-    margin: 20px;
+    height: 12vh;
+    width: 12vh;
+    margin-bottom: 30px;
+    margin-right: 20px;
     border-style: ridge;
     border-radius: 5px;
     border-color: black;
     border-width: medium;
     background-color: white;
+}
+
+@media (hover: none) {
+    .draw [large='1'].hint-picture {
+        height: 45vh;
+        width: 45vh;
+    }
+}
+  
+@media (hover: hover) {
+    .draw .hint-picture:hover {
+        height: 45vh;
+        width: 45vh;
+    }
 }

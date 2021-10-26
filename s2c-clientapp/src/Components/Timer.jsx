@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React from 'react'
 import '../Styles/Timer.css';
 
 class CountDownTimer extends React.Component{
@@ -11,7 +11,9 @@ class CountDownTimer extends React.Component{
         };
     }
 
-    reset = () =>{this.setState({Secs: this.props.Secs})} 
+    reset = () => {
+        this.setState({Secs: this.props.Secs});
+    } 
   
     tick = () => {
    
@@ -20,7 +22,7 @@ class CountDownTimer extends React.Component{
             this.props.onTimeIsOver();
             this.reset();
         } 
-         else
+        else
         {
             this.setState((state) => ({
                 Secs: state.Secs - 1
@@ -39,7 +41,7 @@ class CountDownTimer extends React.Component{
 
     render () {
         return (
-            <div className="timer">{this.state.Secs.toString().padStart(2, '0')} s</div>
+            <div className="timer" blink={this.state.Secs <= 6 ? '1' : '0'}>{this.state.Secs.toString().padStart(2, '0')} s</div>
         );
     }
 }
