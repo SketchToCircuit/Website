@@ -31,7 +31,7 @@ class Draw extends React.Component {
     }
 
     componentDidMount() {
-        window.addEventListener('resize', this.handleResize, true)
+        window.addEventListener('resize', this.handleResize, true);
 
         this.setState({
             canvHeight: document.getElementsByClassName('canvasSizePlaceholder')[0].offsetHeight,
@@ -128,15 +128,15 @@ class Draw extends React.Component {
             <div className="draw">
                 <div className="top">
                     <div className="btns-timer">
-                        <div onClick={this.onButtonNext}><img className='button' src={'next_icon.svg'} role='button'></img></div>
+                        <div onClick={this.onButtonNext}><img className='button' src={'next_icon.svg'} role='button' alt=''></img></div>
                         <div onClick={() => {
                         try {
                             this.saveableCanvas.undo();
                         } catch (e) {
                             return
-                        }}}><img className='button' src={'undo_icon.svg'}  role='button'></img></div>
+                        }}}><img className='button' src={'undo_icon.svg'}  role='button' alt=''></img></div>
 
-                        <CountDownTimer Secs={10} onTimeIsOver={this.onButtonNext} className="timer" onreset={this.state.resetTimer} ref={this.timerRef}/>
+                        <CountDownTimer Secs={20} onTimeIsOver={this.onButtonNext} className="timer" onreset={this.state.resetTimer} ref={this.timerRef}/>
                     </div>
                     <p className="instruction-paragraph">{this.state.hinttext}</p>
                 </div>
@@ -150,10 +150,18 @@ class Draw extends React.Component {
                 </div>
 
                 <div className="hint-div">
-                    <img
-                        src={this.state.hintpicture}
+                    <img src={this.state.hintpicture}
                         className="hint-picture"
-                        alt=''/>
+                        alt=''
+                        role='button'
+                        large='0'
+                        onClick={() => {
+                            if (document.getElementsByClassName('hint-picture')[0].getAttribute('large') === '1') {
+                                document.getElementsByClassName('hint-picture')[0].setAttribute('large', '0')
+                            } else {
+                                document.getElementsByClassName('hint-picture')[0].setAttribute('large', '1')
+                            }
+                        }}/>
                 </div>
             </div>
         );
