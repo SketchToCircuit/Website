@@ -1,41 +1,47 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import '../Styles/Timer.css';
 
-const CountDownTimer = ({Secs, onTimeIsOver, onreset}) => {
-    const [secs, setTime] = React.useState(Secs);
-    
-    const reset = () => setTime(Secs);
+class CountDownTimer extends React.Component{
 
-    
+    constructor(props) {
+        super(props);
 
-    const tick = () => {
+        this.state = {
+            Secs: props.Secs
+        };
+    }
 
-        if(onreset)
-        {
-            reset();
-        }
+    reset = () =>{this.setState({Secs: this.props.Secs})} 
+  
+    tick = () => {
    
-        if (secs <= 0)
+        if (this.state.Secs <= 0)
         {
-            onTimeIsOver();
-            reset();
+            this.props.onTimeIsOver();
+            this.reset();
         } 
          else
         {
-            setTime([secs - 1]);
+            this.setState((state) => ({
+                Secs: state.Secs - 1
+            }));
         }
     };
     
-    React.useEffect(() => {
+    componentDidMount(){
         // ever second so every thousand mili seconds
-        const timerId = setInterval(() => tick(), 1000);
-        return () => clearInterval(timerId);
-    });
+        this.timerId = setInterval(this.tick, 1000);
+    }
 
-    
-    return (
-        <div className="timer">{secs.toString().padStart(2, '0')}</div>
-    );
+    componentWillUnmount(){
+        clearInterval(this.timerId);
+    }
+
+    render () {
+        return (
+            <div className="timer">{this.state.Secs.toString().padStart(2, '0')}</div>
+        );
+    }
 }
 
 export default CountDownTimer;

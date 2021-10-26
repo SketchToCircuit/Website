@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {createRef} from 'react';
 import CanvasDraw from "react-canvas-draw";
+
 
 
 import CountDownTimer from './Timer';
@@ -11,6 +12,8 @@ class Draw extends React.Component {
     constructor(props) {
         super(props)
 
+        this.timerRef = createRef();
+
         this.state = {
             hintpicture: props.wsData.ComponentHint.img,
             hinttext: props.wsData.ComponentHint.text,
@@ -19,8 +22,7 @@ class Draw extends React.Component {
             backgroundpic: "",
             canvdimension: window.innerWidth ,
             batchcount: 1,
-            type: props.wsData.type,
-            resetTimer: false
+            type: props.wsData.type
         };
     }
 
@@ -33,6 +35,7 @@ class Draw extends React.Component {
     }
 
     onButtonNext = () => {
+        this.timerRef.current.reset();
         if (!this.state.isfirstDrawn) {
             this.componentimage = this.saveableCanvas.canvas.drawing.toDataURL("image/png");
             this.saveableCanvas.clear();
@@ -43,11 +46,10 @@ class Draw extends React.Component {
                 isfirstDrawn: true,
                 hinttext: this.props.wsData.LabelHint.text,
                 hintpicture: this.props.wsData.LabelHint.img,
-                resetTimer: true,
                 canvdimension: this.state.canvdimension + 1
             }));
             
-        } else if (this.state.isfirstDrawn) {
+        } else {
 
             this.setState((state) => ({
                 backgroundpic: "",
@@ -90,7 +92,7 @@ class Draw extends React.Component {
     }
 
     render() {
-        
+
         if (!this.props.wsData) {
             return(
                      <h1>Ufff No Data</h1>
@@ -113,7 +115,7 @@ class Draw extends React.Component {
                             this.saveableCanvas.undo();
                         }}> Undo </button>
                         
-                        <CountDownTimer Secs={10} onTimeIsOver={this.onButtonNext} className="timer" onreset={this.state.resetTimer} />
+                        <CountDownTimer Secs={10} onTimeIsOver={this.onButtonNext} className="timer" onreset={this.state.resetTimer} ref={this.timerRef}/>
                     </div>
                     <p className="instruction-paragraph">{this.state.hinttext}</p>
                 </div>
