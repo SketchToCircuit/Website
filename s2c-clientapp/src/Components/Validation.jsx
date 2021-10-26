@@ -52,11 +52,28 @@ class Validation extends React.Component {
 
         return (
             <div className='validation'>
-                <h1>{this.props.wsData.hintText}</h1>
-                <img src={this.props.wsData.valImg} alt=''></img>
-                <img src={this.props.wsData.hintImg} alt=''></img>
-                <button onClick={() => {this.onBtnClick(true)}} disabled={!this.state.enabledBtn}>Ok</button>
-                <button onClick={() => {this.onBtnClick(false)}} disabled={!this.state.enabledBtn}>Not Ok</button>
+                <div className="top">
+                    <p className="instruction-paragraph">{this.props.wsData.hintText}</p>
+                    <div className="btns">
+                        <div onClick={() => {this.onBtnClick(true)}}><img className='button' src={'ok_icon.svg'} role='button' alt=''></img></div>
+                        <div onClick={() => {this.onBtnClick(false)}}><img className='button' src={'notok_icon.svg'}  role='button' alt=''></img></div>
+                    </div>
+                </div>
+                <img className="val-image" src={this.props.wsData.valImg} alt=''></img>
+                <div className="hint-div">
+                    <img src={this.props.wsData.hintImg}
+                        className="hint-picture"
+                        alt=''
+                        role='button'
+                        large='0'
+                        onClick={() => {
+                            if (document.getElementsByClassName('hint-picture')[0].getAttribute('large') === '1') {
+                                document.getElementsByClassName('hint-picture')[0].setAttribute('large', '0')
+                            } else {
+                                document.getElementsByClassName('hint-picture')[0].setAttribute('large', '1')
+                            }
+                        }}/>
+                </div>
             </div>
         );
     }

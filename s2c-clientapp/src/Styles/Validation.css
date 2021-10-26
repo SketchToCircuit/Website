@@ -1,9 +1,91 @@
-.validation h1 {
-    text-align: center;
-    color: black;
+.validation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    --btn-size: 45px;
 }
 
-.validation img {
-    width: 50%;
-    max-height: 500px;
+.validation .top {
+    background-color: var(--prim-background);
+    overflow: hidden;
+    width: 100vw;
+}
+
+.validation .instruction-paragraph {
+    color: white;
+    margin-left: 20px;
+    margin-right: 20px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.validation .btns {
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.validation img.button {
+    height: calc(var(--btn-size) - 20px);
+    width: calc(var(--btn-size) - 20px);
+    cursor: pointer;
+    margin-top: 0px;
+    margin-left: 20px;
+    margin-right: 20px;
+    background-color: var(--sec-background);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+@media (hover: none) {
+    .validation img.button:active {
+      background-color: var(--sec-background-dark);
+    }
+}
+  
+@media (hover: hover) {
+    .validation img.button:hover {
+        background-color: var(--sec-background-dark);
+    }
+}
+
+.validation .hint-div {
+    z-index: 20;
+}
+
+.validation .hint-picture {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    height: 12vh;
+    width: 12vh;
+    margin-bottom: 30px;
+    margin-right: 20px;
+    border-style: ridge;
+    border-radius: 5px;
+    border-color: black;
+    border-width: medium;
+    background-color: white;
+}
+
+@media (hover: none) {
+    .validation [large='1'].hint-picture {
+        height: 45vh;
+        width: 45vh;
+    }
+}
+  
+@media (hover: hover) {
+    .validation .hint-picture:hover {
+        height: 45vh;
+        width: 45vh;
+    }
+}
+
+.validation .val-image {
+    height: 50vh;
+    width: 50vh;
+    margin-top: 10px;
 }

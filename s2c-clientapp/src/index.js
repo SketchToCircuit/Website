@@ -11,7 +11,7 @@ import Logout from './Components/Logout';
 
 const App = () => {
     const [loggedIn, setLoggedIn] = useState(false);
-    const [showNav, setShowNav] = useState(true);
+    const [showNav, setShowNav] = useState(false);
     
     
     const loginCallback = (res) => {
@@ -28,12 +28,12 @@ const App = () => {
 
     const updateShowNav = (val) => {
         if (showNav !== val) {
-            setShowNav(val);
+            //setShowNav(val);
         }
     }
 
     if (window.location.pathname !== '/') {
-        updateShowNav(true);
+        //updateShowNav(true);
     }
 
     return (
