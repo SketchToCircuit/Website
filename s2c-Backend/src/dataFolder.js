@@ -3,7 +3,6 @@ const {env} = require('process');
 
 function init()
 {
-    return;
     if(!fs.existsSync(env.SAVEFOLDER))
     {
         fs.mkdirSync(env.SAVEFOLDER);

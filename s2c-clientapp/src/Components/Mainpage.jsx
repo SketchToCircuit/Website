@@ -189,25 +189,6 @@ class Mainpage extends React.Component {
     }
 
     render() { 
-        
-        const Data={
-            "type": "Resistor",
-        
-            "ComponentHint": {
-              "text": "bitte Zeichnen sie einen horizontal gelgenen Widerstand!!",
-              "img": "logo192.png"
-            },
-        
-            "LabelHint": {
-              "text": "Bitte zeivhen sie die Beschriftung: R14",
-              "img": "logo512.png"
-            },
-        
-            "unique": 10
-          }
-
-        return <StartButton ws={this.state.ws}/>
-        
         const ws = this.state.ws;
         if (!ws || ws.readyState !== WebSocket.OPEN) {
             return null;
