@@ -1,7 +1,13 @@
 .timer {
-    background-color: aliceblue;
-    padding-left: 10px;
-    padding-right: 10px;
-    color: var(--prim-background);
-    font-size: 15px;
+    height: 50px;
+    line-height: 50px;
+    width: 50px;
+    text-align: center;
+    background-color: var(--sec-background);
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 0px;
+    display: inline-block;
 }

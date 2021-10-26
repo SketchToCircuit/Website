@@ -39,7 +39,7 @@ class CountDownTimer extends React.Component{
 
     render () {
         return (
-            <div className="timer">{this.state.Secs.toString().padStart(2, '0')}</div>
+            <div className="timer">{this.state.Secs.toString().padStart(2, '0')} s</div>
         );
     }
 }

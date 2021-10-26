@@ -90,8 +90,13 @@ class Mainpage extends React.Component {
         });
 
         this.didCloseWs = true;
-        this.state.ws.close();
-        this.connect();
+        
+        try {
+            this.state.ws.close();
+            this.connect();
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     /**

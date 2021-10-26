@@ -1,11 +1,21 @@
+.draw {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
 .draw .top {
-    overflow: hidden;
     background-color: var(--prim-background);
 }
 
-.draw .timer {
-    margin-left: auto;
-    margin-right: auto;
+.draw .canvasSizePlaceholder {
+    height: 100%;
+}
+
+.draw .canvas {
+    position: absolute;
+    bottom: 0;
 }
 
 .draw .instruction-paragraph {
@@ -17,62 +27,46 @@
 }
 
 .draw .btns-timer {
-    margin: 5px;
+    margin: 20px;
+    display: flex;
+}
+
+.draw img.button {
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+    margin-top: 0px;
+    margin-right: 10px;
+    background-color: var(--sec-background);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+@media (hover: none) {
+    .draw img.button:active {
+      background-color: var(--sec-background-dark);
+    }
+}
+  
+@media (hover: hover) {
+    .draw img.button:hover {
+        background-color: var(--sec-background-dark);
+    }
+}
+
+.draw .timer {
     margin-left: auto;
 }
 
-.draw .btns-timer div {
-    display: inline-block;
-}
-
-.draw .hint-div{
- margin-left: 0px;
- margin-top: auto;
- margin-bottom: auto;
-}
-
-.draw .canvas{
-    margin-top: auto;
-    display: flex;
-    margin: auto;
-}
-
-.draw .undo-btn {
-    display: inline;
-    background-color: var(--prim-background);
-    border: none;
-    color: white;
-    padding: 10px 16px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 15px;
-    margin: 0;
-    cursor: pointer;
-}
-
-.draw .next-btn {
-    display: inline;
-    background-color: var(--prim-background);
-    border: none;
-    color: white;
-    padding: 10px 16px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 15px;
-    margin: 0;
-    cursor: pointer;
-}
-
 .draw .hint-picture {
-    height: auto;
-    margin-right: auto;
-    margin-left: 0px;
-    background-color: aliceblue;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 100px;
+    height: 100px;
+    margin: 20px;
+    border-style: ridge;
+    border-radius: 5px;
+    border-color: black;
+    border-width: medium;
 }
-
-.draw .instruction-paragraph{
-   
-}
-

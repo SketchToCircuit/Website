@@ -1,9 +1,10 @@
 :root {
   --prim-background: rgb(19, 46, 68);
   --sec-background: rgb(41, 90, 131);
+  --sec-background-dark: rgb(30, 67, 97);
 }
 
-html, body {
+html, body, #root {
   height: 100%;
   background-image: linear-gradient(110deg, #5ed3f7, #770ece);
 }
