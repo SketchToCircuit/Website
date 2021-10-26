@@ -206,8 +206,8 @@ class Mainpage extends React.Component {
             "unique": 10
           }
 
-        return <Draw ws={null} wsData={Data} onFinished={this.onDrawValFinished}/>
-
+        return <StartButton ws={this.state.ws}/>
+        
         const ws = this.state.ws;
         if (!ws || ws.readyState !== WebSocket.OPEN) {
             return null;

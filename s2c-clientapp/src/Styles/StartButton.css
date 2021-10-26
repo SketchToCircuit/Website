@@ -44,3 +44,11 @@
   transform: scale(.9);
   opacity: .75;
 }
+
+.start-text {
+  text-align: center;
+  white-space: pre-line;
+  padding-left: 10%;
+  padding-right: 10%;
+  font-size: 20px;
+}
