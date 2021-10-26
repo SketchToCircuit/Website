@@ -12,6 +12,7 @@
 
 .draw .top {
     background-color: var(--prim-background);
+    width: 100vw;
 }
 
 .draw .canvasSizePlaceholder {
@@ -27,6 +28,8 @@
     color: white;
     margin-left: 20px;
     margin-right: 20px;
+    margin-bottom: 10px;
+    margin-top: 5px;
     font-size: 20px;
     text-align: center;
 }

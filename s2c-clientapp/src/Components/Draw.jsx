@@ -127,6 +127,7 @@ class Draw extends React.Component {
         return (
             <div className="draw">
                 <div className="top">
+                    <p className="instruction-paragraph">{this.state.hinttext}</p>
                     <div className="btns-timer">
                         <div onClick={this.onButtonNext}><img className='button' src={'next_icon.svg'} role='button' alt=''></img></div>
                         <div onClick={() => {
@@ -138,7 +139,6 @@ class Draw extends React.Component {
 
                         <CountDownTimer Secs={20} onTimeIsOver={this.onButtonNext} className="timer" onreset={this.state.resetTimer} ref={this.timerRef}/>
                     </div>
-                    <p className="instruction-paragraph">{this.state.hinttext}</p>
                 </div>
 
                 <div className='canvasSizePlaceholder'></div>
