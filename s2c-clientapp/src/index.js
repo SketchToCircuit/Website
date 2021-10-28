@@ -19,7 +19,7 @@ if ('ontouchstart' in window || window.matchMedia("(hover: none)").matches) {
 
 const App = () => {
     const [loggedIn, setLoggedIn] = useState(false);
-    const [showNav, setShowNav] = useState(false);
+    const [showNav, setShowNav] = useState(true);
     
     const loginCallback = (res) => {
         if (res && res.tokenId) {
@@ -35,13 +35,13 @@ const App = () => {
 
     const updateShowNav = (val) => {
         if (showNav !== val) {
-            //setShowNav(val);
+            setShowNav(val);
         }
     }
 
     useEffect(() => {
         if (window.location.pathname !== '/') {
-            //updateShowNav(true);
+            updateShowNav(true);
         }
     });
 
