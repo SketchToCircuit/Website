@@ -102,7 +102,7 @@ function getDrawData(base64Helper,callback) {
                 drawData.type = r.file_prefix;
                 drawData.componentText = r.draw_hint;
                 drawData.componentImg = await base64Helper.getBase64Img(r.component_hint_img);
-                drawData.labelText = "Bitte zeichnen Sie die Beschriftung für dieses Bauteil!";
+                drawData.labelText = "Please label the component somewhere";
                 drawData.labelImg = await base64Helper.getBase64Img(r.labeled_hint_img);
                 return drawData;
             }
