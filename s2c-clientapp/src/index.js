@@ -1,6 +1,6 @@
 import React, {useEffect, useState,} from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter as Router, Switch, Route, NavLink} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route, NavLink, Link} from "react-router-dom";
 
 import './index.css';
 
@@ -59,14 +59,13 @@ const App = () => {
                 <Switch>
                     <Route exact path="/" render={(props) => <Mainpage {...props} loginCallback={loginCallback} loggedIn={loggedIn} setShowNav={updateShowNav}/>}/>
                     <Route path="/About" render={(props) => <About {...props } setShowNav={updateShowNav}/>}/>
-                    <Route path="/Legal" render={(props) => <Legal/>}/>
+                    <Route path="/Legal" component={Legal}/>
                     <Route component={NotFound}/>
                 </Switch>
+                <footer>
+                    <Link to="/Legal">Impressum &amp; Datenschutz</Link>
+                </footer>
             </Router>
-
-            <footer>
-                <a href='/Legal'>Impressum &amp; Datenschutz</a>
-            </footer>
         </div>
     );
 }
