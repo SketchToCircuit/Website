@@ -25,7 +25,8 @@
 
 .draw .canvas {
     position: fixed;
-    bottom: 0;
+    top: var(--top-h, 135px);
+    left: 0;
 }
 
 .draw .instruction-paragraph {
@@ -36,6 +37,8 @@
     margin-top: 20px;
     font-size: 20px;
     text-align: center;
+    height: 30px;
+    line-height: 30px;
 }
 
 .draw .btns-timer {

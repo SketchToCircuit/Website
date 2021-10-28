@@ -2,6 +2,8 @@ import React, {createRef} from 'react';
 import CanvasDraw from "react-canvas-draw";
 
 import CountDownTimer from './Timer';
+import TextFontScaling from './TextFontScaling';
+
 import '../Styles/Draw.css';
 
 class Draw extends React.Component {
@@ -68,6 +70,13 @@ class Draw extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
+        const topHeight = document.getElementById("top").offsetHeight;
+        document.documentElement.style.setProperty('--top-h', `${topHeight}px`);
+
+        if (prevState.isfirstDrawn && !this.state.isfirstDrawn) {
+            this.handleResize();
+        }
+
         if (prevProps.wsData !== this.props.wsData) {
             this.setState({hintpicture: this.props.wsData.ComponentHint.img, 
                            hinttext: this.props.wsData.ComponentHint.text,
@@ -137,8 +146,8 @@ class Draw extends React.Component {
 
         return (
             <div className="draw">
-                <div className="top">
-                    <p className="instruction-paragraph">{this.state.hinttext}</p>
+                <div className="top" id="top">
+                    <div className="instruction-paragraph"><TextFontScaling text={this.state.hinttext} maxFontSize={20}/></div>
                     <div className="btns-timer">
                         <span className='counter'>{this.state.batchcount}/5</span>
                         <div onClick={this.onButtonNext}><img className='button' src={'next_icon.svg'} role='button' alt=''></img></div>

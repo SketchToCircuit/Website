@@ -111,8 +111,8 @@
 .validation .val-image {
     height: 50vh;
     width: 50vh;
-    max-width: 95vw;
-    max-height: 95vw;
+    max-width: 90vw;
+    max-height: 90vw;
     padding: 10px;
     margin-top: 10px;
     background-color: white;
