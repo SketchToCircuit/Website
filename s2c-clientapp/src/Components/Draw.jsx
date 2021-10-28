@@ -144,7 +144,7 @@ class Draw extends React.Component {
                 <div className='canvasSizePlaceholder'></div>
 
                 <div className="canvas">
-                    {this.state.unmountDrawing ? null : <CanvasDraw ref={canvasDraw => (this.saveableCanvas = canvasDraw)} brushColor="#000000" brushRadius={2} lazyRadius={0} //min is 300px by 300px even older 4:3 screens can resolve this(i hope)
+                    {this.state.unmountDrawing ? null : <CanvasDraw ref={canvasDraw => (this.saveableCanvas = canvasDraw)} brushColor="#000000" brushRadius={2} lazyRadius={0}
                         canvasWidth={this.state.canvWidth} canvasHeight={this.state.canvHeight}
                         imgSrc={this.state.backgroundpic}/>}
                 </div>
