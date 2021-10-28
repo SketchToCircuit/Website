@@ -161,20 +161,17 @@ class Draw extends React.Component {
                         imgSrc={this.state.backgroundpic}/>}
                 </div>
 
-                <div    className="hint-div"
-                        id="hint-div"
-                        role='button'
-                        large='0'
+                <div className="hint-div" id="hint-div" role='button' large='0'
                         onClick={() => {
                             if (document.getElementById('hint-div').getAttribute('large') === '1') {
                                 document.getElementById('hint-div').setAttribute('large', '0')
                             } else {
                                 document.getElementById('hint-div').setAttribute('large', '1')
                             }}}>
+                    <span>Example</span>
                     <img src={this.state.hintpicture}
                         className="hint-picture"
                         alt=''/>
-                    <span>Example</span>
                 </div>
             </div>
         );
