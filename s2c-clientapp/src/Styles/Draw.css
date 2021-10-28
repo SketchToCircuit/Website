@@ -70,16 +70,12 @@
     padding: 10px;
 }
 
-@media (hover: none) {
-    .draw img.button:active {
-      background-color: var(--sec-background-dark);
-    }
+.touch .draw img.button:active {
+  background-color: var(--sec-background-dark);
 }
   
-@media (hover: hover) {
-    .draw img.button:hover {
-        background-color: var(--sec-background-dark);
-    }
+.no-touch .draw img.button:hover {
+    background-color: var(--sec-background-dark);
 }
 
 .draw .timer {
@@ -118,16 +114,12 @@
     height: 100%;
 }
 
-@media (hover: none) {
-    .draw [large='1'].hint-div {
-        height: 45vh;
-        width: 45vh;
-    }
+.touch .draw [large='1'].hint-div {
+    height: 45vh;
+    width: 45vh;
 }
   
-@media (hover: hover) {
-    .draw .hint-div:hover {
-        height: 45vh;
-        width: 45vh;
-    }
+.no-touch .draw .hint-div:hover {
+    height: 45vh;
+    width: 45vh;
 }

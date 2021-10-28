@@ -54,16 +54,12 @@
     padding: 10px;
 }
 
-@media (hover: none) {
-    .validation img.button:active {
-      background-color: var(--sec-background-dark);
-    }
+.touch .validation img.button:active {
+  background-color: var(--sec-background-dark);
 }
   
-@media (hover: hover) {
-    .validation img.button:hover {
-        background-color: var(--sec-background-dark);
-    }
+.no-touch .validation img.button:hover {
+    background-color: var(--sec-background-dark);
 }
 
 .validation img.button[enabled='0'] {
@@ -99,18 +95,14 @@
     height: 100%;
 }
 
-@media (hover: none) {
-    .validation [large='1'].hint-div {
-        height: 45vh;
-        width: 45vh;
-    }
+.touch .validation [large='1'].hint-div {
+    height: 45vh;
+    width: 45vh;
 }
   
-@media (hover: hover) {
-    .validation .hint-div:hover {
-        height: 45vh;
-        width: 45vh;
-    }
+.no-touch .validation .hint-div:hover {
+    height: 45vh;
+    width: 45vh;
 }
 
 .validation .val-image {

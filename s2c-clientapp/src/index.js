@@ -9,6 +9,13 @@ import About from './Components/About';
 import NotFound from './Components/NotFound';
 import Logout from './Components/Logout';
 
+if ('ontouchstart' in window || window.matchMedia("(hover: none)").matches) {
+    // Device is a touch device
+    document.documentElement.classList.add('touch');
+} else {
+    document.documentElement.classList.add('no-touch');
+}
+
 const App = () => {
     const [loggedIn, setLoggedIn] = useState(false);
     const [showNav, setShowNav] = useState(true);
@@ -32,7 +39,6 @@ const App = () => {
     }
 
     useEffect(() => {
-        console.log(window.location.pathname)
         if (window.location.pathname !== '/') {
             updateShowNav(true);
         }
