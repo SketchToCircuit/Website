@@ -1,6 +1,11 @@
 import React from 'react';
 
 class Legal extends React.Component {
+
+    componentDidMount() {
+      this.props.setShowNav(true);
+    }
+
     render() {
         return (
             <div
