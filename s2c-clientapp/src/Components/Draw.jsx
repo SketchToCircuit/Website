@@ -129,6 +129,7 @@ class Draw extends React.Component {
                 <div className="top">
                     <p className="instruction-paragraph">{this.state.hinttext}</p>
                     <div className="btns-timer">
+                        <span className='counter'>{this.state.batchcount}/5</span>
                         <div onClick={this.onButtonNext}><img className='button' src={'next_icon.svg'} role='button' alt=''></img></div>
                         <div onClick={() => {
                         try {
