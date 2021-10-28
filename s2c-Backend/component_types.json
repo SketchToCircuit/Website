@@ -30,7 +30,7 @@
         "val_hint": "Do you see a vertical capacitor?",
         "component_hint_img": "/data/hints/C_V.jpg",
         "labeled_hint_img": "/data/hints/C_V_labeled.jpg"
-    }
+    },
     {
         "component_id": 5,
         "file_prefix": "L_H",
