@@ -66,8 +66,8 @@
     }
 }
 
-.validation .hint-div {
-    z-index: 20;
+.validation img.button[enabled='0'] {
+    background-color: grey !important;
 }
 
 .validation .hint-picture {

@@ -82,13 +82,6 @@ class Draw extends React.Component {
             }));
 
         } else {
-
-            this.setState((state) => ({
-                backgroundpic: "",
-                isfirstDrawn: false,
-                unmountDrawing: true
-            }));
-
             const data = {
                 "PacketId": 104,
                 "Data": {
@@ -113,6 +106,11 @@ class Draw extends React.Component {
             }
 
             this.setState((state) => ({
+                backgroundpic: "",
+                isfirstDrawn: false,
+                unmountDrawing: true,
+                hinttext: "",
+                hintpicture: "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=",      // Tiniest valid gif
                 batchcount: state.batchcount + 1
             }));
         }
