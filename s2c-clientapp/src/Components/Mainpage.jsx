@@ -189,31 +189,31 @@ class Mainpage extends React.Component {
     }
 
     render() { 
-        const Data= {
-            "type": "Resistor",
+        // const Data= {
+        //     "type": "Resistor",
         
-            "ComponentHint": {
-              "text": "bitte Zeichnen sie einen horizontal gelgenen Widerstand!!",
-              "img": "logo192.png"
-            },
+        //     "ComponentHint": {
+        //       "text": "bitte Zeichnen sie einen horizontal gelgenen Widerstand!!",
+        //       "img": "logo192.png"
+        //     },
         
-            "LabelHint": {
-              "text": "Bitte zeivhen sie die Beschriftung: R14",
-              "img": "logo512.png"
-            },
+        //     "LabelHint": {
+        //       "text": "Bitte zeivhen sie die Beschriftung: R14",
+        //       "img": "logo512.png"
+        //     },
         
-            "unique": 10
-        }
-
-        // const Data = {
-        //     "hintText": "Ist hier ein Widerstand abgebildet?",
-        //     "hintImg": "logo192.png",
-        //     "valImg": "logo512.png",
-        //     "imgId": 1,
-        //     "unique": 1
+        //     "unique": 10
         // }
 
-        return <Draw ws={this.state.ws} wsData={Data} onFinished={this.onDrawValFinished}/>
+        const Data = {
+            "hintText": "Ist hier ein Widerstand abgebildet?",
+            "hintImg": "logo192.png",
+            "valImg": "logo512.png",
+            "imgId": 1,
+            "unique": 1
+        }
+
+        //return <Draw ws={this.state.ws} wsData={Data} onFinished={this.onDrawValFinished}/>
         return <Validation ws={this.state.ws} wsData={Data} onFinished={this.onDrawValFinished}/>
         
         const ws = this.state.ws;
