@@ -63,7 +63,7 @@ const App = () => {
             </Router>
 
             <footer>
-                <a href='https://www.youtube.com/'>AGB &amp; Datenschutz</a>
+                <a href='/legal.html'>Impressum &amp; Datenschutz</a>
             </footer>
         </div>
     );
