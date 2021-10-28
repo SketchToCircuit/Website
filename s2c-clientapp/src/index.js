@@ -11,8 +11,8 @@ import Logout from './Components/Logout';
 
 const App = () => {
     const [loggedIn, setLoggedIn] = useState(false);
-    const [showNav, setShowNav] = useState(false);
-    
+    const [showNav, setShowNav] = useState(true);
+  
     
     const loginCallback = (res) => {
         if (res && res.tokenId) {
