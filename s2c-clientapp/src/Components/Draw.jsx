@@ -58,10 +58,13 @@ class Draw extends React.Component {
     }
 
     handleResize = () => {
-        this.setState({
-            canvHeight: document.getElementById('canvasSizePlaceholder').offsetHeight,
-            canvWidth: window.innerWidth,
-        });
+        // Force canvas size to stay the same during one drawing process
+        if (!this.state.isfirstDrawn) {
+            this.setState({
+                canvHeight: document.getElementById('canvasSizePlaceholder').offsetHeight,
+                canvWidth: document.getElementById('canvasSizePlaceholder').offsetWidth,
+            });
+        }
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -105,7 +108,7 @@ class Draw extends React.Component {
             try {
                 this.props.ws.send(JSON.stringify(data));
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
 
             this.saveableCanvas.clear();
