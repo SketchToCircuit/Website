@@ -114,4 +114,4 @@ function PacketHandler(data, ws) {
     return true;
 }
 
-console.log("Wss startet");
+console.log("\nWss startet");
