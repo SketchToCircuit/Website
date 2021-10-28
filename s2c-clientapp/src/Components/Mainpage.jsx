@@ -38,7 +38,7 @@ class Mainpage extends React.Component {
                 this.state.ws.close();
                 this.connect();
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
         }
 
@@ -95,7 +95,7 @@ class Mainpage extends React.Component {
             this.state.ws.close();
             this.connect();
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     }
 
@@ -142,7 +142,6 @@ class Mainpage extends React.Component {
         ws.onmessage = (event) => {
             try {
                 const wsData = JSON.parse(event.data);
-                console.log(wsData);
 
                 switch (wsData.PacketId) {
                     case 202:
@@ -157,7 +156,7 @@ class Mainpage extends React.Component {
                         break;
                 }
             } catch (error) {
-                console.log("Error in Websocket-Message");
+                console.error("Error in Websocket-Message");
             }
         };
     };

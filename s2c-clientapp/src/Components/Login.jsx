@@ -10,7 +10,7 @@ function Login(props)
     };
 
     const onFailure = (res) => {
-        console.log("Failed to log in");
+        console.error("Failed to log in");
     };
 
     return (
