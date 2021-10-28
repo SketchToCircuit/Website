@@ -1,4 +1,4 @@
-import React, {useState,} from 'react';
+import React, {useEffect, useState,} from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Switch, Route, NavLink} from "react-router-dom";
 
@@ -11,7 +11,7 @@ import Logout from './Components/Logout';
 
 const App = () => {
     const [loggedIn, setLoggedIn] = useState(false);
-    const [showNav, setShowNav] = useState(true);
+    const [showNav, setShowNav] = useState(false);
     
     const loginCallback = (res) => {
         if (res && res.tokenId) {
@@ -31,9 +31,12 @@ const App = () => {
         }
     }
 
-    if (window.location.pathname !== '/') {
-        updateShowNav(true);
-    }
+    useEffect(() => {
+        console.log(window.location.pathname)
+        if (window.location.pathname !== '/') {
+            updateShowNav(true);
+        }
+    });
 
     return (
         <div>
@@ -48,7 +51,7 @@ const App = () => {
 
                 <Switch>
                     <Route exact path="/" render={(props) => <Mainpage {...props} loginCallback={loginCallback} loggedIn={loggedIn} setShowNav={updateShowNav}/>}/>
-                    <Route path="/About" component={About}/>
+                    <Route path="/About" render={(props) => <About {...props } setShowNav={updateShowNav}/>}/>
                     <Route component={NotFound}/>
                 </Switch>
             </Router>
