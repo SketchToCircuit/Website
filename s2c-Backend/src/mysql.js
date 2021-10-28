@@ -93,7 +93,7 @@ function getValidationData(base64Helper, googleId, callback) {
 
 function getDrawData(lastDrawId, base64Helper, callback) {
     // prefer types with fewer drawn images
-    let query = "SELECT * FROM component_types WHERE component_id != ? ORDER BY (RAND() * (1+(SELECT COUNT(*) FROM images WHERE component_type = component_id))) DESC LIMIT 1;";
+    let query = "SELECT * FROM component_types WHERE component_id != ? ORDER BY (RAND() * (1+(SELECT COUNT(*) FROM images WHERE component_type = component_id))) ASC LIMIT 1;";
     database.query(query, [lastDrawId], (err, result) => {
         if (err) {
             console.log(err);
