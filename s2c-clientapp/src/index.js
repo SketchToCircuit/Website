@@ -8,6 +8,7 @@ import Mainpage from './Components/Mainpage';
 import About from './Components/About';
 import NotFound from './Components/NotFound';
 import Logout from './Components/Logout';
+import Legal from './Components/Legal';
 
 if ('ontouchstart' in window || window.matchMedia("(hover: none)").matches) {
     // Device is a touch device
@@ -58,12 +59,13 @@ const App = () => {
                 <Switch>
                     <Route exact path="/" render={(props) => <Mainpage {...props} loginCallback={loginCallback} loggedIn={loggedIn} setShowNav={updateShowNav}/>}/>
                     <Route path="/About" render={(props) => <About {...props } setShowNav={updateShowNav}/>}/>
+                    <Route path="/Legal" render={(props) => <Legal/>}/>
                     <Route component={NotFound}/>
                 </Switch>
             </Router>
 
             <footer>
-                <a href='/legal.html'>Impressum &amp; Datenschutz</a>
+                <a href='/Legal'>Impressum &amp; Datenschutz</a>
             </footer>
         </div>
     );
