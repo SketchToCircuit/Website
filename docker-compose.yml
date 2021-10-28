@@ -11,8 +11,7 @@ services:
     build: ./s2c-Backend
     command: sh -c "yarn install && yarn start"
     volumes:
-      #- /mnt/hdd2/Sketch2Circuit/data:/data#
-      - /home/hauminix/diplom/data:/data
+      - /mnt/hdd2/Sketch2Circuit/data:/data#
       - ./s2c-Backend:/code
     networks:
       - backend
