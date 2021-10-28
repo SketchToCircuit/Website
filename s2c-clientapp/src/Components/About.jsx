@@ -2,6 +2,11 @@ import React from 'react';
 import '../Styles/About.css';
 
 class About extends React.Component {
+
+    componentDidMount() {
+        this.props.setShowNav(true);
+    }
+
     render() {
         const aboutText = "\
         We - Tim Brunner, Sebastian Pfusterer, Patrick Ziegler - are a small team interested in AI-Development.\r\n\

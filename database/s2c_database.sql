@@ -35,17 +35,6 @@ CREATE TABLE `component_types` (
   `component_hint_img` varchar(4096) NOT NULL COMMENT 'File path to hint image with only the component (no label). Used for first stage of drawing.',
   `labeled_hint_img` varchar(4096) NOT NULL COMMENT 'File path to labeled hint image. (Used as hint durcing validation and in the second stage of drawing\r\n)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Daten für Tabelle `component_types`
---
-
-INSERT INTO `component_types` (`component_id`, `file_prefix`, `draw_hint`, `val_hint`, `component_hint_img`, `labeled_hint_img`) VALUES
-(1, 'R_H', 'Bitte zeichnen Sie einen horizontal gelegenen Widerstand!', 'Ist hier ein horizontaler Widerstand abgebildet?', './data/Hints/R_H.jpg', './data/Hints/R_H_labeled.jpg'),
-(2, 'R_V', 'Bitte zeichnen Sie einen vertikal gelegenen Widerstand!', 'Ist hier ein vertikaler Widerstand abgebildet?', './data/Hints/R_V.jpg', './data/Hints/R_V_labeled.jpg'),
-(3, 'C_H', 'Bitte zeichnen Sie einen horizontal gelegenen Kondensator!', 'Ist hier ein horizontaler Kondensator abgebildet?', './data/Hints/C_H.jpg', './data/Hints/C_H_labeled.jpg'),
-(4, 'C_V', 'Bitte zeichnen Sie einen vertikal gelegenen Kondensator!', 'Ist hier ein vertikaler Kondensator abgebildet?', './data/Hints/C_V.jpg', './data/Hints/C_V_labeled.jpg');
-
 -- --------------------------------------------------------
 
 --
@@ -56,14 +45,6 @@ CREATE TABLE `google_user` (
   `google_id` varchar(32) NOT NULL,
   `untrusted` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Hat der Benutzer schon einmal etwas falsch gemacht?'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Daten für Tabelle `google_user`
---
-
-INSERT INTO `google_user` (`google_id`, `untrusted`) VALUES
-('115272271012238952043', 0),
-('118029624248768760033', 0);
 
 -- --------------------------------------------------------
 

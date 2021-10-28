@@ -37,7 +37,7 @@ function decideIfDrawVal(ws, client, database, base64Helper) {
     }
 
     function sendDraw() {
-        database.getDrawData(base64Helper, (drawData) => {
+        database.getDrawData(client.lastDrawId, base64Helper, (drawData) => {
             let dataOut = {
                 "PacketId": 202,
                 "Data": {
@@ -58,6 +58,7 @@ function decideIfDrawVal(ws, client, database, base64Helper) {
             };
             sendData(dataOut, ws);
             client.drawVal = "draw";
+            client.lastDrawId = drawData.id;
         });
     }
 
@@ -85,7 +86,7 @@ function onImgReceive(dataIn, ws, client, database, base64Helper) {
     if (client.drawVal === "draw" && dataIn.count >= 1 && dataIn.count <= 5 && dataIn.count === client.count + 1) {
         storeDrawnImage(dataIn, client ,database, base64Helper);
 
-        database.getDrawData(base64Helper,(drawData) => {
+        database.getDrawData(client.lastDrawId, base64Helper, (drawData) => {
             let dataOut = {
                 "PacketId": 202,
                 "Data": {
@@ -107,6 +108,7 @@ function onImgReceive(dataIn, ws, client, database, base64Helper) {
 
             sendData(dataOut, ws);
             client.count += 1;
+            client.lastDrawId = drawData.id;
         });
     }
 }

@@ -39,18 +39,14 @@ code {
   font-size: 17px;
 }
 
-@media (hover: none) {
-  .topnav a:active {
-    background-color: var(--sec-background);
-    color: black;
-  }
+.touch .topnav a:active {
+  background-color: var(--sec-background);
+  color: black;
 }
 
-@media (hover: hover) {
-  .topnav a:hover {
-    background-color: var(--sec-background);
-    color: black;
-  }
+.no-touch .topnav a:hover {
+  background-color: var(--sec-background);
+  color: black;
 }
 
 .topnav .logout {

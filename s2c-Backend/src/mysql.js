@@ -91,18 +91,20 @@ function getValidationData(base64Helper, googleId, callback) {
     });
 }
 
-function getDrawData(base64Helper,callback) {
-    let query = "SELECT * FROM component_types ORDER BY RAND() LIMIT 1;";
-    database.query(query, (err, result) => {
+function getDrawData(lastDrawId, base64Helper, callback) {
+    // prefer types with fewer drawn images
+    let query = "SELECT * FROM component_types WHERE component_id != ? ORDER BY (RAND() * (1+(SELECT COUNT(*) FROM images WHERE component_type = component_id))) ASC LIMIT 1;";
+    database.query(query, [lastDrawId], (err, result) => {
         if (err) {
             console.log(err);
         } else if (result.length >= 1) {
             async function combineData(r) {
                 let drawData = new Object();
                 drawData.type = r.file_prefix;
+                drawData.id = r.component_id;
                 drawData.componentText = r.draw_hint;
                 drawData.componentImg = await base64Helper.getBase64Img(r.component_hint_img);
-                drawData.labelText = "Bitte zeichnen Sie die Beschriftung für dieses Bauteil!";
+                drawData.labelText = "Please label the component somewhere";
                 drawData.labelImg = await base64Helper.getBase64Img(r.labeled_hint_img);
                 return drawData;
             }

@@ -1,4 +1,4 @@
-import React, {useState,} from 'react';
+import React, {useEffect, useState,} from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Switch, Route, NavLink} from "react-router-dom";
 
@@ -8,11 +8,18 @@ import Mainpage from './Components/Mainpage';
 import About from './Components/About';
 import NotFound from './Components/NotFound';
 import Logout from './Components/Logout';
+import Legal from './Components/Legal';
+
+if ('ontouchstart' in window || window.matchMedia("(hover: none)").matches) {
+    // Device is a touch device
+    document.documentElement.classList.add('touch');
+} else {
+    document.documentElement.classList.add('no-touch');
+}
 
 const App = () => {
     const [loggedIn, setLoggedIn] = useState(false);
     const [showNav, setShowNav] = useState(false);
-  
     
     const loginCallback = (res) => {
         if (res && res.tokenId) {
@@ -32,31 +39,33 @@ const App = () => {
         }
     }
 
-    if (window.location.pathname !== '/') {
-        //updateShowNav(true);
-    }
+    useEffect(() => {
+        if (window.location.pathname !== '/') {
+            //updateShowNav(true);
+        }
+    });
 
     return (
         <div>
             <Router>
-                {
-                    showNav ? 
-                        <nav className="topnav">
-                            <NavLink activeStyle={{textShadow: "0px 0px 2px" }} exact to="/" className='home-link'>SketchToCircuit</NavLink>
-                            <NavLink activeStyle={{textShadow: "0px 0px 2px" }} to="/About">About</NavLink>
-                            {loggedIn ? <div className="logout"><Logout callback={logoutCallback}/></div> : null}
-                        </nav> : null
+                {showNav ? 
+                    <nav className="topnav">
+                        <NavLink activeStyle={{textShadow: "0px 0px 2px" }} exact to="/" className='home-link'>SketchToCircuit</NavLink>
+                        <NavLink activeStyle={{textShadow: "0px 0px 2px" }} to="/About">About</NavLink>
+                        {loggedIn ? <div className="logout"><Logout callback={logoutCallback}/></div> : null}
+                    </nav> : null
                 }
 
                 <Switch>
                     <Route exact path="/" render={(props) => <Mainpage {...props} loginCallback={loginCallback} loggedIn={loggedIn} setShowNav={updateShowNav}/>}/>
-                    <Route path="/About" component={About}/>
+                    <Route path="/About" render={(props) => <About {...props } setShowNav={updateShowNav}/>}/>
+                    <Route path="/Legal" render={(props) => <Legal {...props } setShowNav={updateShowNav}/>}/>
                     <Route component={NotFound}/>
                 </Switch>
             </Router>
 
             <footer>
-                <a href='/legal.html'>Impressum &amp; Datenschutz</a>
+                <a href='/Legal'>Impressum &amp; Datenschutz</a>
             </footer>
         </div>
     );

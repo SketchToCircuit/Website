@@ -187,7 +187,7 @@ class Mainpage extends React.Component {
         this.props.loginCallback(res);
     }
 
-    render() { 
+    render() {
         let Data= {
             "type": "Resistor",
         
@@ -214,7 +214,7 @@ class Mainpage extends React.Component {
 
         //return <Draw ws={this.state.ws} wsData={Data} onFinished={this.onDrawValFinished}/>
         return <Validation ws={this.state.ws} wsData={Data} onFinished={this.onDrawValFinished}/>
-        
+         
         const ws = this.state.ws;
         if (!ws || ws.readyState !== WebSocket.OPEN) {
             return null;
