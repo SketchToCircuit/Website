@@ -58,8 +58,8 @@ const App = () => {
 
                 <Switch>
                     <Route exact path="/" render={(props) => <Mainpage {...props} loginCallback={loginCallback} loggedIn={loggedIn} setShowNav={updateShowNav}/>}/>
-                    <Route path="/About" render={(props) => <About {...props } setShowNav={updateShowNav}/>}/>
-                    <Route path="/Legal" render={(props) => <Legal {...props } setShowNav={updateShowNav}/>}/>
+                    <Route path="/About" component={About}/>
+                    <Route path="/Legal" component={Legal}/>
                     <Route component={NotFound}/>
                 </Switch>
             </Router>

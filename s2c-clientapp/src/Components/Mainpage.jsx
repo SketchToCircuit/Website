@@ -50,6 +50,8 @@ class Mainpage extends React.Component {
     }
 
     componentWillUnmount() {
+        this.props.setShowNav(true);
+        
         if (this.state.ws) {
             this.didCloseWs = true;
             this.state.ws.close(); 
