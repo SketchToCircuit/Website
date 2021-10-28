@@ -15,8 +15,9 @@
     width: 100vw;
 }
 
-.draw .canvasSizePlaceholder {
+.draw #canvasSizePlaceholder {
     height: 100%;
+    width: calc(var(--vw, 1vw) * 100);
 }
 
 .draw .canvas {

@@ -13,9 +13,11 @@ class Draw extends React.Component {
         this.timerRef = createRef();
         this.forceResize = false;
 
-        // set custom vh-unit for mobile devices
+        // set custom vh/vw-unit for mobile devices
         let vh = window.innerHeight * 0.01;
         document.documentElement.style.setProperty('--vh', `${vh}px`);
+        let vw = window.innerWidth * 0.01;
+        document.documentElement.style.setProperty('--vw', `${vw}px`);
 
         this.state = {
             hintpicture: props.wsData.ComponentHint.img,
@@ -31,27 +33,35 @@ class Draw extends React.Component {
     }
 
     componentDidMount() {
-        window.addEventListener('resize', this.handleResize, true);
+        this.resizeObserver = new ResizeObserver(this.handleResize);
+        this.resizeObserver.observe(document.getElementById('canvasSizePlaceholder'));
+
+        window.addEventListener('resize', this.onWindowResize);
 
         this.setState({
-            canvHeight: document.getElementsByClassName('canvasSizePlaceholder')[0].offsetHeight,
+            canvHeight: document.getElementById('canvasSizePlaceholder').offsetHeight,
             canvWidth: window.innerWidth,
         });
     }
       
     componentWillUnmount() {
-        window.removeEventListener('resize', this.handleResize);
+        this.resizeObserver.disconnect();
+        window.removeEventListener('resize', this.onWindowResize);
     }
     
-    handleResize = () => {
-        this.setState({
-            canvHeight: document.getElementsByClassName('canvasSizePlaceholder')[0].offsetHeight,
-            canvWidth: window.innerWidth,
-        });
-
-        // set custom vh-unit for mobile devices
+    onWindowResize = () => {
+        // set custom vh/vw-unit for mobile devices
         let vh = window.innerHeight * 0.01;
         document.documentElement.style.setProperty('--vh', `${vh}px`);
+        let vw = window.innerWidth * 0.01;
+        document.documentElement.style.setProperty('--vw', `${vw}px`);
+    }
+
+    handleResize = () => {
+        this.setState({
+            canvHeight: document.getElementById('canvasSizePlaceholder').offsetHeight,
+            canvWidth: window.innerWidth,
+        });
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -140,7 +150,7 @@ class Draw extends React.Component {
                     </div>
                 </div>
 
-                <div className='canvasSizePlaceholder'></div>
+                <div id='canvasSizePlaceholder'></div>
 
                 <div className="canvas">
                     {this.state.unmountDrawing ? null : <CanvasDraw ref={canvasDraw => (this.saveableCanvas = canvasDraw)} brushColor="#000000" brushRadius={2} lazyRadius={0}
