@@ -188,7 +188,7 @@ class Mainpage extends React.Component {
     }
 
     render() { 
-        const Data= {
+        let Data= {
             "type": "Resistor",
         
             "ComponentHint": {
@@ -204,15 +204,15 @@ class Mainpage extends React.Component {
             "unique": 10
         }
 
-        // const Data = {
-        //     "hintText": "Ist hier ein Widerstand abgebildet?",
-        //     "hintImg": "logo192.png",
-        //     "valImg": "logo512.png",
-        //     "imgId": 1,
-        //     "unique": 1
-        // }
+        Data = {
+            "hintText": "Ist hier ein Widerstand abgebildet?",
+            "hintImg": "logo192.png",
+            "valImg": "logo512.png",
+            "imgId": 1,
+            "unique": 1
+        }
 
-        return <Draw ws={this.state.ws} wsData={Data} onFinished={this.onDrawValFinished}/>
+        //return <Draw ws={this.state.ws} wsData={Data} onFinished={this.onDrawValFinished}/>
         return <Validation ws={this.state.ws} wsData={Data} onFinished={this.onDrawValFinished}/>
         
         const ws = this.state.ws;

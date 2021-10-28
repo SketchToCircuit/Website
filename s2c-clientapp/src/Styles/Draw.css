@@ -91,32 +91,42 @@
 
 .draw .hint-div {
     z-index: 20;
-}
-
-.draw .hint-picture {
     position: fixed;
     right: 0;
     bottom: 0;
-    height: 12vh;
-    width: 12vh;
+    height: 13vh;
+    width: 13vh;
     margin-bottom: 30px;
     margin-right: 20px;
     border-style: ridge;
     border-radius: 5px;
     border-color: black;
     border-width: medium;
+}
+
+.draw .hint-div span {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+}
+
+.draw .hint-picture {
+    position: absolute;
     background-color: white;
+    width: 100%;
+    height: 100%;
 }
 
 @media (hover: none) {
-    .draw [large='1'].hint-picture {
+    .draw [large='1'].hint-div {
         height: 45vh;
         width: 45vh;
     }
 }
   
 @media (hover: hover) {
-    .draw .hint-picture:hover {
+    .draw .hint-div:hover {
         height: 45vh;
         width: 45vh;
     }
