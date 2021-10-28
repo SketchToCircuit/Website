@@ -65,19 +65,21 @@ class Validation extends React.Component {
                     </div>
                 </div>
                 <img className="val-image" src={this.props.wsData.valImg} alt=''></img>
-                <div className="hint-div">
-                    <img src={this.props.wsData.hintImg}
-                        className="hint-picture"
-                        alt=''
+                
+                <div    className="hint-div"
+                        id="hint-div"
                         role='button'
                         large='0'
                         onClick={() => {
-                            if (document.getElementsByClassName('hint-picture')[0].getAttribute('large') === '1') {
-                                document.getElementsByClassName('hint-picture')[0].setAttribute('large', '0')
+                            if (document.getElementById('hint-div').getAttribute('large') === '1') {
+                                document.getElementById('hint-div').setAttribute('large', '0')
                             } else {
-                                document.getElementsByClassName('hint-picture')[0].setAttribute('large', '1')
-                            }
-                        }}/>
+                                document.getElementById('hint-div').setAttribute('large', '1')
+                            }}}>
+                    <img src={this.props.wsData.hintImg}
+                        className="hint-picture"
+                        alt=''/>
+                        <span>Example</span>
                 </div>
             </div>
         );
