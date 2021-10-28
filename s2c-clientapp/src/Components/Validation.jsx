@@ -54,7 +54,8 @@ class Validation extends React.Component {
             <div className='validation'>
                 <div className="top">
                     <p className="instruction-paragraph">{this.props.wsData.hintText}</p>
-                    <div className="btns">
+                    <div className="btns-cnt">
+                        <span className='counter'>{this.state.count}/5</span>
                         <div onClick={() => {this.onBtnClick(true)}}><img className='button' src={'ok_icon.svg'} role='button' alt=''></img></div>
                         <div onClick={() => {this.onBtnClick(false)}}><img className='button' src={'notok_icon.svg'}  role='button' alt=''></img></div>
                     </div>

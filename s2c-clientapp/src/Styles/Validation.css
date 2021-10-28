@@ -20,11 +20,26 @@
     text-align: center;
 }
 
-.validation .btns {
+.validation .btns-cnt {
     margin: 10px;
     display: flex;
     flex-direction: row;
     justify-content: center;
+}
+
+.validation .counter {
+    height: var(--btn-size);
+    width: var(--btn-size);
+    line-height: var(--btn-size);
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    background-color: var(--sec-background);
+    border-radius: 10px;
+    position: absolute;
+    right: 0;
+    margin-right: 20px;
 }
 
 .validation img.button {
@@ -87,5 +102,9 @@
 .validation .val-image {
     height: 50vh;
     width: 50vh;
+    max-width: 95vw;
+    max-height: 95vw;
     margin-top: 10px;
+    background-color: white;
+    border-radius: 5px;
 }

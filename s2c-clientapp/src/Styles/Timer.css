@@ -5,8 +5,6 @@
     color: white;
     font-weight: bold;
     font-size: 20px;
-    margin-top: 0px;
-    display: inline-block;
 }
 
 [blink="1"].timer {

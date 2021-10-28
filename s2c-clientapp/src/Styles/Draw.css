@@ -37,6 +37,22 @@
 .draw .btns-timer {
     margin: 20px;
     display: flex;
+    height: var(--btn-size);
+}
+
+.draw .counter {
+    height: var(--btn-size);
+    width: var(--btn-size);
+    line-height: var(--btn-size);
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    background-color: var(--sec-background);
+    border-radius: 10px;
+    position: absolute;
+    left: 50%;
+    margin-left: calc(-0.5 * var(--btn-size));
 }
 
 .draw img.button {
