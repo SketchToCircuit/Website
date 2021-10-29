@@ -107,7 +107,7 @@ class Mainpage extends React.Component {
     */
     connect = () => {
         let that = this; // cache the this
-        const url = 'wss:/' + window.location.hostname + '/api';
+        const url = 'ws:/' + window.location.hostname + ':3001';
         let ws = new WebSocket(url);
         let connectInterval;
 
@@ -144,7 +144,6 @@ class Mainpage extends React.Component {
         ws.onmessage = (event) => {
             try {
                 const wsData = JSON.parse(event.data);
-
                 switch (wsData.PacketId) {
                     case 202:
                         this.onDrawTaskMsg(wsData.Data);

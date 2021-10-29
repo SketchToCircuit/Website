@@ -14,20 +14,28 @@ function sendData(data, ws) { // Send Json data to User
 }
 
 function getUserData(ws, client, database) {
-    //Get score from db
-    let score = 10;
-    const data = {
-        "PacketId": 201,
-        "Data": {
-            "avatar": client.google.picture,
-            "username": client.google.name,
-            "points": score,
-            "unique": Math.floor((Math.random() + 1) * 10000)
+    
+    database.getUserScore(client.google.sub, processData)
+
+    function processData(userScore, scoreBoard)
+    {
+        let scoreBoardData = [];
+        for(var i in scoreBoard)
+        {
+            scoreBoardData.push({name: scoreBoard[i].username, score: scoreBoard[i].score});
         }
-    };
-
-    sendData(data, ws);
-
+        let data = {
+            "PacketId": 201,
+            "Data": {
+                "avatar": client.google.picture,
+                "username": client.google.name,
+                "points": userScore,
+                "scoreBoardData": scoreBoardData,
+                "unique": Math.floor((Math.random() + 1) * 10000)
+            }
+        }
+        sendData(data, ws);
+    }
     return true;
 }
 
