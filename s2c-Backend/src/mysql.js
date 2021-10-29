@@ -94,6 +94,17 @@ function getScoreBoard(userScore, callback)
     });
 }
 
+function addUserScore(googleId, amount)
+{
+    let query = "UPDATE google_user SET score = score + ? WHERE google_id = ?";
+    query = mysql.format(query, [amount, googleId]);
+    database.query(query, (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+    });
+}
+
 // get data for validation from database and filesystem
 function getValidationData(base64Helper, googleId, callback) {
     // order by random number to select random image
@@ -210,6 +221,7 @@ module.exports = {
     AddUser,
     getUserScore,
     getScoreBoard,
+    addUserScore,
     getValidationData,
     getDrawData,
     setValidated,

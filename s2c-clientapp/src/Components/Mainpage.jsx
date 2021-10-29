@@ -60,7 +60,7 @@ class Mainpage extends React.Component {
 
     onUserData(data){
         console.log(data.username + " has " + data.points);
-        console.log(data.scoreBoardData);
+        //console.log(data.scoreBoardData);
     }
 
     onDrawTaskMsg(data) {
@@ -112,7 +112,7 @@ class Mainpage extends React.Component {
     */
     connect = () => {
         let that = this; // cache the this
-        const url = 'wss:/' + window.location.hostname + '/api';
+        const url = 'ws:/' + window.location.hostname + ':3001';
         let ws = new WebSocket(url);
         let connectInterval;
 
