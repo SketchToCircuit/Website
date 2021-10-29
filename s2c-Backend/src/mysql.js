@@ -105,6 +105,19 @@ function addUserScore(googleId, amount)
     });
 }
 
+function addUserScoreFromImgId(imgId, amount)
+{
+    let query = "SELECT drawer_id FROM images WHERE image_id = ?";
+    query = mysql.format(query, imgId);
+    database.query(query, (err, result) => {
+        if (err) {
+            console.log(err);
+        }else if (result.length >= 1) {
+            addUserScore(result[0].drawer_id, amount)
+        }
+    });
+}
+
 // get data for validation from database and filesystem
 function getValidationData(base64Helper, googleId, callback) {
     // order by random number to select random image
@@ -222,6 +235,7 @@ module.exports = {
     getUserScore,
     getScoreBoard,
     addUserScore,
+    addUserScoreFromImgId,
     getValidationData,
     getDrawData,
     setValidated,

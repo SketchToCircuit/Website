@@ -1,5 +1,4 @@
 //#region lib-requires
-const fs = require('fs');
 const WS = require('ws');
 const http = require('http');
 const path = require('path');
@@ -13,6 +12,7 @@ const google = require('./src/google');
 const base64Helper = require('./src/base64Helper');
 const websocket = require('./src/websocket');
 const dataFolder = require('./src/dataFolder');
+//#endregion
 
 //#region vars
 const clients = new Map(); //Map to store ws instances
@@ -81,6 +81,12 @@ function PacketHandler(data, ws) {
             client.isAuth = true;
             // payload.sub is the googleId
             database.AddUser(payload.sub, payload.name);
+
+            /*websocket.getUserData(ws, client, database);//Testing
+            database.addUserScore(payload.sub, 100);
+            websocket.getUserData(ws, client, database);
+            database.addUserScore(payload.sub, -100);
+            websocket.getUserData(ws, client, database);*/
         }).catch((err) => {
             console.log(err);
             client.isAuth = false;
