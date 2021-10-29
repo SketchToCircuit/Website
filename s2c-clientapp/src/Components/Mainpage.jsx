@@ -58,6 +58,11 @@ class Mainpage extends React.Component {
         }
     }
 
+    onUserData(data){
+        console.log(data.username + " has " + data.points);
+        console.log(data.scoreBoardData);
+    }
+
     onDrawTaskMsg(data) {
         if (this.state.displayPage === ChildComponentEnum.StartBtn) {
             this.setState({
@@ -107,7 +112,7 @@ class Mainpage extends React.Component {
     */
     connect = () => {
         let that = this; // cache the this
-        const url = 'ws:/' + window.location.hostname + ':3001';
+        const url = 'wss:/' + window.location.hostname + '/api';
         let ws = new WebSocket(url);
         let connectInterval;
 
@@ -145,6 +150,10 @@ class Mainpage extends React.Component {
             try {
                 const wsData = JSON.parse(event.data);
                 switch (wsData.PacketId) {
+                    case 201:
+                        this.onUserData(wsData.Data);
+                        break;
+
                     case 202:
                         this.onDrawTaskMsg(wsData.Data);
                         break;
