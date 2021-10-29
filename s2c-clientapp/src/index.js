@@ -64,9 +64,11 @@ const App = () => {
                 </Switch>
             </Router>
 
+            {showNav ? 
             <footer>
                 <a href='/Legal'>Impressum &amp; Datenschutz</a>
-            </footer>
+            </footer> : null
+            }
         </div>
     );
 }
