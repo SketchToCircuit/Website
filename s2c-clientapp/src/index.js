@@ -66,7 +66,7 @@ const App = () => {
 
             {showNav ? 
             <footer>
-                <a href='/Legal'>Impressum &amp; Datenschutz</a>
+                <a href='/Legal'>Impressum – Legal Notice</a>
             </footer> : null
             }
         </div>
