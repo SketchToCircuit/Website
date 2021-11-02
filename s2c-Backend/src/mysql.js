@@ -48,20 +48,71 @@ async function loadData()
 }
 
 // add googleId to database
-function AddUser(googleId) {
+function AddUser(googleId, username) {
     let query = "SELECT * FROM google_user WHERE google_id = ?;";
-    database.query(query, [googleId], (err, result) => {
+    query = mysql.format(query, googleId);
+    database.query(query, (err, result) => {
         if (err) {
             console.log(err);
         }
 
         if (!err && result && !result.length) {
-            query = "INSERT INTO google_user(google_id, untrusted) VALUES(?, FALSE);";
-            database.query(query, [googleId], (err, result) => {
+            query = "INSERT INTO google_user(google_id, username, score, untrusted) VALUES(?,?,0,FALSE);";
+            query = mysql.format(query, [googleId, username])
+            database.query(query, (err, result) => {
                 if (err) {
                     console.log(err);
                 }
             })
+        }
+    });
+}
+
+function getUserScore(googleId, callback)
+{
+    let query = "SELECT score FROM google_user WHERE google_id = ?";
+    query = mysql.format(query, googleId);
+    database.query(query, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else if (result.length >= 1) {
+            getScoreBoard(result[0].score,callback);
+        }
+    });
+}
+
+function getScoreBoard(userScore, callback)
+{
+    let query = "SELECT score, username FROM google_user ORDER BY score DESC LIMIT 10";
+    database.query(query, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else if (result.length >= 1) {         
+            callback(userScore, result);
+        }
+    });
+}
+
+function addUserScore(googleId, amount)
+{
+    let query = "UPDATE google_user SET score = score + ? WHERE google_id = ?";
+    query = mysql.format(query, [amount, googleId]);
+    database.query(query, (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+    });
+}
+
+function addUserScoreFromImgId(imgId, amount)
+{
+    let query = "SELECT drawer_id FROM images WHERE image_id = ?";
+    query = mysql.format(query, imgId);
+    database.query(query, (err, result) => {
+        if (err) {
+            console.log(err);
+        }else if (result.length >= 1) {
+            addUserScore(result[0].drawer_id, amount)
         }
     });
 }
@@ -180,6 +231,10 @@ function storeImage(component_path, label_path, drawer_id, component_type)
 module.exports = {
     init,
     AddUser,
+    getUserScore,
+    getScoreBoard,
+    addUserScore,
+    addUserScoreFromImgId,
     getValidationData,
     getDrawData,
     setValidated,

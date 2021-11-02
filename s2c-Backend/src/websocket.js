@@ -14,20 +14,28 @@ function sendData(data, ws) { // Send Json data to User
 }
 
 function getUserData(ws, client, database) {
-    //Get score from db
-    let score = 10;
-    const data = {
-        "PacketId": 201,
-        "Data": {
-            "avatar": client.google.picture,
-            "username": client.google.name,
-            "points": score,
-            "unique": Math.floor((Math.random() + 1) * 10000)
+
+    database.getUserScore(client.google.sub, processData)
+
+    function processData(userScore, scoreBoard)
+    {
+        let scoreBoardData = [];
+        for(var i in scoreBoard)
+        {
+            scoreBoardData.push({name: scoreBoard[i].username, score: scoreBoard[i].score});
         }
-    };
-
-    sendData(data, ws);
-
+        let data = {
+            "PacketId": 201,
+            "Data": {
+                "avatar": client.google.picture,
+                "username": client.google.name,
+                "points": userScore,
+                "scoreBoardData": scoreBoardData,
+                "unique": Math.floor((Math.random() + 1) * 10000)
+            }
+        }
+        sendData(data, ws);
+    }
     return true;
 }
 
@@ -78,14 +86,13 @@ function decideIfDrawVal(ws, client, database, base64Helper) {
             client.drawVal = "val";
         });
     }
-
     database.decideDrawValFromDB(client.google.sub, sendDraw, sendVal);
 }
 
 function onImgReceive(dataIn, ws, client, database, base64Helper) {
     if (client.drawVal === "draw" && dataIn.count >= 1 && dataIn.count <= 5 && dataIn.count === client.count + 1) {
         storeDrawnImage(dataIn, client ,database, base64Helper);
-
+        database.addUserScore(client.google.sub, 10);
         database.getDrawData(client.lastDrawId, base64Helper, (drawData) => {
             let dataOut = {
                 "PacketId": 202,
@@ -159,9 +166,11 @@ function storeDrawnImage(data, client ,database, base64Helper) {
 }
 
 function onValReceive(dataIn, ws, client, database, base64Helper) {
-    console.log(dataIn);
     if (client.drawVal === "val" && dataIn.count >= 1 && dataIn.count <= 5 && dataIn.count === client.count + 1) {
-        database.setValidated(dataIn.imgId, dataIn.validated, client.google.sub);
+        database.setValidated(dataIn.imgId, dataIn.validated, client.google.sub); // <-- danger bc user can change imgId
+
+        database.addUserScore(client.google.sub, 10);
+        database.addUserScoreFromImgId(dataIn.imgId, dataIn.validated ? 10:-10); // <-- Same here
 
         database.getValidationData(base64Helper, client.google.sub, function (valData) {
             let dataOut = {
