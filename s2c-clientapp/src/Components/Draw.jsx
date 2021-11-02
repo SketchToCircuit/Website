@@ -279,8 +279,6 @@ class Draw extends React.Component {
         } else {
             this.timerRef.current.reset(30);
 
-            this.resizedrawn(this.componentimage);
-
             const data = {
                 "PacketId": 104,
                 "Data": {

@@ -72,9 +72,6 @@ const App = () => {
                     <Route path="/Leaderboard" render={(props) => <Leaderboard {...props} data={leaderboardData}/>}/>
                     <Route component={NotFound}/>
                 </Switch>
-                <footer>
-                    <Link to="/Legal">Impressum &amp; Datenschutz</Link>
-                </footer>
             </Router>
 
             {showNav ? 
