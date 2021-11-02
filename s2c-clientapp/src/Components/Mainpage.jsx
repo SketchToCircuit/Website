@@ -198,6 +198,33 @@ class Mainpage extends React.Component {
     }
 
     render() {
+        let Data= {
+            "type": "Resistor",
+        
+            "ComponentHint": {
+              "text": "bitte Zeichnen sie einen horizontal gelgenen Widerstand!!",
+              "img": "logo192.png"
+            },
+        
+            "LabelHint": {
+              "text": "Bitte zeivhen sie die Beschriftung: R14",
+              "img": "logo512.png"
+            },
+        
+            "unique": 10
+        }
+
+        Data = {
+            "hintText": "Ist hier ein Widerstand abgebildet?",
+            "hintImg": "logo192.png",
+            "valImg": "logo512.png",
+            "imgId": 1,
+            "unique": 1
+        }
+
+        //return <Draw ws={this.state.ws} wsData={Data} onFinished={this.onDrawValFinished}/>
+        return <Validation ws={this.state.ws} wsData={Data} onFinished={this.onDrawValFinished}/>
+         
         const ws = this.state.ws;
         if (!ws || ws.readyState !== WebSocket.OPEN) {
             return null;
