@@ -30,7 +30,8 @@ class Draw extends React.Component {
             canvWidth: 0,
             unmountDrawing: false,
             batchcount: 1,
-            type: props.wsData.type
+            type: props.wsData.type,
+            time: 30
         };
     }
 
@@ -91,17 +92,18 @@ class Draw extends React.Component {
     }
 
     onButtonNext = () => {
-        this.timerRef.current.reset();
+        
         if (!this.state.isfirstDrawn) {
             this.componentimage = this.saveableCanvas.canvas.drawing.toDataURL("image/png");
             this.saveableCanvas.clear();
-            this.setState((state) => ({
+            this.setState({
                 backgroundpic: this.componentimage,
                 isfirstDrawn: true,
                 hinttext: this.props.wsData.LabelHint.text,
                 hintpicture: this.props.wsData.LabelHint.img,
-                unmountDrawing: true
-            }));
+                unmountDrawing: true,
+                time: 15
+            });
 
         } else {
             const data = {
@@ -133,9 +135,12 @@ class Draw extends React.Component {
                 unmountDrawing: true,
                 hinttext: "",
                 hintpicture: "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=",      // Tiniest valid gif
-                batchcount: state.batchcount + 1
+                batchcount: state.batchcount + 1,
+                time: 30
             }));
         }
+
+        this.timerRef.current.reset();
     }
 
     render() {
@@ -158,7 +163,7 @@ class Draw extends React.Component {
                             return
                         }}}><img className='button' src={'undo_icon.svg'}  role='button' alt=''></img></div>
 
-                        <CountDownTimer Secs={20} onTimeIsOver={this.onButtonNext} className="timer" onreset={this.state.resetTimer} ref={this.timerRef}/>
+                        <CountDownTimer Secs={this.state.time} onTimeIsOver={this.onButtonNext} className="timer" onreset={this.state.resetTimer} ref={this.timerRef}/>
                     </div>
                 </div>
 
