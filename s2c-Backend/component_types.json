@@ -1,50 +1,50 @@
 [
     {
         "component_id": 1,
-        "file_prefix": "R_H",
-        "draw_hint": "Please draw a horizontal resistor",
-        "val_hint": "Do you see a horizontal resistor?",
-        "component_hint_img": "/data/hints/R_H.jpg",
-        "labeled_hint_img": "/data/hints/R_H_labeled.jpg"
+        "file_prefix": "R",
+        "draw_hint": "Please draw a resistor",
+        "val_hint": "Do you see a resistor?",
+        "component_hint_img": "/data/hints/R.jpg",
+        "labeled_hint_img": "/data/hints/R_labeled.jpg"
     },
     {
         "component_id": 2,
-        "file_prefix": "R_V",
-        "draw_hint": "Please draw a vertical resistor",
-        "val_hint": "Do you see a vertical resistor?",
-        "component_hint_img": "/data/hints/R_V.jpg",
-        "labeled_hint_img": "/data/hints/R_V_labeled.jpg"
+        "file_prefix": "C",
+        "draw_hint": "Please draw a capacitor",
+        "val_hint": "Do you see a capacitor?",
+        "component_hint_img": "/data/hints/C.jpg",
+        "labeled_hint_img": "/data/hints/C_labeled.jpg"
     },
     {
         "component_id": 3,
-        "file_prefix": "C_H",
-        "draw_hint": "Please draw a horizontal capacitor",
-        "val_hint": "Do you see a horizontal capacitor?",
-        "component_hint_img": "/data/hints/C_H.jpg",
-        "labeled_hint_img": "/data/hints/C_H_labeled.jpg"
+        "file_prefix": "L",
+        "draw_hint": "Please draw a coil",
+        "val_hint": "Do you see a coil?",
+        "component_hint_img": "/data/hints/L.jpg",
+        "labeled_hint_img": "/data/hints/L_labeled.jpg"
     },
     {
         "component_id": 4,
-        "file_prefix": "C_V",
-        "draw_hint": "Please draw a vertical capacitor",
-        "val_hint": "Do you see a vertical capacitor?",
-        "component_hint_img": "/data/hints/C_V.jpg",
-        "labeled_hint_img": "/data/hints/C_V_labeled.jpg"
+        "file_prefix": "LED",
+        "draw_hint": "Please draw a LED",
+        "val_hint": "Do you see a LED",
+        "component_hint_img": "/data/hints/LED.jpg",
+        "labeled_hint_img": "/data/hints/LED_labeled.jpg"
     },
     {
         "component_id": 5,
-        "file_prefix": "L_H",
-        "draw_hint": "Please draw a horizontal coil",
-        "val_hint": "Do you see a horizontal coil?",
-        "component_hint_img": "/data/hints/L_H.jpg",
-        "labeled_hint_img": "/data/hints/L_H_labeled.jpg"
+        "file_prefix": "D",
+        "draw_hint": "Please draw a diode",
+        "val_hint": "Do you see a diode",
+        "component_hint_img": "/data/hints/D.jpg",
+        "labeled_hint_img": "/data/hints/D_labeled.jpg"
     },
     {
         "component_id": 6,
-        "file_prefix": "L_V",
-        "draw_hint": "Please draw a vertical coil",
-        "val_hint": "Do you see a vertical coil?",
-        "component_hint_img": "/data/hints/L_V.jpg",
-        "labeled_hint_img": "/data/hints/L_V_labeled.jpg"
+        "file_prefix": "POT",
+        "draw_hint": "Please draw a potentiometer",
+        "val_hint": "Do you see a potentiometer",
+        "component_hint_img": "/data/hints/POT.jpg",
+        "labeled_hint_img": "/data/hints/POT_labeled.jpg"
     }
 ]

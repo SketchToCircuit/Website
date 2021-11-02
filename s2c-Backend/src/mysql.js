@@ -87,8 +87,7 @@ function getScoreBoard(userScore, callback)
     database.query(query, (err, result) => {
         if (err) {
             console.log(err);
-        } else if (result.length >= 1) {
-            
+        } else if (result.length >= 1) {         
             callback(userScore, result);
         }
     });
