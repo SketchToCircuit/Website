@@ -14,6 +14,7 @@ class Draw extends React.Component {
 
         this.timerRef = createRef();
         this.forceResize = false;
+        this.countDownTime = 30;
 
         // set custom vh/vw-unit for mobile devices
         let vh = window.innerHeight * 0.01;
@@ -30,8 +31,7 @@ class Draw extends React.Component {
             canvWidth: 0,
             unmountDrawing: false,
             batchcount: 1,
-            type: props.wsData.type,
-            time: 30
+            type: props.wsData.type
         };
     }
 
@@ -91,9 +91,10 @@ class Draw extends React.Component {
         }
     }
 
-    onButtonNext = () => {
-        
+    onButtonNext = () => {        
         if (!this.state.isfirstDrawn) {
+            this.timerRef.current.reset(15);
+
             this.componentimage = this.saveableCanvas.canvas.drawing.toDataURL("image/png");
             this.saveableCanvas.clear();
             this.setState({
@@ -101,11 +102,12 @@ class Draw extends React.Component {
                 isfirstDrawn: true,
                 hinttext: this.props.wsData.LabelHint.text,
                 hintpicture: this.props.wsData.LabelHint.img,
-                unmountDrawing: true,
-                time: 15
+                unmountDrawing: true
             });
 
         } else {
+            this.timerRef.current.reset(30);
+
             const data = {
                 "PacketId": 104,
                 "Data": {
@@ -135,12 +137,9 @@ class Draw extends React.Component {
                 unmountDrawing: true,
                 hinttext: "",
                 hintpicture: "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=",      // Tiniest valid gif
-                batchcount: state.batchcount + 1,
-                time: 30
+                batchcount: state.batchcount + 1
             }));
         }
-
-        this.timerRef.current.reset();
     }
 
     render() {
@@ -163,7 +162,7 @@ class Draw extends React.Component {
                             return
                         }}}><img className='button' src={'undo_icon.svg'}  role='button' alt=''></img></div>
 
-                        <CountDownTimer Secs={this.state.time} onTimeIsOver={this.onButtonNext} className="timer" onreset={this.state.resetTimer} ref={this.timerRef}/>
+                        <CountDownTimer Secs={30} onTimeIsOver={this.onButtonNext} className="timer" onreset={this.state.resetTimer} ref={this.timerRef}/>
                     </div>
                 </div>
 
