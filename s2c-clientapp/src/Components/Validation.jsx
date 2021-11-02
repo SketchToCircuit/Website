@@ -76,10 +76,10 @@ class Validation extends React.Component {
                             } else {
                                 document.getElementById('hint-div').setAttribute('large', '1')
                             }}}>
+                    <span>Example</span>
                     <img src={this.props.wsData.hintImg}
                         className="hint-picture"
                         alt=''/>
-                        <span>Example</span>
                 </div>
             </div>
         );

@@ -1,0 +1,46 @@
+.board h1 {
+    text-align: center;
+}
+
+.board p {
+    font-size: x-large;
+    text-align: center;
+}
+
+.board table {
+    text-align: center;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: large;
+}
+
+.board td:first-child {
+    font-weight: bold;
+    text-align: right !important;
+}
+
+.board td:last-child {
+    text-align: right;
+}
+
+.board th {
+    padding: 8px;
+}
+
+.board td {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.board tr.marked {
+    font-weight: bold;
+}
+
+.board .marked td + td:not(:last-child) {
+    text-decoration: underline;
+}
+
+td + td,
+th + th { border-left: 2px solid; }
+tr + tr { border-top: 2px solid; }

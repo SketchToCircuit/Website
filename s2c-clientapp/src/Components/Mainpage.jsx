@@ -50,10 +50,16 @@ class Mainpage extends React.Component {
     }
 
     componentWillUnmount() {
+        this.props.setShowNav(true);
+        
         if (this.state.ws) {
             this.didCloseWs = true;
             this.state.ws.close(); 
         }
+    }
+
+    onUserData(data){
+        this.props.setLeaderboardData(data);
     }
 
     onDrawTaskMsg(data) {
@@ -142,8 +148,11 @@ class Mainpage extends React.Component {
         ws.onmessage = (event) => {
             try {
                 const wsData = JSON.parse(event.data);
-
                 switch (wsData.PacketId) {
+                    case 201:
+                        this.onUserData(wsData.Data);
+                        break;
+
                     case 202:
                         this.onDrawTaskMsg(wsData.Data);
                         break;
@@ -174,20 +183,35 @@ class Mainpage extends React.Component {
         if (res && res.tokenId) {
             this.setState({displayPage: ChildComponentEnum.StartBtn});
 
-            const data = {
+            let data = {
                 "PacketId": 101,
                 "Data": {
                     "token": res.tokenId
                 }
             }
 
-            this.state.ws.send(JSON.stringify(data));
+            try {
+                this.state.ws.send(JSON.stringify(data));
+            } catch (error) {
+                console.error(error);
+            }
+            
+            data = {
+                "PacketId": 102,
+                "Data": {}
+            }
+
+            try {
+                this.state.ws.send(JSON.stringify(data));
+            } catch (error) {
+                console.error(error);
+            }
         }
 
         this.props.loginCallback(res);
     }
 
-    render() { 
+    render() {
         const ws = this.state.ws;
         if (!ws || ws.readyState !== WebSocket.OPEN) {
             return null;

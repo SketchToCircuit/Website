@@ -2,6 +2,8 @@ import React, {createRef} from 'react';
 import CanvasDraw from "react-canvas-draw";
 
 import CountDownTimer from './Timer';
+import TextFontScaling from './TextFontScaling';
+
 import '../Styles/Draw.css';
 
 class Draw extends React.Component {
@@ -12,6 +14,7 @@ class Draw extends React.Component {
 
         this.timerRef = createRef();
         this.forceResize = false;
+        this.countDownTime = 30;
 
         // set custom vh/vw-unit for mobile devices
         let vh = window.innerHeight * 0.01;
@@ -68,6 +71,13 @@ class Draw extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
+        const topHeight = document.getElementById("top").offsetHeight;
+        document.documentElement.style.setProperty('--top-h', `${topHeight}px`);
+
+        if (prevState.isfirstDrawn && !this.state.isfirstDrawn) {
+            this.handleResize();
+        }
+
         if (prevProps.wsData !== this.props.wsData) {
             this.setState({hintpicture: this.props.wsData.ComponentHint.img, 
                            hinttext: this.props.wsData.ComponentHint.text,
@@ -81,20 +91,23 @@ class Draw extends React.Component {
         }
     }
 
-    onButtonNext = () => {
-        this.timerRef.current.reset();
+    onButtonNext = () => {        
         if (!this.state.isfirstDrawn) {
+            this.timerRef.current.reset(15);
+
             this.componentimage = this.saveableCanvas.canvas.drawing.toDataURL("image/png");
             this.saveableCanvas.clear();
-            this.setState((state) => ({
+            this.setState({
                 backgroundpic: this.componentimage,
                 isfirstDrawn: true,
                 hinttext: this.props.wsData.LabelHint.text,
                 hintpicture: this.props.wsData.LabelHint.img,
                 unmountDrawing: true
-            }));
+            });
 
         } else {
+            this.timerRef.current.reset(30);
+
             const data = {
                 "PacketId": 104,
                 "Data": {
@@ -137,8 +150,8 @@ class Draw extends React.Component {
 
         return (
             <div className="draw">
-                <div className="top">
-                    <p className="instruction-paragraph">{this.state.hinttext}</p>
+                <div className="top" id="top">
+                    <div className="instruction-paragraph"><TextFontScaling text={this.state.hinttext} maxFontSize={20}/></div>
                     <div className="btns-timer">
                         <span className='counter'>{this.state.batchcount}/5</span>
                         <div onClick={this.onButtonNext}><img className='button' src={'next_icon.svg'} role='button' alt=''></img></div>
@@ -149,7 +162,7 @@ class Draw extends React.Component {
                             return
                         }}}><img className='button' src={'undo_icon.svg'}  role='button' alt=''></img></div>
 
-                        <CountDownTimer Secs={20} onTimeIsOver={this.onButtonNext} className="timer" onreset={this.state.resetTimer} ref={this.timerRef}/>
+                        <CountDownTimer Secs={30} onTimeIsOver={this.onButtonNext} className="timer" onreset={this.state.resetTimer} ref={this.timerRef}/>
                     </div>
                 </div>
 
@@ -161,20 +174,17 @@ class Draw extends React.Component {
                         imgSrc={this.state.backgroundpic}/>}
                 </div>
 
-                <div    className="hint-div"
-                        id="hint-div"
-                        role='button'
-                        large='0'
+                <div className="hint-div" id="hint-div" role='button' large='0'
                         onClick={() => {
                             if (document.getElementById('hint-div').getAttribute('large') === '1') {
                                 document.getElementById('hint-div').setAttribute('large', '0')
                             } else {
                                 document.getElementById('hint-div').setAttribute('large', '1')
                             }}}>
+                    <span>Example</span>
                     <img src={this.state.hintpicture}
                         className="hint-picture"
                         alt=''/>
-                    <span>Example</span>
                 </div>
             </div>
         );

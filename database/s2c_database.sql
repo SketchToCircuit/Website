@@ -43,6 +43,8 @@ CREATE TABLE `component_types` (
 
 CREATE TABLE `google_user` (
   `google_id` varchar(32) NOT NULL,
+  `username` varchar(32) NOT NULL,
+  `score` int(16) NOT NULL,
   `untrusted` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Hat der Benutzer schon einmal etwas falsch gemacht?'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

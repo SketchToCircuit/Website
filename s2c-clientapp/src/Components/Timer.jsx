@@ -11,16 +11,21 @@ class CountDownTimer extends React.Component{
         };
     }
 
-    reset = () => {
-        this.setState({Secs: this.props.Secs});
+    reset = (time) => {
+        if (time) {
+            this.setState({Secs: time});
+        } else {
+            this.setState({Secs: this.props.Secs});
+        }
+
+        clearInterval(this.timerId);
+        this.timerId = setInterval(this.tick, 1000);
     } 
   
     tick = () => {
-   
         if (this.state.Secs <= 0)
         {
             this.props.onTimeIsOver();
-            this.reset();
         } 
         else
         {

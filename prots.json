@@ -63,6 +63,7 @@ Packet-IDs with offset 200 (starting at 201)
     "avatar": "string",
     "username": "string",
     "points": integer,
+    "scoreBoardData" : [{username,score}, ], //Array 
     "unique": integer
   }
 }
