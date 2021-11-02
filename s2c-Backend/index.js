@@ -81,6 +81,7 @@ function PacketHandler(data, ws) {
             client.isAuth = true;
             // payload.sub is the googleId
             database.AddUser(payload.sub, payload.name);
+            websocket.getUserData(ws, client, database);
 
             /*websocket.getUserData(ws, client, database);//Testing
             database.addUserScore(payload.sub, 100);
