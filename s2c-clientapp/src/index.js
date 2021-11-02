@@ -51,7 +51,7 @@ const App = () => {
     return (
         <div>
             <Router>
-                {true ? 
+                {showNav ? 
                     <nav className="topnav">
                         <NavLink activeStyle={{textShadow: "0px 0px 2px" }} exact to="/" className='home-link'>SketchToCircuit</NavLink>
                         <NavLink activeStyle={{textShadow: "0px 0px 2px" }} to="/About">About</NavLink>
@@ -64,26 +64,7 @@ const App = () => {
                     <Route exact path="/" render={(props) => <Mainpage {...props} loginCallback={loginCallback} loggedIn={loggedIn} setShowNav={updateShowNav} setLeaderboardData={setLeaderboardData}/>}/>
                     <Route path="/About" component={About}/>
                     <Route path="/Legal" component={Legal}/>
-                    <Route path="/Leaderboard" render={(props) => <Leaderboard {...props} data={{
-    "avatar": "https://lh3.googleusercontent.com/a/AATXAJy5d12ZvGvl0PLJ6IwsDb0rUYpICJuTb9UTiK-cpA=s96-c",
-    "username": "Patrick Z",
-    "points": 230,
-    "scoreBoardData": [
-        {
-            "name": "Patrick Z",
-            "score": 230
-        },
-        {
-            "name": "Qualle 1638",
-            "score": 140
-        },
-        {
-            "name": "B.Robots RescueMaze",
-            "score": 50
-        }
-    ],
-    "unique": 15504
-}}/>}/>
+                    <Route path="/Leaderboard" render={(props) => <Leaderboard {...props} data={leaderboardData}/>}/>
                     <Route component={NotFound}/>
                 </Switch>
             </Router>
