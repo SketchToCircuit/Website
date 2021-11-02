@@ -59,8 +59,7 @@ class Mainpage extends React.Component {
     }
 
     onUserData(data){
-        console.log(data.username + " has " + data.points);
-        //console.log(data.scoreBoardData);
+        this.props.setLeaderboardData(data);
     }
 
     onDrawTaskMsg(data) {
@@ -184,14 +183,29 @@ class Mainpage extends React.Component {
         if (res && res.tokenId) {
             this.setState({displayPage: ChildComponentEnum.StartBtn});
 
-            const data = {
+            let data = {
                 "PacketId": 101,
                 "Data": {
                     "token": res.tokenId
                 }
             }
 
-            this.state.ws.send(JSON.stringify(data));
+            try {
+                this.state.ws.send(JSON.stringify(data));
+            } catch (error) {
+                console.error(error);
+            }
+            
+            data = {
+                "PacketId": 102,
+                "Data": {}
+            }
+
+            try {
+                this.state.ws.send(JSON.stringify(data));
+            } catch (error) {
+                console.error(error);
+            }
         }
 
         this.props.loginCallback(res);
