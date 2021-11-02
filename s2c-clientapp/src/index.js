@@ -48,7 +48,7 @@ const App = () => {
     return (
         <div>
             <Router>
-                {showNav ? 
+                {false ? 
                     <nav className="topnav">
                         <NavLink activeStyle={{textShadow: "0px 0px 2px" }} exact to="/" className='home-link'>SketchToCircuit</NavLink>
                         <NavLink activeStyle={{textShadow: "0px 0px 2px" }} to="/About">About</NavLink>

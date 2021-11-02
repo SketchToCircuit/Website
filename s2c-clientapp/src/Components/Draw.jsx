@@ -140,8 +140,6 @@ class Draw extends React.Component {
                 batchcount: state.batchcount + 1
             }));
         }
-
-        this.timerRef.current.reset();
     }
 
     render() {
