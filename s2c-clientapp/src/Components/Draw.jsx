@@ -81,18 +81,13 @@ class Draw extends React.Component {
     }
     
     resizedrawn = async (rawvaluepicture, rawcomponentpicture) =>{
+       //strip the beginning /^data:image\/([A-Za-z]+);base64,(.+)$/ of the picure
        let valuePicmatches = rawvaluepicture.match(/^data:image\/([A-Za-z]+);base64,(.+)$/);
        let componentPicmatches = rawcomponentpicture.match(/^data:image\/([A-Za-z]+);base64,(.+)$/);
 
         if (valuePicmatches.length !== 3 && componentPicmatches.length !== 3) {
             return;
         }
-
-        let initialresolution = {
-            "height": componentPicmatches.bitmap.height,
-            "length": componentPicmatches.bitmap.width
-        }
-
 
         let valuePicture = await Jimp.read(Buffer.from(valuePicmatches[2], 'base64'))
         let componentPicture = await Jimp.read(Buffer.from(componentPicmatches[2], 'base64'))
@@ -115,7 +110,7 @@ class Draw extends React.Component {
 
         const resolution = 512;
 
-        //get unscaled x width of Combined Bounding Box  
+        //get unscaled  width of Combined Bounding Box  
         if(valPicOffsets.w < comPicOffsets.w)
         {
             if(Math.abs(valPicOffsets.x - comPicOffsets.x) + valPicOffsets.w > comPicOffsets.w)
@@ -166,7 +161,7 @@ class Draw extends React.Component {
         }
 
 
-        //Get unscaled y height of combined bounding box
+        //Get unscaled  height of combined bounding box
         if(valPicOffsets.h < comPicOffsets.h)
         {
             if(Math.abs(valPicOffsets.y - comPicOffsets.y) + valPicOffsets.h > comPicOffsets.h)
@@ -222,6 +217,7 @@ class Draw extends React.Component {
         let scalefactorWidth;
         let scalefactorHeight;
 
+        //Ahhhhhhhhhhhhhh made a Fucky wucky
         //resize component pic
         scalefactorWidth =  comPicOffsets.w / unscaledwidth;
         scalefactorHeight = comPicOffsets.h / unscaledheight;
@@ -279,6 +275,8 @@ class Draw extends React.Component {
                 hintpicture: this.props.wsData.LabelHint.img,
                 unmountDrawing: true
             });
+
+            console.log(this.componentimage);
 
         } else {
             this.timerRef.current.reset(30);
