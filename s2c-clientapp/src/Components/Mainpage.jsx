@@ -211,31 +211,31 @@ class Mainpage extends React.Component {
         this.props.loginCallback(res);
     }
 
-    render() {
-        let Data= {
-            "type": "Resistor",
-        
-            "ComponentHint": {
-              "text": "bitte Zeichnen sie einen horizontal gelgenen Widerstand!!",
-              "img": "logo192.png"
-            },
-        
-            "LabelHint": {
-              "text": "Bitte zeivhen sie die Beschriftung: R14",
-              "img": "logo512.png"
-            },
-        
-            "unique": 10
-        }
-
-        // Data = {
-        //     "hintText": "Ist hier ein Widerstand abgebildet?",
-        //     "hintImg": "logo192.png",
-        //     "valImg": "logo512.png",
-        //     "imgId": 1,
-        //     "unique": 1
-        // }
-
+    render() { 
+        /*
+        const Data = {
+            "hintText": "Ist hier ein Widerstand abgebildet?",
+            "hintImg": "logo192.png",
+            "valImg": "logo512.png",
+            "imgId": 1,
+            "unique": 1
+          }
+        */
+          const Data = {
+                "type": "Wiederstand",
+            
+                "ComponentHint": {
+                  "text": "des is a wiedastrandt",
+                  "img": "logo512.png"
+                },
+            
+                "LabelHint": {
+                  "text": "string",
+                  "img": "logo512.png"
+                },
+            
+                "unique": 20
+            }
         return <Draw ws={this.state.ws} wsData={Data} onFinished={this.onDrawValFinished}/>
         return <Validation ws={this.state.ws} wsData={Data} onFinished={this.onDrawValFinished}/>
          

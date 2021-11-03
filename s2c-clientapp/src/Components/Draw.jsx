@@ -6,11 +6,21 @@ import TextFontScaling from './TextFontScaling';
 
 import '../Styles/Draw.css';
 
+import Jimp from 'jimp';
+
+
 class Draw extends React.Component {
     componentimage = null;
 
     constructor(props) {
         super(props)
+
+        //Prototype for jimp to get the crop dimensions + Cordinates        
+        jimp.prototype.__crop = jimp.prototype.crop
+        jimp.prototype.crop = function (x, y, w, h, cb) {  
+        this.cropArea = { x, y, w, h }
+        return this.__crop(x, y, w, h, cb)
+        }
 
         this.timerRef = createRef();
         this.forceResize = false;
@@ -69,7 +79,144 @@ class Draw extends React.Component {
             });
         }
     }
+    
+    resizedrawn = async (rawvaluepicture, rawcomponentpicture) =>{
+       let valuePicmatches = rawvaluepicture.match(/^data:image\/([A-Za-z]+);base64,(.+)$/);
+       let componentPicmatches = rawcomponentpicture.match(/^data:image\/([A-Za-z]+);base64,(.+)$/);
 
+        if (valuePicmatches.length !== 3 && componentPicmatches.length !== 3) {
+            return;
+        }
+
+        let initialresolution = {
+            "height": componentPicmatches.bitmap.height,
+            "length": componentPicmatches.bitmap.width
+        }
+
+
+        let valuePicture = await Jimp.read(Buffer.from(valuePicmatches[2], 'base64'))
+        let componentPicture = await Jimp.read(Buffer.from(componentPicmatches[2], 'base64'))
+
+        let valPicOffsets;
+        let comPicOffsets;
+
+        await valuePicture.autocrop(0, (error, valuePicture) => {    
+            valPicOffsets = valuePicture.cropArea; // cropArea = { x, y, w, h }
+          })
+        await componentPicture.autocrop(0, (error, componentPicture) => {    
+           comPicOffsets = componentPicture.cropArea; // cropArea = { x, y, w, h }
+          })
+        
+        var unscaledwidth;
+        var unscaledheight;
+
+        //get unscaled x width of Combined Bounding Box  
+        if(valPicOffsets.w < comPicOffsets.w)
+        {
+            if(abs(valPicOffsets.x - comPicOffsets.x) + valPicOffsets.w > comPicOffsets.w)
+            {
+                if(valPicOffsets.x < ccomPicOffsets.x)
+                {
+                //if the Value is outward to the left add componentlength
+                unscaledwidth = abs(valPicOffsets.x - comPicOffsets.x) + comPicOffsets.w;
+                }
+                else
+                {
+                //if the Value is outward to the right add valuelength
+                  unscaledwidth = abs(valPicOffsets.x - comPicOffsets.x) + valPicOffsets.w;
+                }
+            }
+            else
+            {
+                unscaledwidth = comPicOffsets.w;
+            }
+        }
+        else
+        {
+            //a lot of nearly redunden code but patrick said i should include the edge case that if the label is bigger than the component that it schould scale properly
+            //i think every picture that has a bigger value than component has a 99.9 percent chance of being garbage but hey
+            if(abs(valPicOffsets.x - comPicOffsets.x) + valPicOffsets.w > valPicOffsets.w)
+            {
+                if(valPicOffsets.x < comPicOffsets.x)
+                {
+                //if the Value is outward to the left add componentlength
+                unscaledwidth = abs(valPicOffsets.x - comPicOffsets.x) + valPicOffsets.w;
+                }
+                else
+                {
+                //if the Value is outward to the right add valuelength
+                  unscaledwidth = abs(valPicOffsets.x - comPicOffsets.x) + comPicOffsets.w;
+                }
+            }
+            else
+            {
+                unscaledwidth = valPicOffsets.w;
+            }
+        }
+
+
+        //Get unscaled y height of combined bounding box
+        if(valPicOffsets.h < comPicOffsets.h)
+        {
+            if(abs(valPicOffsets.y - comPicOffsets.y) + valPicOffsets.h > comPicOffsets.h)
+            {
+                if(valPicOffsets.y < comPicOffsets.y)
+                {
+                //if the Value is outward to the left add componentlength
+                unscaledheight = abs(valPicOffsets.y - comPicOffsets.y) + comPicOffsets.h;
+                }
+                else
+                {
+                //if the Value is outward to the right add valuelength
+                  unscaledheight = abs(valPicOffsets.y - comPicOffsets.y) + valPicOffsets.h;
+                }
+            }
+            else
+            {
+                unscaledheight = comPicOffsets.h;
+            }
+        }
+        else
+        {
+            //here it makes a lot of sence since componets somtimes are thiner than values/labels
+            if(abs(valPicOffsets.y - comPicOffsets.y) + valPicOffsets.h > valPicOffsets.h)
+            {
+                if(valPicOffsets.y < comPicOffsets.y)
+                {
+                //if the Value is outward to the left add componentlength
+                unscaledheight = abs(valPicOffsets.y - comPicOffsets.y) + valPicOffsets.h;
+                }
+                else
+                {
+                //if the Value is outward to the right add valuelength
+                unscaledheight = abs(valPicOffsets.y - comPicOffsets.y) + comPicOffsets.h;
+                }
+            }
+            else
+            {
+                unscaledheight = valPicOffsets.h;
+            }
+        }        
+        
+        //To Do patrick will das Mitelpunk mitelpunkt von Combined Bounding box ist
+        
+        //Check which side to scale
+        
+
+        image.resize( w, h[, mode] );
+
+        let blankimage =  new Jimp(512, 512, '#FFFFFF')
+
+        await valuePicture.composite();
+        await valuePicture.composite(); 
+
+        let Images = {
+            "value": await valuePicture.getBase64Async(Jimp.AUTO),
+            "component":await componentPicture.getBase64Async(Jimp.AUTO)
+        }
+        return Images;
+    }
+    
     componentDidUpdate(prevProps, prevState) {
         const topHeight = document.getElementById("top").offsetHeight;
         document.documentElement.style.setProperty('--top-h', `${topHeight}px`);
@@ -107,6 +254,16 @@ class Draw extends React.Component {
 
         } else {
             this.timerRef.current.reset(30);
+
+            this.setState((state) => ({
+                backgroundpic: "",
+                isfirstDrawn: false,
+                unmountDrawing: true,
+                hinttext: "",
+                hintpicture: ""
+            }));
+
+            this.resizedrawn(this.componentimage);
 
             const data = {
                 "PacketId": 104,
