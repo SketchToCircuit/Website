@@ -16,8 +16,8 @@ class Draw extends React.Component {
         super(props)
 
         //Prototype for jimp to get the crop dimensions + Cordinates        
-        jimp.prototype.__crop = jimp.prototype.crop
-        jimp.prototype.crop = function (x, y, w, h, cb) {  
+        Jimp.prototype.__crop = Jimp.prototype.crop
+        Jimp.prototype.crop = function (x, y, w, h, cb) {  
         this.cropArea = { x, y, w, h }
         return this.__crop(x, y, w, h, cb)
         }
@@ -107,50 +107,61 @@ class Draw extends React.Component {
            comPicOffsets = componentPicture.cropArea; // cropArea = { x, y, w, h }
           })
         
-        var unscaledwidth;
-        var unscaledheight;
+        let unscaledwidth;
+        let unscaledheight;
+
+        let boundingboxX;
+        let boundingboxY;
+
+        const resolution = 512;
 
         //get unscaled x width of Combined Bounding Box  
         if(valPicOffsets.w < comPicOffsets.w)
         {
-            if(abs(valPicOffsets.x - comPicOffsets.x) + valPicOffsets.w > comPicOffsets.w)
+            if(Math.abs(valPicOffsets.x - comPicOffsets.x) + valPicOffsets.w > comPicOffsets.w)
             {
-                if(valPicOffsets.x < ccomPicOffsets.x)
+                if(valPicOffsets.x < comPicOffsets.x)
                 {
                 //if the Value is outward to the left add componentlength
-                unscaledwidth = abs(valPicOffsets.x - comPicOffsets.x) + comPicOffsets.w;
+                unscaledwidth = Math.abs(valPicOffsets.x - comPicOffsets.x) + comPicOffsets.w;
+                boundingboxX = valPicOffsets.x;
                 }
                 else
                 {
                 //if the Value is outward to the right add valuelength
-                  unscaledwidth = abs(valPicOffsets.x - comPicOffsets.x) + valPicOffsets.w;
+                  unscaledwidth = Math.abs(valPicOffsets.x - comPicOffsets.x) + valPicOffsets.w;
+                  boundingboxX = comPicOffsets.x;
                 }
             }
             else
             {
                 unscaledwidth = comPicOffsets.w;
+                boundingboxX = comPicOffsets.x;
             }
         }
         else
         {
             //a lot of nearly redunden code but patrick said i should include the edge case that if the label is bigger than the component that it schould scale properly
             //i think every picture that has a bigger value than component has a 99.9 percent chance of being garbage but hey
-            if(abs(valPicOffsets.x - comPicOffsets.x) + valPicOffsets.w > valPicOffsets.w)
+            if(Math.abs(valPicOffsets.x - comPicOffsets.x) + valPicOffsets.w > valPicOffsets.w)
             {
                 if(valPicOffsets.x < comPicOffsets.x)
                 {
-                //if the Value is outward to the left add componentlength
-                unscaledwidth = abs(valPicOffsets.x - comPicOffsets.x) + valPicOffsets.w;
+                //if the Component is outward to the left add componentlength 
+                unscaledwidth = Math.abs(valPicOffsets.x - comPicOffsets.x) + valPicOffsets.w;
+                boundingboxX = comPicOffsets.x;
                 }
                 else
                 {
-                //if the Value is outward to the right add valuelength
-                  unscaledwidth = abs(valPicOffsets.x - comPicOffsets.x) + comPicOffsets.w;
+                //if the component is outward to the right add valuelength
+                  unscaledwidth = Math.abs(valPicOffsets.x - comPicOffsets.x) + comPicOffsets.w;
+                  boundingboxX = valPicOffsets.x;
                 }
             }
             else
             {
                 unscaledwidth = valPicOffsets.w;
+                boundingboxX = valPicOffsets.x;
             }
         }
 
@@ -158,57 +169,74 @@ class Draw extends React.Component {
         //Get unscaled y height of combined bounding box
         if(valPicOffsets.h < comPicOffsets.h)
         {
-            if(abs(valPicOffsets.y - comPicOffsets.y) + valPicOffsets.h > comPicOffsets.h)
+            if(Math.abs(valPicOffsets.y - comPicOffsets.y) + valPicOffsets.h > comPicOffsets.h)
             {
                 if(valPicOffsets.y < comPicOffsets.y)
                 {
-                //if the Value is outward to the left add componentlength
-                unscaledheight = abs(valPicOffsets.y - comPicOffsets.y) + comPicOffsets.h;
+                //if the Value is uppward to the left add componentlength
+                unscaledheight = Math.abs(valPicOffsets.y - comPicOffsets.y) + comPicOffsets.h;
+                boundingboxY = valPicOffsets.y;
                 }
                 else
                 {
-                //if the Value is outward to the right add valuelength
-                  unscaledheight = abs(valPicOffsets.y - comPicOffsets.y) + valPicOffsets.h;
+                //if the Value is downward add valuelength
+                  unscaledheight = Math.abs(valPicOffsets.y - comPicOffsets.y) + valPicOffsets.h;
+                  boundingboxY = comPicOffsets.y;
                 }
             }
             else
             {
                 unscaledheight = comPicOffsets.h;
+                boundingboxY = valPicOffsets.y;
             }
         }
         else
         {
-            //here it makes a lot of sence since componets somtimes are thiner than values/labels
-            if(abs(valPicOffsets.y - comPicOffsets.y) + valPicOffsets.h > valPicOffsets.h)
+            //here it makes a lot of sence since componets somtimes are not ass high than values/labels
+            if(Math.abs(valPicOffsets.y - comPicOffsets.y) + valPicOffsets.h > valPicOffsets.h)
             {
                 if(valPicOffsets.y < comPicOffsets.y)
                 {
                 //if the Value is outward to the left add componentlength
-                unscaledheight = abs(valPicOffsets.y - comPicOffsets.y) + valPicOffsets.h;
+                unscaledheight = Math.abs(valPicOffsets.y - comPicOffsets.y) + valPicOffsets.h;
+                boundingboxX = comPicOffsets.y;
                 }
                 else
                 {
                 //if the Value is outward to the right add valuelength
-                unscaledheight = abs(valPicOffsets.y - comPicOffsets.y) + comPicOffsets.h;
+                unscaledheight = Math.abs(valPicOffsets.y - comPicOffsets.y) + comPicOffsets.h;
+                boundingboxX = valPicOffsets.y;
                 }
             }
             else
             {
                 unscaledheight = valPicOffsets.h;
+                boundingboxY = valPicOffsets.y
             }
         }        
-        
-        //To Do patrick will das Mitelpunk mitelpunkt von Combined Bounding box ist
-        
+        //To Do patrick will das Mitelpunk, mitelpunkt von Combined Bounding box ist
+
+        //reference image.resize( w, h);
+
         //Check which side to scale
+        let scalefactorWidth;
+        let scalefactorHeight;
+
+        //resize component pic
+        scalefactorWidth =  comPicOffsets.w / unscaledwidth;
+        scalefactorHeight = comPicOffsets.h / unscaledheight;
+        componentPicture.resize( scalefactorWidth * resolution, scalefactorHeight * resolution);
+
+        //resize value pic
+        scalefactorWidth =  valPicOffsets.w / unscaledwidth;
+        scalefactorHeight = valPicOffsets.h / unscaledheight;
+        valuePicture.resize( scalefactorWidth * resolution, scalefactorHeight * resolution);
         
+        let blankimage =  new Jimp(resolution, resolution, '#FFFFFF');
+        componentPicture = await blankimage.composite(componentPicture, boundingboxX - comPicOffsets.x, boundingboxY - comPicOffsets.y);
 
-        image.resize( w, h[, mode] );
-
-        let blankimage =  new Jimp(512, 512, '#FFFFFF')
-
-        await valuePicture.composite();
-        await valuePicture.composite(); 
+        blankimage =  new Jimp(resolution, resolution, '#FFFFFF');
+        valuePicture = await blankimage.composite(valuePicture, boundingboxX - valPicOffsets.x, boundingboxY - valPicOffsets.y);  
 
         let Images = {
             "value": await valuePicture.getBase64Async(Jimp.AUTO),
