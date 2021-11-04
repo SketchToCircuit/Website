@@ -6,11 +6,21 @@ import TextFontScaling from './TextFontScaling';
 
 import '../Styles/Draw.css';
 
+import Jimp from 'jimp';
+
+
 class Draw extends React.Component {
     componentimage = null;
 
     constructor(props) {
         super(props)
+
+        //Prototype for jimp to get the crop dimensions + Cordinates        
+        Jimp.prototype.__crop = Jimp.prototype.crop
+        Jimp.prototype.crop = function (x, y, w, h, cb) {  
+        this.cropArea = { x, y, w, h }
+        return this.__crop(x, y, w, h, cb)
+        }
 
         this.timerRef = createRef();
         this.forceResize = false;
@@ -69,7 +79,168 @@ class Draw extends React.Component {
             });
         }
     }
+    
+    resizedrawn = async (rawvaluepicture, rawcomponentpicture) =>{
+       //strip the beginning /^data:image\/([A-Za-z]+);base64,(.+)$/ of the picure
+       let valuePicmatches = rawvaluepicture.match(/^data:image\/([A-Za-z]+);base64,(.+)$/);
+       let componentPicmatches = rawcomponentpicture.match(/^data:image\/([A-Za-z]+);base64,(.+)$/);
 
+        if (valuePicmatches.length !== 3 && componentPicmatches.length !== 3) {
+            return;
+        }
+
+        let valuePicture = await Jimp.read(Buffer.from(valuePicmatches[2], 'base64'))
+        let componentPicture = await Jimp.read(Buffer.from(componentPicmatches[2], 'base64'))
+
+        let valPicOffsets;
+        let comPicOffsets;
+
+        await valuePicture.autocrop(0, (error, valuePicture) => {    
+            valPicOffsets = valuePicture.cropArea; // cropArea = { x, y, w, h }
+          })
+        await componentPicture.autocrop(0, (error, componentPicture) => {    
+           comPicOffsets = componentPicture.cropArea; // cropArea = { x, y, w, h }
+          })
+        
+        let unscaledwidth;
+        let unscaledheight;
+
+        let boundingboxX;
+        let boundingboxY;
+
+        const resolution = 512;
+
+        //get unscaled  width of Combined Bounding Box  
+        if(valPicOffsets.w < comPicOffsets.w)
+        {
+            if(Math.abs(valPicOffsets.x - comPicOffsets.x) + valPicOffsets.w > comPicOffsets.w)
+            {
+                if(valPicOffsets.x < comPicOffsets.x)
+                {
+                //if the Value is outward to the left add componentlength
+                unscaledwidth = Math.abs(valPicOffsets.x - comPicOffsets.x) + comPicOffsets.w;
+                boundingboxX = valPicOffsets.x;
+                }
+                else
+                {
+                //if the Value is outward to the right add valuelength
+                  unscaledwidth = Math.abs(valPicOffsets.x - comPicOffsets.x) + valPicOffsets.w;
+                  boundingboxX = comPicOffsets.x;
+                }
+            }
+            else
+            {
+                unscaledwidth = comPicOffsets.w;
+                boundingboxX = comPicOffsets.x;
+            }
+        }
+        else
+        {
+            //a lot of nearly redunden code but patrick said i should include the edge case that if the label is bigger than the component that it schould scale properly
+            //i think every picture that has a bigger value than component has a 99.9 percent chance of being garbage but hey
+            if(Math.abs(valPicOffsets.x - comPicOffsets.x) + valPicOffsets.w > valPicOffsets.w)
+            {
+                if(valPicOffsets.x < comPicOffsets.x)
+                {
+                //if the Component is outward to the left add componentlength 
+                unscaledwidth = Math.abs(valPicOffsets.x - comPicOffsets.x) + valPicOffsets.w;
+                boundingboxX = comPicOffsets.x;
+                }
+                else
+                {
+                //if the component is outward to the right add valuelength
+                  unscaledwidth = Math.abs(valPicOffsets.x - comPicOffsets.x) + comPicOffsets.w;
+                  boundingboxX = valPicOffsets.x;
+                }
+            }
+            else
+            {
+                unscaledwidth = valPicOffsets.w;
+                boundingboxX = valPicOffsets.x;
+            }
+        }
+
+
+        //Get unscaled  height of combined bounding box
+        if(valPicOffsets.h < comPicOffsets.h)
+        {
+            if(Math.abs(valPicOffsets.y - comPicOffsets.y) + valPicOffsets.h > comPicOffsets.h)
+            {
+                if(valPicOffsets.y < comPicOffsets.y)
+                {
+                //if the Value is uppward to the left add componentlength
+                unscaledheight = Math.abs(valPicOffsets.y - comPicOffsets.y) + comPicOffsets.h;
+                boundingboxY = valPicOffsets.y;
+                }
+                else
+                {
+                //if the Value is downward add valuelength
+                  unscaledheight = Math.abs(valPicOffsets.y - comPicOffsets.y) + valPicOffsets.h;
+                  boundingboxY = comPicOffsets.y;
+                }
+            }
+            else
+            {
+                unscaledheight = comPicOffsets.h;
+                boundingboxY = valPicOffsets.y;
+            }
+        }
+        else
+        {
+            //here it makes a lot of sence since componets somtimes are not ass high than values/labels
+            if(Math.abs(valPicOffsets.y - comPicOffsets.y) + valPicOffsets.h > valPicOffsets.h)
+            {
+                if(valPicOffsets.y < comPicOffsets.y)
+                {
+                //if the Value is outward to the left add componentlength
+                unscaledheight = Math.abs(valPicOffsets.y - comPicOffsets.y) + valPicOffsets.h;
+                boundingboxX = comPicOffsets.y;
+                }
+                else
+                {
+                //if the Value is outward to the right add valuelength
+                unscaledheight = Math.abs(valPicOffsets.y - comPicOffsets.y) + comPicOffsets.h;
+                boundingboxX = valPicOffsets.y;
+                }
+            }
+            else
+            {
+                unscaledheight = valPicOffsets.h;
+                boundingboxY = valPicOffsets.y
+            }
+        }        
+        //To Do patrick will das Mitelpunk, mitelpunkt von Combined Bounding box ist
+
+        //reference image.resize( w, h);
+
+        //Check which side to scale
+        let scalefactorWidth;
+        let scalefactorHeight;
+
+        //Ahhhhhhhhhhhhhh made a Fucky wucky
+        //resize component pic
+        scalefactorWidth =  comPicOffsets.w / unscaledwidth;
+        scalefactorHeight = comPicOffsets.h / unscaledheight;
+        componentPicture.resize( scalefactorWidth * resolution, scalefactorHeight * resolution);
+
+        //resize value pic
+        scalefactorWidth =  valPicOffsets.w / unscaledwidth;
+        scalefactorHeight = valPicOffsets.h / unscaledheight;
+        valuePicture.resize( scalefactorWidth * resolution, scalefactorHeight * resolution);
+        
+        let blankimage =  new Jimp(resolution, resolution, '#FFFFFF');
+        componentPicture = await blankimage.composite(componentPicture, boundingboxX - comPicOffsets.x, boundingboxY - comPicOffsets.y);
+
+        blankimage =  new Jimp(resolution, resolution, '#FFFFFF');
+        valuePicture = await blankimage.composite(valuePicture, boundingboxX - valPicOffsets.x, boundingboxY - valPicOffsets.y);  
+
+        let Images = {
+            "value": await valuePicture.getBase64Async(Jimp.AUTO),
+            "component":await componentPicture.getBase64Async(Jimp.AUTO)
+        }
+        return Images;
+    }
+    
     componentDidUpdate(prevProps, prevState) {
         const topHeight = document.getElementById("top").offsetHeight;
         document.documentElement.style.setProperty('--top-h', `${topHeight}px`);
@@ -107,6 +278,8 @@ class Draw extends React.Component {
 
         } else {
             this.timerRef.current.reset(30);
+
+            this.resizedrawn(this.componentimage);
 
             const data = {
                 "PacketId": 104,

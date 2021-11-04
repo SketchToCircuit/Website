@@ -6,7 +6,8 @@ class Legal extends React.Component {
             <div
                 style={{
                 backgroundColor: 'white',
-                padding: '15px'
+                padding: '15px',
+                wordBreak: 'break-word'
             }}>
               <br/>
         Höhere technische Bundeslehranstalt Graz-Gösting

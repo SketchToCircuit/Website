@@ -195,20 +195,6 @@ class Mainpage extends React.Component {
             } catch (error) {
                 console.error(error);
             }
-            
-            //Sendet zu schnell einfach im Backend bei login mitschicken kommt aufs gleiche
-            /*
-            data = {
-                "PacketId": 102,
-                "Data": {}
-            }
-
-            try {
-                this.state.ws.send(JSON.stringify(data));
-            } catch (error) {
-                console.error(error);
-            }
-            */
         }
 
         this.props.loginCallback(res);
