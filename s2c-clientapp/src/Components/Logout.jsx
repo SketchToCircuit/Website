@@ -9,7 +9,7 @@ function Logout(props){
     return(
         <div>
             <GoogleLogout
-                clientId={process.env.REACT_APP_O2ID}
+                clientId={1}
                 buttonText="Logout"
                 onLogoutSuccess={onSucces}
                 />

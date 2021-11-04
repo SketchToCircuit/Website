@@ -48,15 +48,20 @@ const App = () => {
         }
     });
 
+    let smallNav = false;
+    if (window.innerWidth < 420) {
+        smallNav = true;
+    }
+    
     return (
         <div>
             <Router>
                 {true ? 
                     <nav className="topnav">
-                        <NavLink activeStyle={{textShadow: "0px 0px 2px" }} exact to="/" className='home-link'>SketchToCircuit</NavLink>
+                        <NavLink activeStyle={{textShadow: "0px 0px 2px" }} exact to="/" className='home-link'>{smallNav ? 'S2C' : 'SketchToCircuit'}</NavLink>
                         <NavLink activeStyle={{textShadow: "0px 0px 2px" }} to="/About">About</NavLink>
-                        <NavLink activeStyle={{textShadow: "0px 0px 2px" }} to="/Leaderboard">Leaderboard</NavLink>
-                        {loggedIn ? <div className="logout"><Logout callback={logoutCallback}/></div> : null}
+                        <NavLink activeStyle={{textShadow: "0px 0px 2px" }} to="/Leaderboard">Scores</NavLink>
+                        {true ? <div className="logout"><Logout callback={logoutCallback}/></div> : null}
                     </nav> : null
                 }
 
