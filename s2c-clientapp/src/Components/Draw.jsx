@@ -101,7 +101,7 @@ class Draw extends React.Component {
            comPicOffsets = componentPicture.cropArea; // cropArea = { x, y, w, h }
           })
 
-          console.log("preprescale"+ await componentPicture.getBase64Async(Jimp.AUTO));
+          console.log("preprescale"+ await valuePicture.getBase64Async(Jimp.AUTO));
 
 
         let unscaledwidth;
@@ -162,10 +162,6 @@ class Draw extends React.Component {
             }
         }
 
-        let scalefactor;
-
-
-
         //Get unscaled  height of combined bounding box
         if(valPicOffsets.h < comPicOffsets.h)
         {
@@ -215,7 +211,12 @@ class Draw extends React.Component {
             }
         }  
 
-        //Check which side to scale
+        let scalefactor;
+
+        let blankimage =  new Jimp(resolution, resolution, '#FFFFFF');
+        let testblankimage =  new Jimp(resolution, resolution, '#FFFFFF');
+
+        //Check which side to scale plus composite
         //if the witdh is wider than the hight is high
         if(unscaledwidth >= unscaledheight)
         {
@@ -224,12 +225,23 @@ class Draw extends React.Component {
             if( comPicOffsets.w > valPicOffsets.w)
             {
                 componentPicture.resize( resolution, scalefactor * comPicOffsets.h);
-                valuePicture.resize(valPicOffsets.w * scalefactor, valPicOffsets.w * scalefactor);
+                valuePicture.resize(valPicOffsets.w / scalefactor, valPicOffsets.w / scalefactor);
+
+                console.log("des isas" + await valuePicture.getBase64Async(Jimp.AUTO));
+
+                //compositing
+                componentPicture = blankimage.composite(componentPicture, 0, boundingboxY - comPicOffsets.y + (resolution / 2),  {mode: Jimp.BLEND_DARKEN});
+                valuePicture = testblankimage.composite(valuePicture, boundingboxX - valPicOffsets.x , boundingboxY - valPicOffsets.y , {mode: Jimp.BLEND_DARKEN});
             }
             else//if the value Picture is bigger
             {
                 valuePicture.resize(resolution, valPicOffsets.w * scalefactor);
                 componentPicture.resize(comPicOffsets.w * scalefactor, scalefactor * comPicOffsets.h);
+
+                //compositing
+                valuePicture = blankimage.composite(valuePicture, 0, boundingboxY - comPicOffsets.y + (resolution / 2),  {mode: Jimp.BLEND_DARKEN});
+                blankimage =  new Jimp(resolution, resolution, '#FFFFFF');
+                componentPicture = blankimage.composite(componentPicture, boundingboxX - valPicOffsets.x , boundingboxY - valPicOffsets.y , {mode: Jimp.BLEND_DARKEN});
             }
             //resize component pic
         }
@@ -241,27 +253,30 @@ class Draw extends React.Component {
             {
                 componentPicture.resize( scalefactor * comPicOffsets.h, resolution);
                 valuePicture.resize(valPicOffsets.h * scalefactor, valPicOffsets.h * scalefactor);
+
+                //compositing
+                componentPicture = blankimage.composite(componentPicture, boundingboxX - comPicOffsets.x + (resolution / 2), 0,  {mode: Jimp.BLEND_DARKEN});
+                valuePicture = testblankimage.composite(valuePicture, boundingboxX - valPicOffsets.x , boundingboxY - valPicOffsets.y , {mode: Jimp.BLEND_DARKEN});
             }
             else//if the value Picture is bigger
             {
                 valuePicture.resize( scalefactor * comPicOffsets.h, resolution);
                 componentPicture.resize(valPicOffsets.h * scalefactor, valPicOffsets.h * scalefactor);
+
+                //compositing
+                valuePicture = blankimage.composite(componentPicture, boundingboxX - comPicOffsets.x + (resolution / 2), 0,  {mode: Jimp.BLEND_DARKEN});
+                componentPicture = testblankimage.composite(valuePicture, boundingboxX - valPicOffsets.x , boundingboxY - valPicOffsets.y , {mode: Jimp.BLEND_DARKEN});
             }
         }
         console.log("this is scale"+scalefactor);
-
-        //place the images so that the combined bounding box is centered
-        let blankimage =  new Jimp(resolution, resolution, '#FFFFFF');
-        componentPicture = await blankimage.composite(componentPicture, boundingboxX - comPicOffsets.x + (resolution / 4), boundingboxY - comPicOffsets.y + (resolution / 4),  {mode: Jimp.BLEND_DARKEN});
-
-        blankimage =  new Jimp(resolution, resolution, '#FFFFFF');
-        valuePicture = await blankimage.composite(valuePicture, boundingboxX - valPicOffsets.x + (resolution / 4), 0, {mode: Jimp.BLEND_DARKEN});  
 
         let Images = {
             "value": await valuePicture.getBase64Async(Jimp.AUTO),
             "component":await componentPicture.getBase64Async(Jimp.AUTO)
         }
         console.log("lafasar" + Images.component);
+        console.log("ringfasar" + Images.value);
+        
        
         return Images;
     }
@@ -312,7 +327,7 @@ class Draw extends React.Component {
                 hintpicture: ""
             }));
 
-            this.resizedrawn(this.saveableCanvas.canvas.drawing.toDataURL("image/png"), this.componentimage);
+           
 
             const data = {
                 "PacketId": 104,
@@ -323,6 +338,8 @@ class Draw extends React.Component {
                     "labelImg": this.saveableCanvas.canvas.drawing.toDataURL("image/png")
                 }
             }
+
+            this.resizedrawn(this.saveableCanvas.canvas.drawing.toDataURL("image/png"), this.componentimage);
 
             try {
                 this.props.ws.send(JSON.stringify(data));
