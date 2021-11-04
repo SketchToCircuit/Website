@@ -220,7 +220,7 @@ function checkType(type, callback)
     });
 }
 
-function checkUser(google_id) {
+function checkUser(google_id, callback) {
     let query = mysql.format("SELECT COUNT(*) AS num FROM google_user where google_id=? AND untrusted;", google_id);
     database.query(query,(err, result) => {
         if (err) {
