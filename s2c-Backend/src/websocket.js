@@ -67,6 +67,7 @@ function decideIfDrawVal(ws, client, database, base64Helper) {
             sendData(dataOut, ws);
             client.drawVal = "draw";
             client.lastDrawId = drawData.id;
+            client.drawCmpType = drawData.type;
         });
     }
 
@@ -84,13 +85,14 @@ function decideIfDrawVal(ws, client, database, base64Helper) {
             };
             sendData(dataOut, ws);
             client.drawVal = "val";
+            client.valImgId = valData.imgId;
         });
     }
     database.decideDrawValFromDB(client.google.sub, sendDraw, sendVal);
 }
 
 function onImgReceive(dataIn, ws, client, database, base64Helper) {
-    if (client.drawVal === "draw" && dataIn.count >= 1 && dataIn.count <= env.DRAWING_COUNT && dataIn.count === client.count + 1) {
+    if (client.drawVal === "draw" && dataIn.type === client.drawCmpType && dataIn.count >= 1 && dataIn.count <= env.DRAWING_COUNT && dataIn.count === client.count + 1) {
         storeDrawnImage(dataIn, client ,database, base64Helper);
         database.addUserScore(client.google.sub, 10);
         database.getDrawData(client.lastDrawId, base64Helper, (drawData) => {
@@ -116,6 +118,7 @@ function onImgReceive(dataIn, ws, client, database, base64Helper) {
             sendData(dataOut, ws);
             client.count += 1;
             client.lastDrawId = drawData.id;
+            client.drawCmpType = drawData.type;
         });
     }
 }
@@ -166,7 +169,7 @@ function storeDrawnImage(data, client ,database, base64Helper) {
 }
 
 function onValReceive(dataIn, ws, client, database, base64Helper) {
-    if (client.drawVal === "val" && dataIn.count >= 1 && dataIn.count <= env.VALIDATING_COUNT && dataIn.count === client.count + 1) {
+    if (client.drawVal === "val" && dataIn.imgId === client.valImgId && dataIn.count >= 1 && dataIn.count <= env.VALIDATING_COUNT && dataIn.count === client.count + 1) {
         database.setValidated(dataIn.imgId, dataIn.validated, client.google.sub); // <-- danger bc user can change imgId
 
         database.addUserScore(client.google.sub, 10);
@@ -186,6 +189,7 @@ function onValReceive(dataIn, ws, client, database, base64Helper) {
 
             sendData(dataOut, ws);
             client.count += 1;
+            client.valImgId = valData.imgId;
         });
     }
 }
