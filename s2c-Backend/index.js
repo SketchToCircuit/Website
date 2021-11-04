@@ -78,16 +78,12 @@ function PacketHandler(data, ws) {
             if (!data.Data.token) return false;
             google.verifyGoogleToken(data.Data.token).then((payload) => {
             client.google = payload;
-            client.isAuth = true;
-            // payload.sub is the googleId
-            database.AddUser(payload.sub, payload.name);
-            websocket.getUserData(ws, client, database);
-
-            /*websocket.getUserData(ws, client, database);//Testing
-            database.addUserScore(payload.sub, 100);
-            websocket.getUserData(ws, client, database);
-            database.addUserScore(payload.sub, -100);
-            websocket.getUserData(ws, client, database);*/
+            
+            database.checkUser(payload.sub, () => {
+                client.isAuth = true;
+                database.AddUser(payload.sub, payload.name);
+                websocket.getUserData(ws, client, database);
+            });
         }).catch((err) => {
             console.log(err);
             client.isAuth = false;
