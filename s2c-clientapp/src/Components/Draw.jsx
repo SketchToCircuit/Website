@@ -297,7 +297,7 @@ class Draw extends React.Component {
 
             this.saveableCanvas.clear();
 
-            if(this.state.batchcount >= process.env.DRAWING_COUNT)
+            if(this.state.batchcount >= process.env.REACT_APP_DRAWING_COUNT)
             {
                 this.props.onFinished();
             }

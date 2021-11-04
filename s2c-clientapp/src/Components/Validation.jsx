@@ -31,7 +31,7 @@ class Validation extends React.Component {
         } catch (e) {
         }
 
-        if (this.state.count >= process.env.VALIDATING_COUNT) {
+        if (this.state.count >= process.env.REACT_APP_VALIDATING_COUNT) {
             this.props.onFinished();
         }
 
