@@ -8,19 +8,18 @@ import '../Styles/Draw.css';
 
 import Jimp from 'jimp';
 
-
-class Draw extends React.Component {
-    componentimage = null;
-
-    constructor(props) {
-        super(props)
-
         //Prototype for jimp to get the crop dimensions + Cordinates        
         Jimp.prototype.__crop = Jimp.prototype.crop
         Jimp.prototype.crop = function (x, y, w, h, cb) {  
         this.cropArea = { x, y, w, h }
         return this.__crop(x, y, w, h, cb)
         }
+
+class Draw extends React.Component {
+    componentimage = null;
+
+    constructor(props) {
+        super(props)
 
         this.timerRef = createRef();
         this.forceResize = false;
@@ -95,13 +94,16 @@ class Draw extends React.Component {
         let valPicOffsets;
         let comPicOffsets;
 
-        await valuePicture.autocrop(0, (error, valuePicture) => {    
+        await valuePicture.autocrop({cropOnlyFrames: true}, (error, valuePicture) => {    
             valPicOffsets = valuePicture.cropArea; // cropArea = { x, y, w, h }
           })
-        await componentPicture.autocrop(0, (error, componentPicture) => {    
+        await componentPicture.autocrop({cropOnlyFrames: true}, (error, componentPicture) => {    
            comPicOffsets = componentPicture.cropArea; // cropArea = { x, y, w, h }
           })
-        
+
+          console.log("preprescale"+ await componentPicture.getBase64Async(Jimp.AUTO));
+
+
         let unscaledwidth;
         let unscaledheight;
 
@@ -160,6 +162,9 @@ class Draw extends React.Component {
             }
         }
 
+        let scalefactor;
+
+
 
         //Get unscaled  height of combined bounding box
         if(valPicOffsets.h < comPicOffsets.h)
@@ -208,36 +213,56 @@ class Draw extends React.Component {
                 unscaledheight = valPicOffsets.h;
                 boundingboxY = valPicOffsets.y
             }
-        }        
-        //To Do patrick will das Mitelpunk, mitelpunkt von Combined Bounding box ist
-
-        //reference image.resize( w, h);
+        }  
 
         //Check which side to scale
-        let scalefactorWidth;
-        let scalefactorHeight;
+        //if the witdh is wider than the hight is high
+        if(unscaledwidth >= unscaledheight)
+        {
+            scalefactor =resolution / unscaledwidth;
+            //if the component picture is bigger 
+            if( comPicOffsets.w > valPicOffsets.w)
+            {
+                componentPicture.resize( resolution, scalefactor * comPicOffsets.h);
+                valuePicture.resize(valPicOffsets.w * scalefactor, valPicOffsets.w * scalefactor);
+            }
+            else//if the value Picture is bigger
+            {
+                valuePicture.resize(resolution, valPicOffsets.w * scalefactor);
+                componentPicture.resize(comPicOffsets.w * scalefactor, scalefactor * comPicOffsets.h);
+            }
+            //resize component pic
+        }
+        else
+        {
+            scalefactor = resolution / unscaledheight;
+            //if the component picture is bigger
+            if(comPicOffsets.h > valPicOffsets.h)
+            {
+                componentPicture.resize( scalefactor * comPicOffsets.h, resolution);
+                valuePicture.resize(valPicOffsets.h * scalefactor, valPicOffsets.h * scalefactor);
+            }
+            else//if the value Picture is bigger
+            {
+                valuePicture.resize( scalefactor * comPicOffsets.h, resolution);
+                componentPicture.resize(valPicOffsets.h * scalefactor, valPicOffsets.h * scalefactor);
+            }
+        }
+        console.log("this is scale"+scalefactor);
 
-        //Ahhhhhhhhhhhhhh made a Fucky wucky
-        //resize component pic
-        scalefactorWidth =  comPicOffsets.w / unscaledwidth;
-        scalefactorHeight = comPicOffsets.h / unscaledheight;
-        componentPicture.resize( scalefactorWidth * resolution, scalefactorHeight * resolution);
-
-        //resize value pic
-        scalefactorWidth =  valPicOffsets.w / unscaledwidth;
-        scalefactorHeight = valPicOffsets.h / unscaledheight;
-        valuePicture.resize( scalefactorWidth * resolution, scalefactorHeight * resolution);
-        
+        //place the images so that the combined bounding box is centered
         let blankimage =  new Jimp(resolution, resolution, '#FFFFFF');
-        componentPicture = await blankimage.composite(componentPicture, boundingboxX - comPicOffsets.x, boundingboxY - comPicOffsets.y);
+        componentPicture = await blankimage.composite(componentPicture, boundingboxX - comPicOffsets.x + (resolution / 4), boundingboxY - comPicOffsets.y + (resolution / 4),  {mode: Jimp.BLEND_DARKEN});
 
         blankimage =  new Jimp(resolution, resolution, '#FFFFFF');
-        valuePicture = await blankimage.composite(valuePicture, boundingboxX - valPicOffsets.x, boundingboxY - valPicOffsets.y);  
+        valuePicture = await blankimage.composite(valuePicture, boundingboxX - valPicOffsets.x + (resolution / 4), 0, {mode: Jimp.BLEND_DARKEN});  
 
         let Images = {
             "value": await valuePicture.getBase64Async(Jimp.AUTO),
             "component":await componentPicture.getBase64Async(Jimp.AUTO)
         }
+        console.log("lafasar" + Images.component);
+       
         return Images;
     }
     
@@ -276,8 +301,6 @@ class Draw extends React.Component {
                 unmountDrawing: true
             });
 
-            console.log(this.componentimage);
-
         } else {
             this.timerRef.current.reset(30);
 
@@ -289,7 +312,7 @@ class Draw extends React.Component {
                 hintpicture: ""
             }));
 
-            this.resizedrawn(this.componentimage);
+            this.resizedrawn(this.saveableCanvas.canvas.drawing.toDataURL("image/png"), this.componentimage);
 
             const data = {
                 "PacketId": 104,
