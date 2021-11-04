@@ -46,5 +46,37 @@
         "val_hint": "Do you see a potentiometer",
         "component_hint_img": "/data/hints/POT.jpg",
         "labeled_hint_img": "/data/hints/POT_labeled.jpg"
+    },
+    {
+        "component_id": 7,
+        "file_prefix": "S1",
+        "draw_hint": "Please draw a switch (open)",
+        "val_hint": "Do you see an open switch",
+        "component_hint_img": "/data/hints/S_1.jpg",
+        "labeled_hint_img": "/data/hints/S_1_labeled.jpg"
+    },
+    {
+        "component_id": 8,
+        "file_prefix": "S2",
+        "draw_hint": "Please draw a switch (closed)",
+        "val_hint": "Do you see a closed switch",
+        "component_hint_img": "/data/hints/S_2.jpg",
+        "labeled_hint_img": "/data/hints/S_2_labeled.jpg"
+    },
+    {
+        "component_id": 9,
+        "file_prefix": "BTN1",
+        "draw_hint": "Please draw a button (open)",
+        "val_hint": "Do you see an open button",
+        "component_hint_img": "/data/hints/BTN_1.jpg",
+        "labeled_hint_img": "/data/hints/BTN_1_labeled.jpg"
+    },
+    {
+        "component_id": 10,
+        "file_prefix": "BTN2",
+        "draw_hint": "Please draw a button (closed)",
+        "val_hint": "Do you see a closed button",
+        "component_hint_img": "/data/hints/BTN_2.jpg",
+        "labeled_hint_img": "/data/hints/BTN_2_labeled.jpg"
     }
 ]
