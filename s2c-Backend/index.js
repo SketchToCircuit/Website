@@ -82,8 +82,9 @@ function PacketHandler(data, ws) {
             database.checkUser(payload.sub, () => {
                 client.isAuth = true;
                 database.AddUser(payload.sub, payload.name);
-                websocket.getUserData(ws, client, database);
             });
+
+            websocket.getUserData(ws, client, database);
         }).catch((err) => {
             console.log(err);
             client.isAuth = false;
