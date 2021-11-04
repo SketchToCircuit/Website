@@ -78,5 +78,37 @@
         "val_hint": "Do you see a closed button",
         "component_hint_img": "/data/hints/BTN_2.jpg",
         "labeled_hint_img": "/data/hints/BTN_2_labeled.jpg"
+    },
+    {
+        "component_id": 11,
+        "file_prefix": "V_V",
+        "draw_hint": "Please draw a voltmeter",
+        "val_hint": "Do you see a voltmeter",
+        "component_hint_img": "/data/hints/V_V.jpg",
+        "labeled_hint_img": "/data/hints/V_V_labeled.jpg"
+    },
+    {
+        "component_id": 12,
+        "file_prefix": "V_H",
+        "draw_hint": "Please draw a voltmeter",
+        "val_hint": "Do you see a voltmeter",
+        "component_hint_img": "/data/hints/V_H.jpg",
+        "labeled_hint_img": "/data/hints/V_H_labeled.jpg"
+    },
+    {
+        "component_id": 13,
+        "file_prefix": "A_H",
+        "draw_hint": "Please draw a ammeter",
+        "val_hint": "Do you see a ammeter",
+        "component_hint_img": "/data/hints/A_H.jpg",
+        "labeled_hint_img": "/data/hints/A_H_labeled.jpg"
+    },
+    {
+        "component_id": 14,
+        "file_prefix": "A_V",
+        "draw_hint": "Please draw a ammeter",
+        "val_hint": "Do you see a ammeter",
+        "component_hint_img": "/data/hints/A_V.jpg",
+        "labeled_hint_img": "/data/hints/A_V_labeled.jpg"
     }
 ]
