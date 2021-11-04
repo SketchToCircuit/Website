@@ -297,7 +297,7 @@ class Draw extends React.Component {
 
             this.saveableCanvas.clear();
 
-            if(this.state.batchcount >= 5)
+            if(this.state.batchcount >= process.env.DRAWING_COUNT)
             {
                 this.props.onFinished();
             }
@@ -324,7 +324,7 @@ class Draw extends React.Component {
                 <div className="top" id="top">
                     <div className="instruction-paragraph"><TextFontScaling text={this.state.hinttext} maxFontSize={20}/></div>
                     <div className="btns-timer">
-                        <span className='counter'>{this.state.batchcount}/5</span>
+                        <span className='counter'>{this.state.batchcount}/{process.env.DRAWING_COUNT}</span>
                         <div onClick={this.onButtonNext}><img className='button' src={'next_icon.svg'} role='button' alt=''></img></div>
                         <div onClick={() => {
                         try {

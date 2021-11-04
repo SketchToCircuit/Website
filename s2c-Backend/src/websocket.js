@@ -90,7 +90,7 @@ function decideIfDrawVal(ws, client, database, base64Helper) {
 }
 
 function onImgReceive(dataIn, ws, client, database, base64Helper) {
-    if (client.drawVal === "draw" && dataIn.count >= 1 && dataIn.count <= 5 && dataIn.count === client.count + 1) {
+    if (client.drawVal === "draw" && dataIn.count >= 1 && dataIn.count <= env.DRAWING_COUNT && dataIn.count === client.count + 1) {
         storeDrawnImage(dataIn, client ,database, base64Helper);
         database.addUserScore(client.google.sub, 10);
         database.getDrawData(client.lastDrawId, base64Helper, (drawData) => {
@@ -166,7 +166,7 @@ function storeDrawnImage(data, client ,database, base64Helper) {
 }
 
 function onValReceive(dataIn, ws, client, database, base64Helper) {
-    if (client.drawVal === "val" && dataIn.count >= 1 && dataIn.count <= 5 && dataIn.count === client.count + 1) {
+    if (client.drawVal === "val" && dataIn.count >= 1 && dataIn.count <= env.VALIDATING_COUNT && dataIn.count === client.count + 1) {
         database.setValidated(dataIn.imgId, dataIn.validated, client.google.sub); // <-- danger bc user can change imgId
 
         database.addUserScore(client.google.sub, 10);
