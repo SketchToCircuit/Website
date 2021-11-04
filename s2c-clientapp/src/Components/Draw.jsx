@@ -319,14 +319,12 @@ class Draw extends React.Component {
             return (<h1>Ufff No Data</h1>);
         }
 
-        console.log(process.env);
-
         return (
             <div className="draw">
                 <div className="top" id="top">
                     <div className="instruction-paragraph"><TextFontScaling text={this.state.hinttext} maxFontSize={20}/></div>
                     <div className="btns-timer">
-                        <span className='counter'>{this.state.batchcount}/{process.env.DRAWING_COUNT}</span>
+                        <span className='counter'>{this.state.batchcount}/{process.env.REACT_APP_DRAWING_COUNT}</span>
                         <div onClick={this.onButtonNext}><img className='button' src={'next_icon.svg'} role='button' alt=''></img></div>
                         <div onClick={() => {
                         try {
