@@ -319,6 +319,8 @@ class Draw extends React.Component {
             return (<h1>Ufff No Data</h1>);
         }
 
+        console.log(process.env);
+
         return (
             <div className="draw">
                 <div className="top" id="top">
