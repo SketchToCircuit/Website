@@ -99,7 +99,7 @@
         "component_id": 13,
         "file_prefix": "A_H",
         "draw_hint": "Please draw an ammeter",
-        "val_hint": "Do you see a ammeter",
+        "val_hint": "Do you see an ammeter",
         "component_hint_img": "/data/hints/A_H.jpg",
         "labeled_hint_img": "/data/hints/A_H_labeled.jpg"
     },
@@ -107,7 +107,7 @@
         "component_id": 14,
         "file_prefix": "A_V",
         "draw_hint": "Please draw an ammeter",
-        "val_hint": "Do you see a ammeter",
+        "val_hint": "Do you see an ammeter",
         "component_hint_img": "/data/hints/A_V.jpg",
         "labeled_hint_img": "/data/hints/A_V_labeled.jpg"
     }
