@@ -93,6 +93,11 @@
     font-size: 15px;
     text-align: center;
     font-weight: bold;
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .validation .hint-picture {
