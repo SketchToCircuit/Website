@@ -114,7 +114,7 @@
     {
         "component_id": 15,
         "file_prefix": "U1",
-        "draw_hint": "Please draw a dc voltage source",
+        "draw_hint": "Please draw a DC voltage source",
         "val_hint": "Do you see a labeled voltage source?",
         "component_hint_img": "/data/hints/U1.jpg",
         "labeled_hint_img": "/data/hints/U1_labeled.jpg"
@@ -122,7 +122,7 @@
     {
         "component_id": 16,
         "file_prefix": "U2",
-        "draw_hint": "Please draw a dc voltage source",
+        "draw_hint": "Please draw a DC voltage source",
         "val_hint": "Do you see a labeled voltage source?",
         "component_hint_img": "/data/hints/U2.jpg",
         "labeled_hint_img": "/data/hints/U2_labeled.jpg"
@@ -146,9 +146,49 @@
     {
         "component_id": 18,
         "file_prefix": "U3",
-        "draw_hint": "Please draw a dc voltage source",
+        "draw_hint": "Please draw a DC voltage source",
         "val_hint": "Do you see a labeled voltage source?",
         "component_hint_img": "/data/hints/U3.jpg",
         "labeled_hint_img": "/data/hints/U3_labeled.jpg"
+    },
+    {
+        "component_id": 19,
+        "file_prefix": "BAT",
+        "draw_hint": "Please draw a battery",
+        "val_hint": "Do you see a labeled battery?",
+        "component_hint_img": "/data/hints/BAT.jpg",
+        "labeled_hint_img": "/data/hints/BAT_labeled.jpg"
+    },
+    {
+        "component_id": 20,
+        "file_prefix": "U_AC_H",
+        "draw_hint": "Please draw an AC voltage source",
+        "val_hint": "Do you see a labeled AC source?",
+        "component_hint_img": "/data/hints/U_AC_H.jpg",
+        "labeled_hint_img": "/data/hints/U_AC_H_labeled.jpg"
+    },
+    {
+        "component_id": 21,
+        "file_prefix": "U_AC_V",
+        "draw_hint": "Please draw an AC voltage source",
+        "val_hint": "Do you see a labeled AC source?",
+        "component_hint_img": "/data/hints/U_AC_V.jpg",
+        "labeled_hint_img": "/data/hints/U_AC_V_labeled.jpg"
+    },
+    {
+        "component_id": 22,
+        "file_prefix": "SPK",
+        "draw_hint": "Please draw a speaker",
+        "val_hint": "Do you see a labeled speaker?",
+        "component_hint_img": "/data/hints/SPK.jpg",
+        "labeled_hint_img": "/data/hints/SPK_labeled.jpg"
+    },
+    {
+        "component_id": 23,
+        "file_prefix": "MIC",
+        "draw_hint": "Please draw a microphone",
+        "val_hint": "Do you see a labeled microphone?",
+        "component_hint_img": "/data/hints/MIC.jpg",
+        "labeled_hint_img": "/data/hints/MIC_labeled.jpg"
     }
 ]
