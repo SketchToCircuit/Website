@@ -183,10 +183,10 @@ function decideDrawValFromDB(googleId, onDraw, onValidate) {
             } else {
                 // 5 images to validate: 90% chance to draw
                 const fewImgDrawProb = 0.9;
-                // more than 20 imges to validate: 50% chance to draw
-                const lotImgDrawProb = 0.5;
+                // more than 50 imges to validate: 50% chance to draw
+                const lotImgDrawProb = 0.2;
 
-                let normalizedNum = Math.min(Math.max((result[0].num - 5) / 15.0, 0.0), 1.0);
+                let normalizedNum = Math.min(Math.max((result[0].num - 5) / 45.0, 0.0), 1.0);
                 drawProb = normalizedNum * (lotImgDrawProb - fewImgDrawProb) + fewImgDrawProb;
 
                 if (Math.random() < drawProb) {
