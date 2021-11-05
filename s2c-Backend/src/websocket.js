@@ -170,10 +170,11 @@ function storeDrawnImage(data, client ,database, base64Helper) {
 
 function onValReceive(dataIn, ws, client, database, base64Helper) {
     if (client.drawVal === "val" && dataIn.imgId === client.valImgId && dataIn.count >= 1 && dataIn.count <= env.VALIDATING_COUNT && dataIn.count === client.count + 1) {
-        database.setValidated(dataIn.imgId, dataIn.validated, client.google.sub); // <-- danger bc user can change imgId
+        database.setValidated(dataIn.imgId, dataIn.validated, client.google.sub);
 
-        database.addUserScore(client.google.sub, 10);
-        database.addUserScoreFromImgId(dataIn.imgId, dataIn.validated ? 10:-10); // <-- Same here
+        const points = Math.ceil(15.0 / env.MAX_VALIDATION_RUNS);
+        database.addUserScore(client.google.sub, points);
+        database.addUserScoreFromImgId(dataIn.imgId, dataIn.validated ? points : -points);
 
         database.getValidationData(base64Helper, client.google.sub, function (valData) {
             let dataOut = {
