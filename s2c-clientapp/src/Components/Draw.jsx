@@ -377,13 +377,13 @@ class Draw extends React.Component {
                     <div className="instruction-paragraph"><TextFontScaling text={this.state.hinttext} maxFontSize={20}/></div>
                     <div className="btns-timer">
                         <span className='counter'>{this.state.batchcount}/5</span>
-                        <div onClick={this.onButtonNext}><img className='button' src={'next_icon.svg'} role='button' alt=''></img></div>
-                        <div onClick={() => {
+                        <div><img className='button' src={'next_icon.svg'} role='button' alt='' onClick={this.onButtonNext}></img></div>
+                        <div><img className='button' src={'undo_icon.svg'}  role='button' alt='' onClick={() => {
                         try {
                             this.saveableCanvas.undo();
                         } catch (e) {
                             return
-                        }}}><img className='button' src={'undo_icon.svg'}  role='button' alt=''></img></div>
+                        }}}></img></div>
 
                         <CountDownTimer Secs={30} onTimeIsOver={this.onButtonNext} className="timer" onreset={this.state.resetTimer} ref={this.timerRef}/>
                     </div>
