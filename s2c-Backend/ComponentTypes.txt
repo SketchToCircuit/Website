@@ -1,6 +1,3 @@
-R_H: Resistor horizontale
-R_V: Resistor vertical
-
 File-system layout:
 
 ./data/Hints: all hint Images
