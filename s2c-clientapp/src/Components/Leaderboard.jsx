@@ -2,10 +2,6 @@ import React from 'react';
 import '../Styles/Leaderboard.css';
 
 class Leaderboard extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         if (this.props.data && this.props.data.scoreBoardData && this.props.data.scoreBoardData.length > 1) {
 

@@ -1,6 +1,6 @@
 import React, {useEffect, useState,} from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter as Router, Switch, Route, NavLink, Link} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route, NavLink} from "react-router-dom";
 
 import './index.css';
 

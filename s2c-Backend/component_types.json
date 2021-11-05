@@ -27,7 +27,7 @@
         "component_id": 4,
         "file_prefix": "LED",
         "draw_hint": "Please draw a LED",
-        "val_hint": "Do you see a labeled LED",
+        "val_hint": "Do you see a labeled LED?",
         "component_hint_img": "/data/hints/LED.jpg",
         "labeled_hint_img": "/data/hints/LED_labeled.jpg"
     },
@@ -35,7 +35,7 @@
         "component_id": 5,
         "file_prefix": "D",
         "draw_hint": "Please draw a diode",
-        "val_hint": "Do you see a labeled diode",
+        "val_hint": "Do you see a labeled diode?",
         "component_hint_img": "/data/hints/D.jpg",
         "labeled_hint_img": "/data/hints/D_labeled.jpg"
     },
@@ -43,7 +43,7 @@
         "component_id": 6,
         "file_prefix": "POT",
         "draw_hint": "Please draw a potentiometer",
-        "val_hint": "Do you see a labeled potentiometer",
+        "val_hint": "Do you see a labeled potentiometer?",
         "component_hint_img": "/data/hints/POT.jpg",
         "labeled_hint_img": "/data/hints/POT_labeled.jpg"
     },
@@ -51,7 +51,7 @@
         "component_id": 7,
         "file_prefix": "S1",
         "draw_hint": "Please draw a switch (open)",
-        "val_hint": "Do you see a labeled open switch",
+        "val_hint": "Do you see a labeled open switch?",
         "component_hint_img": "/data/hints/S_1.jpg",
         "labeled_hint_img": "/data/hints/S_1_labeled.jpg"
     },
@@ -59,7 +59,7 @@
         "component_id": 8,
         "file_prefix": "S2",
         "draw_hint": "Please draw a switch (closed)",
-        "val_hint": "Do you see a labeled closed switch",
+        "val_hint": "Do you see a labeled closed switch?",
         "component_hint_img": "/data/hints/S_2.jpg",
         "labeled_hint_img": "/data/hints/S_2_labeled.jpg"
     },
@@ -67,7 +67,7 @@
         "component_id": 9,
         "file_prefix": "BTN1",
         "draw_hint": "Please draw a button (open)",
-        "val_hint": "Do you see a labeled open button",
+        "val_hint": "Do you see a labeled open button?",
         "component_hint_img": "/data/hints/BTN_1.jpg",
         "labeled_hint_img": "/data/hints/BTN_1_labeled.jpg"
     },
@@ -75,7 +75,7 @@
         "component_id": 10,
         "file_prefix": "BTN2",
         "draw_hint": "Please draw a button (closed)",
-        "val_hint": "Do you see a labeled closed button",
+        "val_hint": "Do you see a labeled closed button?",
         "component_hint_img": "/data/hints/BTN_2.jpg",
         "labeled_hint_img": "/data/hints/BTN_2_labeled.jpg"
     },
@@ -83,7 +83,7 @@
         "component_id": 11,
         "file_prefix": "V_V",
         "draw_hint": "Please draw a voltmeter",
-        "val_hint": "Do you see a labeled voltmeter",
+        "val_hint": "Do you see a labeled voltmeter?",
         "component_hint_img": "/data/hints/V_V.jpg",
         "labeled_hint_img": "/data/hints/V_V_labeled.jpg"
     },
@@ -91,7 +91,7 @@
         "component_id": 12,
         "file_prefix": "V_H",
         "draw_hint": "Please draw a voltmeter",
-        "val_hint": "Do you see a labeled voltmeter",
+        "val_hint": "Do you see a labeled voltmeter?",
         "component_hint_img": "/data/hints/V_H.jpg",
         "labeled_hint_img": "/data/hints/V_H_labeled.jpg"
     },
@@ -99,7 +99,7 @@
         "component_id": 13,
         "file_prefix": "A_H",
         "draw_hint": "Please draw an ammeter",
-        "val_hint": "Do you see a labeled ammeter",
+        "val_hint": "Do you see a labeled ammeter?",
         "component_hint_img": "/data/hints/A_H.jpg",
         "labeled_hint_img": "/data/hints/A_H_labeled.jpg"
     },
@@ -107,8 +107,48 @@
         "component_id": 14,
         "file_prefix": "A_V",
         "draw_hint": "Please draw an ammeter",
-        "val_hint": "Do you see a labeled ammeter",
+        "val_hint": "Do you see a labeled ammeter?",
         "component_hint_img": "/data/hints/A_V.jpg",
         "labeled_hint_img": "/data/hints/A_V_labeled.jpg"
+    },
+    {
+        "component_id": 15,
+        "file_prefix": "U1",
+        "draw_hint": "Please draw a dc voltage source",
+        "val_hint": "Do you see a labeled voltage source?",
+        "component_hint_img": "/data/hints/U1.jpg",
+        "labeled_hint_img": "/data/hints/U1_labeled.jpg"
+    },
+    {
+        "component_id": 16,
+        "file_prefix": "U2",
+        "draw_hint": "Please draw a dc voltage source",
+        "val_hint": "Do you see a labeled voltage source?",
+        "component_hint_img": "/data/hints/U2.jpg",
+        "labeled_hint_img": "/data/hints/U2_labeled.jpg"
+    },
+    {
+        "component_id": 17,
+        "file_prefix": "I1",
+        "draw_hint": "Please draw a current source",
+        "val_hint": "Do you see a labeled current source?",
+        "component_hint_img": "/data/hints/I1.jpg",
+        "labeled_hint_img": "/data/hints/I1_labeled.jpg"
+    },
+    {
+        "component_id": 17,
+        "file_prefix": "I2",
+        "draw_hint": "Please draw a current source",
+        "val_hint": "Do you see a labeled current source?",
+        "component_hint_img": "/data/hints/I2.jpg",
+        "labeled_hint_img": "/data/hints/I2_labeled.jpg"
+    },
+    {
+        "component_id": 18,
+        "file_prefix": "U3",
+        "draw_hint": "Please draw a dc voltage source",
+        "val_hint": "Do you see a labeled voltage source?",
+        "component_hint_img": "/data/hints/U3.jpg",
+        "labeled_hint_img": "/data/hints/U3_labeled.jpg"
     }
 ]
