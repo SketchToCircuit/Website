@@ -61,8 +61,8 @@ CREATE TABLE `images` (
   `component_type` int(11) NOT NULL,
   `drawer_id` varchar(32) NOT NULL COMMENT 'Google ID des Zeichners',
   `validator_id` varchar(32) DEFAULT NULL COMMENT 'Google ID des Validierers',
-  `looked_at` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Wurde es bereits angeschaut?',
-  `validated` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Als korrekt markiert?',
+  `looked_at` int(11) NOT NULL DEFAULT 0 COMMENT 'Wie oft wurde es bereits angeschaut?',
+  `validated` int(11) NOT NULL DEFAULT 0 COMMENT 'Wie oft als korrekt markiert?',
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

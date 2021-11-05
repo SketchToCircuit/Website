@@ -120,8 +120,9 @@ function addUserScoreFromImgId(imgId, amount)
 // get data for validation from database and filesystem
 function getValidationData(base64Helper, googleId, callback) {
     // order by random number to select random image
-    let query = "SELECT * FROM images, component_types WHERE component_type = component_id AND NOT looked_at AND drawer_id != ? ORDER BY RAND() LIMIT 1;";
-    query = mysql.format(query, googleId);
+    // prefer images with lower "looked_at"
+    let query = "SELECT * FROM images, component_types WHERE component_type = component_id AND looked_at < ? AND drawer_id != ? ORDER BY (RAND() * 0.1 + looked_at) LIMIT 1;";
+    query = mysql.format(query, [env.MAX_VALIDATION_RUNS, googleId]);
     database.query(query, (err, result) => {
         if (err) {
             console.error(err);
@@ -144,7 +145,7 @@ function getValidationData(base64Helper, googleId, callback) {
 
 function getDrawData(lastDrawId, base64Helper, callback) {
     // prefer types with fewer drawn images
-    let query = "SELECT * FROM component_types WHERE component_id != ? ORDER BY (RAND() * (1+(SELECT COUNT(*) FROM images WHERE component_type = component_id))) ASC LIMIT 1;";
+    let query = "SELECT * FROM component_types WHERE component_id != ? ORDER BY (RAND() * (1 + (SELECT COUNT(*) FROM images WHERE component_type = component_id))) ASC LIMIT 1;";
     database.query(query, [lastDrawId], (err, result) => {
         if (err) {
             console.error(err);
@@ -168,8 +169,8 @@ function getDrawData(lastDrawId, base64Helper, callback) {
 }
 
 function decideDrawValFromDB(googleId, onDraw, onValidate) {
-    let query = "SELECT COUNT(*) AS num FROM images WHERE NOT looked_at AND drawer_id != ?;"
-    query = mysql.format(query, googleId);
+    let query = "SELECT COUNT(*) AS num FROM images WHERE looked_at < ? AND drawer_id != ?;"
+    query = mysql.format(query, [env.MAX_VALIDATION_RUNS, googleId]);
     database.query(query, (err, result) => {
         if (err) {
             console.error(err);
@@ -199,9 +200,9 @@ function decideDrawValFromDB(googleId, onDraw, onValidate) {
 }
 
 function setValidated(imgId, validated, googleId) {
-    let query = "UPDATE images SET validated = ?, validator_id = ?, looked_at = TRUE WHERE image_id = ?;";
+    let query = "UPDATE images SET validated = validated + ?, validator_id = ?, looked_at = looked_at + 1 WHERE image_id = ?;";
 
-    database.query(query, [validated, googleId, imgId], (err, result) => {
+    database.query(query, [validated ? 1 : 0, googleId, imgId], (err, result) => {
         if (err) {
             console.error(err);
         }
