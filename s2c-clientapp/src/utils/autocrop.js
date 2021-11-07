@@ -32,10 +32,10 @@ export const autocrop = (img) => {
         }
     });
 
-    let w = maxBlackX - minBlackX + 1;
-    let h = maxBlackY - minBlackY + 1;
-    let x = Math.max(minBlackX - 1, 0);
-    let y = Math.max(minBlackY - 1, 0);
+    let w = maxBlackX - minBlackX + 2;
+    let h = maxBlackY - minBlackY + 2;
+    let x = Math.max(minBlackX - 2, 0);
+    let y = Math.max(minBlackY - 2, 0);
 
     if (x + w >= img.bitmap.width) {
         w = img.bitmap.width - 1 - x;
