@@ -25,7 +25,7 @@ class Mainpage extends React.Component {
     }
 
     componentDidMount() {
-        this.connect();
+        //this.connect();
         this.props.setShowNav(true);
     }
 
