@@ -56,7 +56,7 @@ const App = () => {
     return (
         <div>
             <Router>
-                {true ? 
+                {false ? 
                     <nav className="topnav">
                         <NavLink activeStyle={{textShadow: "0px 0px 2px" }} exact to="/" className='home-link'>{smallNav ? 'S2C' : 'SketchToCircuit'}</NavLink>
                         <NavLink activeStyle={{textShadow: "0px 0px 2px" }} to="/About">About</NavLink>
@@ -93,7 +93,7 @@ const App = () => {
                 </Switch>
             </Router>
 
-            {showNav ? 
+            {false ? 
             <footer>
                 <a href='/Legal'>Impressum – Legal Notice</a>
             </footer> : null

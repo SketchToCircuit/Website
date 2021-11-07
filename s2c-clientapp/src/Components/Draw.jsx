@@ -6,14 +6,14 @@ import TextFontScaling from './TextFontScaling';
 
 import '../Styles/Draw.css';
 
-import Jimp from 'jimp';
+import Jimp from 'jimp/es';
 
-        //Prototype for jimp to get the crop dimensions + Cordinates        
-        Jimp.prototype.__crop = Jimp.prototype.crop
-        Jimp.prototype.crop = function (x, y, w, h, cb) {  
-        this.cropArea = { x, y, w, h }
-        return this.__crop(x, y, w, h, cb)
-        }
+//Prototype for jimp to get the crop dimensions + coordinates        
+Jimp.prototype.__crop = Jimp.prototype.crop
+Jimp.prototype.crop = function (x, y, w, h, cb) {  
+    this.cropArea = { x, y, w, h }
+    return this.__crop(x, y, w, h, cb)
+}
 
 class Draw extends React.Component {
     componentimage = null;
@@ -79,206 +79,59 @@ class Draw extends React.Component {
         }
     }
     
-    resizedrawn = async (rawvaluepicture, rawcomponentpicture) =>{
+    resizedrawn = async (rawvaluepicture, rawcomponentpicture, resolution) =>{
        //strip the beginning /^data:image\/([A-Za-z]+);base64,(.+)$/ of the picure
        let valuePicmatches = rawvaluepicture.match(/^data:image\/([A-Za-z]+);base64,(.+)$/);
        let componentPicmatches = rawcomponentpicture.match(/^data:image\/([A-Za-z]+);base64,(.+)$/);
 
-        if (valuePicmatches.length !== 3 && componentPicmatches.length !== 3) {
+        if (valuePicmatches.length !== 3 || componentPicmatches.length !== 3) {
             return;
         }
 
-        let valuePicture = await Jimp.read(Buffer.from(valuePicmatches[2], 'base64'))
-        let componentPicture = await Jimp.read(Buffer.from(componentPicmatches[2], 'base64'))
+        let valuePic = await Jimp.read(Buffer.from(valuePicmatches[2], 'base64'))
+        let componentPic = await Jimp.read(Buffer.from(componentPicmatches[2], 'base64'))
 
-        let valPicOffsets;
-        let comPicOffsets;
+        await valuePic.autocrop({cropOnlyFrames: true});
+        await componentPic.autocrop({cropOnlyFrames: true});
 
-        await valuePicture.autocrop({cropOnlyFrames: true}, (error, valuePicture) => {    
-            valPicOffsets = valuePicture.cropArea; // cropArea = { x, y, w, h }
-          })
-        await componentPicture.autocrop({cropOnlyFrames: true}, (error, componentPicture) => {    
-           comPicOffsets = componentPicture.cropArea; // cropArea = { x, y, w, h }
-          })
+        const newX = Math.min(valuePic.cropArea.x, componentPic.cropArea.x);
+        const newY = Math.min(valuePic.cropArea.y, componentPic.cropArea.y);
+        const newW = Math.max(valuePic.cropArea.x + valuePic.cropArea.w, componentPic.cropArea.x + componentPic.cropArea.w) - newX;
+        const newH = Math.max(valuePic.cropArea.y + valuePic.cropArea.h, componentPic.cropArea.y + componentPic.cropArea.h) - newY;
 
-          console.log("preprescale"+ await valuePicture.getBase64Async(Jimp.AUTO));
+        const scaleFactor = resolution / Math.max(newW, newH);
+        await valuePic.scale(scaleFactor);
+        await componentPic.scale(scaleFactor);
 
+        let offValueX = 0;
+        let offValueY = 0;
+        let offComponentX = 0;
+        let offComponentY = 0;
 
-        let unscaledwidth;
-        let unscaledheight;
-
-        let boundingboxX;
-        let boundingboxY;
-
-        const resolution = 512;
-
-        //get unscaled  width of Combined Bounding Box  
-        if(valPicOffsets.w < comPicOffsets.w)
-        {
-            if(Math.abs(valPicOffsets.x - comPicOffsets.x) + valPicOffsets.w > comPicOffsets.w)
-            {
-                if(valPicOffsets.x < comPicOffsets.x)
-                {
-                //if the Value is outward to the left add componentlength
-                unscaledwidth = Math.abs(valPicOffsets.x - comPicOffsets.x) + comPicOffsets.w;
-                boundingboxX = valPicOffsets.x;
-                }
-                else
-                {
-                //if the Value is outward to the right add valuelength
-                  unscaledwidth = Math.abs(valPicOffsets.x - comPicOffsets.x) + valPicOffsets.w;
-                  boundingboxX = comPicOffsets.x;
-                }
-            }
-            else
-            {
-                unscaledwidth = comPicOffsets.w;
-                boundingboxX = comPicOffsets.x;
-            }
-        }
-        else
-        {
-            //a lot of nearly redunden code but patrick said i should include the edge case that if the label is bigger than the component that it schould scale properly
-            //i think every picture that has a bigger value than component has a 99.9 percent chance of being garbage but hey
-            if(Math.abs(valPicOffsets.x - comPicOffsets.x) + valPicOffsets.w > valPicOffsets.w)
-            {
-                if(valPicOffsets.x < comPicOffsets.x)
-                {
-                //if the Component is outward to the left add componentlength 
-                unscaledwidth = Math.abs(valPicOffsets.x - comPicOffsets.x) + valPicOffsets.w;
-                boundingboxX = comPicOffsets.x;
-                }
-                else
-                {
-                //if the component is outward to the right add valuelength
-                  unscaledwidth = Math.abs(valPicOffsets.x - comPicOffsets.x) + comPicOffsets.w;
-                  boundingboxX = valPicOffsets.x;
-                }
-            }
-            else
-            {
-                unscaledwidth = valPicOffsets.w;
-                boundingboxX = valPicOffsets.x;
-            }
+        if (newH < newW) {
+            // center on y
+            const centerOff = (resolution - newH * scaleFactor) / 2.0;
+            offValueX = (valuePic.cropArea.x - newX) * scaleFactor;
+            offValueY = (valuePic.cropArea.y - newY) * scaleFactor + centerOff;
+            offComponentX = (componentPic.cropArea.x - newX) * scaleFactor;
+            offComponentY = (componentPic.cropArea.y - newY) * scaleFactor + centerOff;
+        } else {
+            // center on x
+            const centerOff = (resolution - newW * scaleFactor) / 2.0;
+            offValueX = (valuePic.cropArea.x - newX) * scaleFactor + centerOff;
+            offValueY = (valuePic.cropArea.y - newY) * scaleFactor;
+            offComponentX = (componentPic.cropArea.x - newX) * scaleFactor + centerOff;
+            offComponentY = (componentPic.cropArea.y - newY) * scaleFactor;
         }
 
-        //Get unscaled  height of combined bounding box
-        if(valPicOffsets.h < comPicOffsets.h)
-        {
-            if(Math.abs(valPicOffsets.y - comPicOffsets.y) + valPicOffsets.h > comPicOffsets.h)
-            {
-                if(valPicOffsets.y < comPicOffsets.y)
-                {
-                //if the Value is uppward to the left add componentlength
-                unscaledheight = Math.abs(valPicOffsets.y - comPicOffsets.y) + comPicOffsets.h;
-                boundingboxY = valPicOffsets.y;
-                }
-                else
-                {
-                //if the Value is downward add valuelength
-                  unscaledheight = Math.abs(valPicOffsets.y - comPicOffsets.y) + valPicOffsets.h;
-                  boundingboxY = comPicOffsets.y;
-                }
-            }
-            else
-            {
-                unscaledheight = comPicOffsets.h;
-                boundingboxY = valPicOffsets.y;
-            }
-        }
-        else
-        {
-            //here it makes a lot of sence since componets somtimes are not ass high than values/labels
-            if(Math.abs(valPicOffsets.y - comPicOffsets.y) + valPicOffsets.h > valPicOffsets.h)
-            {
-                if(valPicOffsets.y < comPicOffsets.y)
-                {
-                //if the Value is outward to the left add componentlength
-                unscaledheight = Math.abs(valPicOffsets.y - comPicOffsets.y) + valPicOffsets.h;
-                boundingboxX = comPicOffsets.y;
-                }
-                else
-                {
-                //if the Value is outward to the right add valuelength
-                unscaledheight = Math.abs(valPicOffsets.y - comPicOffsets.y) + comPicOffsets.h;
-                boundingboxX = valPicOffsets.y;
-                }
-            }
-            else
-            {
-                unscaledheight = valPicOffsets.h;
-                boundingboxY = valPicOffsets.y
-            }
-        }  
+        let finalValuePic = new Jimp(resolution, resolution, '#FFFFFF');
+        let finalComponentPic = new Jimp(resolution, resolution, '#FFFFFF');
 
-        let scalefactor;
+        await finalValuePic.composite(valuePic, offValueX, offValueY, {mode: Jimp.BLEND_DARKEN});
+        await finalComponentPic.composite(componentPic, offComponentX, offComponentY, {mode: Jimp.BLEND_DARKEN});
 
-        let blankimage =  new Jimp(resolution, resolution, '#FFFFFF');
-        let testblankimage =  new Jimp(resolution, resolution, '#FFFFFF');
-
-        //Check which side to scale plus composite
-        //if the witdh is wider than the hight is high
-        if(unscaledwidth >= unscaledheight)
-        {
-            scalefactor =resolution / unscaledwidth;
-            //if the component picture is bigger 
-            if( comPicOffsets.w > valPicOffsets.w)
-            {
-                componentPicture.resize( resolution, scalefactor * comPicOffsets.h);
-                valuePicture.resize(valPicOffsets.w / scalefactor, valPicOffsets.w / scalefactor);
-
-                console.log("des isas" + await valuePicture.getBase64Async(Jimp.AUTO));
-
-                //compositing
-                componentPicture = blankimage.composite(componentPicture, 0, boundingboxY - comPicOffsets.y + (resolution / 2),  {mode: Jimp.BLEND_DARKEN});
-                valuePicture = testblankimage.composite(valuePicture, boundingboxX - valPicOffsets.x , boundingboxY - valPicOffsets.y , {mode: Jimp.BLEND_DARKEN});
-            }
-            else//if the value Picture is bigger
-            {
-                valuePicture.resize(resolution, valPicOffsets.w * scalefactor);
-                componentPicture.resize(comPicOffsets.w * scalefactor, scalefactor * comPicOffsets.h);
-
-                //compositing
-                valuePicture = blankimage.composite(valuePicture, 0, boundingboxY - comPicOffsets.y + (resolution / 2),  {mode: Jimp.BLEND_DARKEN});
-                blankimage =  new Jimp(resolution, resolution, '#FFFFFF');
-                componentPicture = blankimage.composite(componentPicture, boundingboxX - valPicOffsets.x , boundingboxY - valPicOffsets.y , {mode: Jimp.BLEND_DARKEN});
-            }
-            //resize component pic
-        }
-        else
-        {
-            scalefactor = resolution / unscaledheight;
-            //if the component picture is bigger
-            if(comPicOffsets.h > valPicOffsets.h)
-            {
-                componentPicture.resize( scalefactor * comPicOffsets.h, resolution);
-                valuePicture.resize(valPicOffsets.h * scalefactor, valPicOffsets.h * scalefactor);
-
-                //compositing
-                componentPicture = blankimage.composite(componentPicture, boundingboxX - comPicOffsets.x + (resolution / 2), 0,  {mode: Jimp.BLEND_DARKEN});
-                valuePicture = testblankimage.composite(valuePicture, boundingboxX - valPicOffsets.x , boundingboxY - valPicOffsets.y , {mode: Jimp.BLEND_DARKEN});
-            }
-            else//if the value Picture is bigger
-            {
-                valuePicture.resize( scalefactor * comPicOffsets.h, resolution);
-                componentPicture.resize(valPicOffsets.h * scalefactor, valPicOffsets.h * scalefactor);
-
-                //compositing
-                valuePicture = blankimage.composite(componentPicture, boundingboxX - comPicOffsets.x + (resolution / 2), 0,  {mode: Jimp.BLEND_DARKEN});
-                componentPicture = testblankimage.composite(valuePicture, boundingboxX - valPicOffsets.x , boundingboxY - valPicOffsets.y , {mode: Jimp.BLEND_DARKEN});
-            }
-        }
-        console.log("this is scale"+scalefactor);
-
-        let Images = {
-            "value": await valuePicture.getBase64Async(Jimp.AUTO),
-            "component":await componentPicture.getBase64Async(Jimp.AUTO)
-        }
-        console.log("lafasar" + Images.component);
-        console.log("ringfasar" + Images.value);
-        
-       
-        return Images;
+        console.log(`Label: ${await finalValuePic.getBase64Async(Jimp.AUTO)}`);
+        console.log(`Component: ${await finalComponentPic.getBase64Async(Jimp.AUTO)}`);
     }
     
     componentDidUpdate(prevProps, prevState) {
@@ -304,7 +157,7 @@ class Draw extends React.Component {
 
     onButtonNext = () => {        
         if (!this.state.isfirstDrawn) {
-            this.timerRef.current.reset(15);
+            this.timerRef.current.reset(100);
 
             this.componentimage = this.saveableCanvas.canvas.drawing.toDataURL("image/png");
             this.saveableCanvas.clear();
@@ -317,7 +170,7 @@ class Draw extends React.Component {
             });
 
         } else {
-            this.timerRef.current.reset(30);
+            this.timerRef.current.reset(100);
 
             this.setState((state) => ({
                 backgroundpic: "",
@@ -325,9 +178,7 @@ class Draw extends React.Component {
                 unmountDrawing: true,
                 hinttext: "",
                 hintpicture: ""
-            }));
-
-           
+            }));  
 
             const data = {
                 "PacketId": 104,
@@ -339,7 +190,7 @@ class Draw extends React.Component {
                 }
             }
 
-            this.resizedrawn(this.saveableCanvas.canvas.drawing.toDataURL("image/png"), this.componentimage);
+            this.resizedrawn(this.saveableCanvas.canvas.drawing.toDataURL("image/png"), this.componentimage, 512);
 
             try {
                 this.props.ws.send(JSON.stringify(data));
@@ -385,7 +236,7 @@ class Draw extends React.Component {
                             return
                         }}}></img></div>
 
-                        <CountDownTimer Secs={30} onTimeIsOver={this.onButtonNext} className="timer" onreset={this.state.resetTimer} ref={this.timerRef}/>
+                        <CountDownTimer Secs={100} onTimeIsOver={this.onButtonNext} className="timer" onreset={this.state.resetTimer} ref={this.timerRef}/>
                     </div>
                 </div>
 
