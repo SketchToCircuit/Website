@@ -17,7 +17,6 @@ class Draw extends React.Component {
 
         this.timerRef = createRef();
         this.forceResize = false;
-        this.countDownTime = 30;
 
         // set custom vh/vw-unit for mobile devices
         let vh = window.innerHeight * 0.01;
@@ -156,7 +155,7 @@ class Draw extends React.Component {
 
     onButtonNext = () => {        
         if (!this.state.isfirstDrawn) {
-            this.timerRef.current.reset(100);
+            this.timerRef.current.reset(process.env.REACT_APP_LABEL_TIME);
 
             this.componentimage = this.saveableCanvas.canvas.drawing.toDataURL("image/png");
             this.saveableCanvas.clear();
@@ -169,7 +168,7 @@ class Draw extends React.Component {
             });
 
         } else {
-            this.timerRef.current.reset(100);
+            this.timerRef.current.reset(process.env.REACT_APP_COMPONENT_TIME);
 
             this.setState({
                 backgroundpic: "",
@@ -239,7 +238,7 @@ class Draw extends React.Component {
                         }></img></div>
                         <div><img className='button' src={'next_icon.svg'}  role='button' alt='' onClick={this.onButtonNext}></img></div>
 
-                        <CountDownTimer Secs={100} onTimeIsOver={this.onButtonNext} className="timer" onreset={this.state.resetTimer} ref={this.timerRef}/>
+                        <CountDownTimer Secs={process.env.REACT_APP_COMPONENT_TIME} onTimeIsOver={this.onButtonNext} className="timer" onreset={this.state.resetTimer} ref={this.timerRef}/>
                     </div>
                 </div>
 
