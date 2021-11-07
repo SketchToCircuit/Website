@@ -91,12 +91,12 @@
 .draw .hint-div {
     z-index: 20;
     position: fixed;
-    right: 0;
+    left: 0;
     bottom: 0;
     height: calc(13vh + 20px);
     width: 13vh;
     margin-bottom: 30px;
-    margin-right: 20px;
+    margin-left: 20px;
     border-style: ridge;
     border-radius: 5px;
     border-color: black;
