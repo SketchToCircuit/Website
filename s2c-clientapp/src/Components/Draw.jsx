@@ -7,13 +7,7 @@ import TextFontScaling from './TextFontScaling';
 import '../Styles/Draw.css';
 
 import Jimp from 'jimp/es';
-
-//Prototype for jimp to get the crop dimensions + coordinates        
-Jimp.prototype.__crop = Jimp.prototype.crop
-Jimp.prototype.crop = function (x, y, w, h, cb) {  
-    this.cropArea = { x, y, w, h }
-    return this.__crop(x, y, w, h, cb)
-}
+import { autocrop } from '../utils/autocrop';
 
 class Draw extends React.Component {
     componentimage = null;
@@ -79,7 +73,7 @@ class Draw extends React.Component {
         }
     }
     
-    resizedrawn = async (rawvaluepicture, rawcomponentpicture, resolution) =>{
+    autocropImages = async (rawvaluepicture, rawcomponentpicture, resolution) => {
        //strip the beginning /^data:image\/([A-Za-z]+);base64,(.+)$/ of the picure
        let valuePicmatches = rawvaluepicture.match(/^data:image\/([A-Za-z]+);base64,(.+)$/);
        let componentPicmatches = rawcomponentpicture.match(/^data:image\/([A-Za-z]+);base64,(.+)$/);
@@ -91,17 +85,23 @@ class Draw extends React.Component {
         let valuePic = await Jimp.read(Buffer.from(valuePicmatches[2], 'base64'))
         let componentPic = await Jimp.read(Buffer.from(componentPicmatches[2], 'base64'))
 
-        await valuePic.autocrop({cropOnlyFrames: true});
-        await componentPic.autocrop({cropOnlyFrames: true});
+        const cropAreaValue = autocrop(valuePic);
+        const cropAreaComponent = autocrop(componentPic);
 
-        const newX = Math.min(valuePic.cropArea.x, componentPic.cropArea.x);
-        const newY = Math.min(valuePic.cropArea.y, componentPic.cropArea.y);
-        const newW = Math.max(valuePic.cropArea.x + valuePic.cropArea.w, componentPic.cropArea.x + componentPic.cropArea.w) - newX;
-        const newH = Math.max(valuePic.cropArea.y + valuePic.cropArea.h, componentPic.cropArea.y + componentPic.cropArea.h) - newY;
+        if (!cropAreaValue || !cropAreaComponent) {
+            const tinyWhiteImg = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wgARCAABAAEDAREAAhEBAxEB/8QAFAABAAAAAAAAAAAAAAAAAAAACP/EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhADEAAAAVSf/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABBQJ//8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAgBAwEBPwF//8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAgBAgEBPwF//8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQAGPwJ//8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPyF//9oADAMBAAIAAwAAABCf/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAgBAwEBPxB//8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAgBAgEBPxB//8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxB//9k=';
+
+            return {valuePicture: tinyWhiteImg, componentPicture: tinyWhiteImg};
+        }
+
+        const newX = Math.min(cropAreaValue.x, cropAreaComponent.x);
+        const newY = Math.min(cropAreaValue.y, cropAreaComponent.y);
+        const newW = Math.max(cropAreaValue.x + cropAreaValue.w, cropAreaComponent.x + cropAreaComponent.w) - newX;
+        const newH = Math.max(cropAreaValue.y + cropAreaValue.h, cropAreaComponent.y + cropAreaComponent.h) - newY;
 
         const scaleFactor = resolution / Math.max(newW, newH);
-        await valuePic.scale(scaleFactor);
-        await componentPic.scale(scaleFactor);
+        valuePic.scale(scaleFactor);
+        componentPic.scale(scaleFactor);
 
         let offValueX = 0;
         let offValueY = 0;
@@ -111,27 +111,26 @@ class Draw extends React.Component {
         if (newH < newW) {
             // center on y
             const centerOff = (resolution - newH * scaleFactor) / 2.0;
-            offValueX = (valuePic.cropArea.x - newX) * scaleFactor;
-            offValueY = (valuePic.cropArea.y - newY) * scaleFactor + centerOff;
-            offComponentX = (componentPic.cropArea.x - newX) * scaleFactor;
-            offComponentY = (componentPic.cropArea.y - newY) * scaleFactor + centerOff;
+            offValueX = (cropAreaValue.x - newX) * scaleFactor;
+            offValueY = (cropAreaValue.y - newY) * scaleFactor + centerOff;
+            offComponentX = (cropAreaComponent.x - newX) * scaleFactor;
+            offComponentY = (cropAreaComponent.y - newY) * scaleFactor + centerOff;
         } else {
             // center on x
             const centerOff = (resolution - newW * scaleFactor) / 2.0;
-            offValueX = (valuePic.cropArea.x - newX) * scaleFactor + centerOff;
-            offValueY = (valuePic.cropArea.y - newY) * scaleFactor;
-            offComponentX = (componentPic.cropArea.x - newX) * scaleFactor + centerOff;
-            offComponentY = (componentPic.cropArea.y - newY) * scaleFactor;
+            offValueX = (cropAreaValue.x - newX) * scaleFactor + centerOff;
+            offValueY = (cropAreaValue.y - newY) * scaleFactor;
+            offComponentX = (cropAreaComponent.x - newX) * scaleFactor + centerOff;
+            offComponentY = (cropAreaComponent.y - newY) * scaleFactor;
         }
 
         let finalValuePic = new Jimp(resolution, resolution, '#FFFFFF');
         let finalComponentPic = new Jimp(resolution, resolution, '#FFFFFF');
 
-        await finalValuePic.composite(valuePic, offValueX, offValueY, {mode: Jimp.BLEND_DARKEN});
-        await finalComponentPic.composite(componentPic, offComponentX, offComponentY, {mode: Jimp.BLEND_DARKEN});
+        finalValuePic.composite(valuePic, offValueX, offValueY, {mode: Jimp.BLEND_DARKEN});
+        finalComponentPic.composite(componentPic, offComponentX, offComponentY, {mode: Jimp.BLEND_DARKEN});
 
-        console.log(`Label: ${await finalValuePic.getBase64Async(Jimp.AUTO)}`);
-        console.log(`Component: ${await finalComponentPic.getBase64Async(Jimp.AUTO)}`);
+        return {valuePicture: await finalValuePic.getBase64Async(Jimp.AUTO), componentPicture: await finalComponentPic.getBase64Async(Jimp.AUTO)};
     }
     
     componentDidUpdate(prevProps, prevState) {
@@ -172,31 +171,35 @@ class Draw extends React.Component {
         } else {
             this.timerRef.current.reset(100);
 
-            this.setState((state) => ({
+            this.setState({
                 backgroundpic: "",
                 isfirstDrawn: false,
                 unmountDrawing: true,
                 hinttext: "",
                 hintpicture: ""
-            }));  
+            });  
 
-            const data = {
-                "PacketId": 104,
-                "Data": {
-                    "count": this.state.batchcount,
-                    "type": this.state.type,
-                    "componentImg": this.componentimage,
-                    "labelImg": this.saveableCanvas.canvas.drawing.toDataURL("image/png")
+            this.autocropImages(this.saveableCanvas.canvas.drawing.toDataURL("image/png"), this.componentimage, 400).then((images) => {
+                const data = {
+                    "PacketId": 104,
+                    "Data": {
+                        "count": this.state.batchcount,
+                        "type": this.state.type,
+                        "componentImg": images.componentPicture,
+                        "labelImg": images.valuePicture
+                    }
                 }
-            }
 
-            this.resizedrawn(this.saveableCanvas.canvas.drawing.toDataURL("image/png"), this.componentimage, 512);
+                console.log(data);
 
-            try {
-                this.props.ws.send(JSON.stringify(data));
-            } catch (error) {
-                console.error(error);
-            }
+                try {
+                    this.props.ws.send(JSON.stringify(data));
+                } catch (error) {
+                    console.error(error);
+                }
+            }).catch((err) => {
+                console.error(err);
+            });
 
             this.saveableCanvas.clear();
 
