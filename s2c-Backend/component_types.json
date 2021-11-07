@@ -190,5 +190,45 @@
         "val_hint": "Do you see a labeled microphone?",
         "component_hint_img": "/data/hints/MIC.jpg",
         "labeled_hint_img": "/data/hints/MIC_labeled.jpg"
+    },
+    {
+        "component_id": 24,
+        "file_prefix": "LMP",
+        "draw_hint": "Please draw a light bulb",
+        "val_hint": "Do you see a labeled light bulb?",
+        "component_hint_img": "/data/hints/LMP.jpg",
+        "labeled_hint_img": "/data/hints/LMP_labeled.jpg"
+    },
+    {
+        "component_id": 25,
+        "file_prefix": "M",
+        "draw_hint": "Please draw a motor",
+        "val_hint": "Do you see a labeled motor?",
+        "component_hint_img": "/data/hints/M.jpg",
+        "labeled_hint_img": "/data/hints/M_labeled.jpg"
+    },
+    {
+        "component_id": 26,
+        "file_prefix": "S3",
+        "draw_hint": "Please draw a switch",
+        "val_hint": "Do you see a labeled switch?",
+        "component_hint_img": "/data/hints/S_3.jpg",
+        "labeled_hint_img": "/data/hints/S_3_labeled.jpg"
+    },
+    {
+        "component_id": 27,
+        "file_prefix": "F",
+        "draw_hint": "Please draw a fuse",
+        "val_hint": "Do you see a labeled fuse?",
+        "component_hint_img": "/data/hints/F.jpg",
+        "labeled_hint_img": "/data/hints/F_labeled.jpg"
+    },
+    {
+        "component_id": 28,
+        "file_prefix": "OPV",
+        "draw_hint": "Please draw an OPV (non-invert. input at the top)",
+        "val_hint": "Do you see a labeled fuse?",
+        "component_hint_img": "/data/hints/OPV.jpg",
+        "labeled_hint_img": "/data/hints/OPV_labeled.jpg"
     }
 ]
