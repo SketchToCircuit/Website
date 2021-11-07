@@ -136,7 +136,7 @@
         "labeled_hint_img": "/data/hints/I1_labeled.jpg"
     },
     {
-        "component_id": 17,
+        "component_id": 18,
         "file_prefix": "I2",
         "draw_hint": "Please draw a current source",
         "val_hint": "Do you see a labeled current source?",
@@ -144,7 +144,7 @@
         "labeled_hint_img": "/data/hints/I2_labeled.jpg"
     },
     {
-        "component_id": 18,
+        "component_id": 19,
         "file_prefix": "U3",
         "draw_hint": "Please draw a DC voltage source",
         "val_hint": "Do you see a labeled voltage source?",
@@ -152,7 +152,7 @@
         "labeled_hint_img": "/data/hints/U3_labeled.jpg"
     },
     {
-        "component_id": 19,
+        "component_id": 20,
         "file_prefix": "BAT",
         "draw_hint": "Please draw a battery",
         "val_hint": "Do you see a labeled battery?",
@@ -160,7 +160,7 @@
         "labeled_hint_img": "/data/hints/BAT_labeled.jpg"
     },
     {
-        "component_id": 20,
+        "component_id": 21,
         "file_prefix": "U_AC_H",
         "draw_hint": "Please draw an AC voltage source",
         "val_hint": "Do you see a labeled AC source?",
@@ -168,7 +168,7 @@
         "labeled_hint_img": "/data/hints/U_AC_H_labeled.jpg"
     },
     {
-        "component_id": 21,
+        "component_id": 22,
         "file_prefix": "U_AC_V",
         "draw_hint": "Please draw an AC voltage source",
         "val_hint": "Do you see a labeled AC source?",
@@ -176,7 +176,7 @@
         "labeled_hint_img": "/data/hints/U_AC_V_labeled.jpg"
     },
     {
-        "component_id": 22,
+        "component_id": 23,
         "file_prefix": "SPK",
         "draw_hint": "Please draw a speaker",
         "val_hint": "Do you see a labeled speaker?",
@@ -184,7 +184,7 @@
         "labeled_hint_img": "/data/hints/SPK_labeled.jpg"
     },
     {
-        "component_id": 23,
+        "component_id": 24,
         "file_prefix": "MIC",
         "draw_hint": "Please draw a microphone",
         "val_hint": "Do you see a labeled microphone?",
@@ -192,7 +192,7 @@
         "labeled_hint_img": "/data/hints/MIC_labeled.jpg"
     },
     {
-        "component_id": 24,
+        "component_id": 25,
         "file_prefix": "LMP",
         "draw_hint": "Please draw a light bulb",
         "val_hint": "Do you see a labeled light bulb?",
@@ -200,7 +200,7 @@
         "labeled_hint_img": "/data/hints/LMP_labeled.jpg"
     },
     {
-        "component_id": 25,
+        "component_id": 26,
         "file_prefix": "M",
         "draw_hint": "Please draw a motor",
         "val_hint": "Do you see a labeled motor?",
@@ -208,7 +208,7 @@
         "labeled_hint_img": "/data/hints/M_labeled.jpg"
     },
     {
-        "component_id": 26,
+        "component_id": 27,
         "file_prefix": "S3",
         "draw_hint": "Please draw a switch",
         "val_hint": "Do you see a labeled switch?",
@@ -216,7 +216,7 @@
         "labeled_hint_img": "/data/hints/S_3_labeled.jpg"
     },
     {
-        "component_id": 27,
+        "component_id": 28,
         "file_prefix": "F",
         "draw_hint": "Please draw a fuse",
         "val_hint": "Do you see a labeled fuse?",
@@ -224,7 +224,7 @@
         "labeled_hint_img": "/data/hints/F_labeled.jpg"
     },
     {
-        "component_id": 28,
+        "component_id": 29,
         "file_prefix": "OPV",
         "draw_hint": "Please draw an OPV (non-invert. input at the top)",
         "val_hint": "Do you see a labeled OPV?",
@@ -232,7 +232,7 @@
         "labeled_hint_img": "/data/hints/OPV_labeled.jpg"
     },
     {
-        "component_id": 29,
+        "component_id": 30,
         "file_prefix": "NPN",
         "draw_hint": "Please draw aa NPN transistor (collector at the top)",
         "val_hint": "Do you see a labeled NPN transistor?",
@@ -240,7 +240,7 @@
         "labeled_hint_img": "/data/hints/NPN_labeled.jpg"
     },
     {
-        "component_id": 30,
+        "component_id": 31,
         "file_prefix": "PNP",
         "draw_hint": "Please draw a PNP transistor (collector at the top)",
         "val_hint": "Do you see a labeled PNP transistor?",
@@ -248,7 +248,7 @@
         "labeled_hint_img": "/data/hints/PNP_labeled.jpg"
     },
     {
-        "component_id": 31,
+        "component_id": 32,
         "file_prefix": "GND",
         "draw_hint": "Please draw a general grounding symbol",
         "val_hint": "Do you see a labeled grounding symbol?",
@@ -256,7 +256,7 @@
         "labeled_hint_img": "/data/hints/GND_labeled.jpg"
     },
     {
-        "component_id": 32,
+        "component_id": 33,
         "file_prefix": "GND_F",
         "draw_hint": "Please draw a functional grounding symbol",
         "val_hint": "Do you see a labeled grounding symbol?",
@@ -264,7 +264,7 @@
         "labeled_hint_img": "/data/hints/GND_F_labeled.jpg"
     },
     {
-        "component_id": 33,
+        "component_id": 34,
         "file_prefix": "GND_C",
         "draw_hint": "Pleas draw a chassis grounding symbol",
         "val_hint": "Do you see a labeled grounding symbol?",
@@ -272,7 +272,7 @@
         "labeled_hint_img": "/data/hints/GND_C_labeled.jpg"
     },
     {
-        "component_id": 34,
+        "component_id": 35,
         "file_prefix": "D_Z",
         "draw_hint": "Pleas draw a zener diode",
         "val_hint": "Do you see a labeled zener diode?",
@@ -280,7 +280,7 @@
         "labeled_hint_img": "/data/hints/D_Z_labeled.jpg"
     },
     {
-        "component_id": 35,
+        "component_id": 36,
         "file_prefix": "D_S",
         "draw_hint": "Pleas draw a schottky diode",
         "val_hint": "Do you see a labeled schottky diode?",
@@ -288,7 +288,7 @@
         "labeled_hint_img": "/data/hints/D_S_labeled.jpg"
     },
     {
-        "component_id": 36,
+        "component_id": 37,
         "file_prefix": "MFET_N_E",
         "draw_hint": "Pleas draw a n-channel enhancement MOSFET (drain at the top)",
         "val_hint": "Do you see a labeled n-channel enhancement MOSFET?",
@@ -296,7 +296,7 @@
         "labeled_hint_img": "/data/hints/MFET_N_E_labeled.jpg"
     },
     {
-        "component_id": 37,
+        "component_id": 38,
         "file_prefix": "MFET_P_E",
         "draw_hint": "Pleas draw a p-channel enhancement MOSFET (drain at the top)",
         "val_hint": "Do you see a labeled p-channel enhancement MOSFET?",
@@ -304,7 +304,7 @@
         "labeled_hint_img": "/data/hints/MFET_P_E_labeled.jpg"
     },
     {
-        "component_id": 38,
+        "component_id": 39,
         "file_prefix": "MFET_N_D",
         "draw_hint": "Pleas draw a n-channel depletion MOSFET (drain at the top)",
         "val_hint": "Do you see a labeled n-channel depletion MOSFET?",
@@ -312,7 +312,7 @@
         "labeled_hint_img": "/data/hints/MFET_N_D_labeled.jpg"
     },
     {
-        "component_id": 39,
+        "component_id": 40,
         "file_prefix": "MFET_P_D",
         "draw_hint": "Pleas draw a p-channel depletion MOSFET (drain at the top)",
         "val_hint": "Do you see a labeled p-channel depletion MOSFET?",
@@ -320,7 +320,7 @@
         "labeled_hint_img": "/data/hints/MFET_P_D_labeled.jpg"
     },
     {
-        "component_id": 40,
+        "component_id": 41,
         "file_prefix": "JFET_N",
         "draw_hint": "Pleas draw a n-channel JFET (drain at the top)",
         "val_hint": "Do you see a labeled n-channel JFET?",
@@ -328,7 +328,7 @@
         "labeled_hint_img": "/data/hints/JFET_N_labeled.jpg"
     },
     {
-        "component_id": 41,
+        "component_id": 42,
         "file_prefix": "JFET_P",
         "draw_hint": "Pleas draw a p-channel JFET (drain at the top)",
         "val_hint": "Do you see a labeled p-channel JFET?",

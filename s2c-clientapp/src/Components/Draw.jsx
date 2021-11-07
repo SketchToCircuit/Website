@@ -189,8 +189,6 @@ class Draw extends React.Component {
                     }
                 }
 
-                console.log(data);
-
                 try {
                     this.props.ws.send(JSON.stringify(data));
                 } catch (error) {
