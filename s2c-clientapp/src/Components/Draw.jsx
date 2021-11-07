@@ -170,14 +170,6 @@ class Draw extends React.Component {
         } else {
             this.timerRef.current.reset(process.env.REACT_APP_COMPONENT_TIME);
 
-            this.setState({
-                backgroundpic: "",
-                isfirstDrawn: false,
-                unmountDrawing: true,
-                hinttext: "",
-                hintpicture: ""
-            });  
-
             this.autocropImages(this.saveableCanvas.canvas.drawing.toDataURL("image/png"), this.componentimage, 400).then((images) => {
                 const data = {
                     "PacketId": 104,
@@ -194,25 +186,25 @@ class Draw extends React.Component {
                 } catch (error) {
                     console.error(error);
                 }
+
+                this.saveableCanvas.clear();
+
+                if(this.state.batchcount >= process.env.REACT_APP_DRAWING_COUNT)
+                {
+                    this.props.onFinished();
+                }
+
+                this.setState((state) => ({
+                    backgroundpic: "",
+                    isfirstDrawn: false,
+                    unmountDrawing: true,
+                    hinttext: "",
+                    hintpicture: "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=",      // Tiniest valid gif
+                    batchcount: state.batchcount + 1
+                }));
             }).catch((err) => {
                 console.error(err);
             });
-
-            this.saveableCanvas.clear();
-
-            if(this.state.batchcount >= process.env.REACT_APP_DRAWING_COUNT)
-            {
-                this.props.onFinished();
-            }
-
-            this.setState((state) => ({
-                backgroundpic: "",
-                isfirstDrawn: false,
-                unmountDrawing: true,
-                hinttext: "",
-                hintpicture: "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=",      // Tiniest valid gif
-                batchcount: state.batchcount + 1
-            }));
         }
     }
 
