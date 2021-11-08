@@ -7,7 +7,7 @@ import TextFontScaling from './TextFontScaling';
 import '../Styles/Draw.css';
 
 import Jimp from 'jimp/es';
-import { autocrop } from '../utils/autocrop';
+import { autocropTransparent } from '../utils/autocrop';
 
 class Draw extends React.Component {
     componentimage = null;
@@ -84,8 +84,8 @@ class Draw extends React.Component {
         let valuePic = await Jimp.read(Buffer.from(valuePicmatches[2], 'base64'))
         let componentPic = await Jimp.read(Buffer.from(componentPicmatches[2], 'base64'))
 
-        const cropAreaValue = autocrop(valuePic);
-        const cropAreaComponent = autocrop(componentPic);
+        const cropAreaValue = autocropTransparent(valuePic);
+        const cropAreaComponent = autocropTransparent(componentPic);
 
         if (!cropAreaValue || !cropAreaComponent) {
             const tinyWhiteImg = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wgARCAABAAEDAREAAhEBAxEB/8QAFAABAAAAAAAAAAAAAAAAAAAACP/EABQBAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhADEAAAAVSf/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABBQJ//8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAgBAwEBPwF//8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAgBAgEBPwF//8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQAGPwJ//8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPyF//9oADAMBAAIAAwAAABCf/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAgBAwEBPxB//8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAgBAgEBPxB//8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxB//9k=';
@@ -129,7 +129,7 @@ class Draw extends React.Component {
         finalValuePic.composite(valuePic, offValueX, offValueY, {mode: Jimp.BLEND_DARKEN});
         finalComponentPic.composite(componentPic, offComponentX, offComponentY, {mode: Jimp.BLEND_DARKEN});
 
-        return {valuePicture: await finalValuePic.getBase64Async(Jimp.AUTO), componentPicture: await finalComponentPic.getBase64Async(Jimp.AUTO)};
+        return {valuePicture: await finalValuePic.colorType(0).getBase64Async(Jimp.MIME_PNG), componentPicture: await finalComponentPic.colorType(0).getBase64Async(Jimp.MIME_PNG)};
     }
     
     componentDidUpdate(prevProps, prevState) {
