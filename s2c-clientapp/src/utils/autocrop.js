@@ -3,17 +3,19 @@ import Jimp from 'jimp/es';
 /**
  * @param {Jimp} img 
  */
-export const autocrop = (img) => {
-    const borderColor = Jimp.intToRGBA(img.getPixelColor(0, 0));
-    const tolerance = 0.01;
-
+export const autocropTransparent = (img) => {
     let minBlackX = img.bitmap.width - 1;
     let maxBlackX = 0;
     let minBlackY = img.bitmap.height - 1;
     let maxBlackY = 0;
 
-    img.scan(0, 0, img.bitmap.width, img.bitmap.height, function(x, y, idx) {
-        if (Jimp.colorDiff(borderColor, Jimp.intToRGBA(this.bitmap.data.readUInt32BE(idx))) > tolerance) {
+    for (let i = 3; i < img.bitmap.data.length; i += 4) {
+        const alpha = img.bitmap.data[i];
+
+        const y = Math.floor(((i - 3) / 4) / img.bitmap.width);
+        const x = ((i - 3) / 4) % img.bitmap.width
+
+        if (alpha > 127) {
             if (x > maxBlackX) {
                 maxBlackX = x;
             }
@@ -30,12 +32,12 @@ export const autocrop = (img) => {
                 minBlackY = y;
             }
         }
-    });
+    }
 
-    let w = maxBlackX - minBlackX + 1;
-    let h = maxBlackY - minBlackY + 1;
-    let x = Math.max(minBlackX - 1, 0);
-    let y = Math.max(minBlackY - 1, 0);
+    let w = maxBlackX - minBlackX + 10
+    let h = maxBlackY - minBlackY + 10;
+    let x = Math.max(minBlackX - 5, 0);
+    let y = Math.max(minBlackY - 5, 0);
 
     if (x + w >= img.bitmap.width) {
         w = img.bitmap.width - 1 - x;
