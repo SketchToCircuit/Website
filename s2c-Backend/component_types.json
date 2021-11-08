@@ -226,7 +226,7 @@
     {
         "component_id": 29,
         "file_prefix": "OPV",
-        "draw_hint": "Please draw an OPV (non-invert. input at the top)",
+        "draw_hint": "Please draw an OPV (invert. input at the top)",
         "val_hint": "Do you see a labeled OPV?",
         "component_hint_img": "/data/hints/OPV.jpg",
         "labeled_hint_img": "/data/hints/OPV_labeled.jpg"
