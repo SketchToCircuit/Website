@@ -10,7 +10,7 @@ async function getBase64Img(absPath) {
         if (ext === 'jpg') {
             ext = 'jpeg';
         }
-        return img.colorType(0).getBase64(Jimp.MIME_PNG);
+        return await img.colorType(0).getBase64Async(Jimp.MIME_PNG);
     } catch (error) {
         console.log(error);
         return '';
@@ -24,8 +24,7 @@ async function getCombinedBase64Img(pathA, pathB) {
         imgA.composite(imgB, 0, 0, {
             mode: Jimp.BLEND_DARKEN
         });
-        let result = imgA.colorType(0).getBase64(Jimp.MIME_PNG);
-        return result;
+        return await imgA.colorType(0).getBase64Async(Jimp.MIME_PNG);
     } catch (e) {
         console.log(e);
         return '';
