@@ -334,5 +334,21 @@
         "val_hint": "Do you see a labeled p-channel JFET?",
         "component_hint_img": "/data/hints/JFET_P.jpg",
         "labeled_hint_img": "/data/hints/JFET_P_labeled.jpg"
+    },
+    {
+        "component_id": 43,
+        "file_prefix": "C_P",
+        "draw_hint": "Pleas draw a polarized capacitor",
+        "val_hint": "Do you see a labeled polarized capacitor?",
+        "component_hint_img": "/data/hints/C_P.jpg",
+        "labeled_hint_img": "/data/hints/C_P_labeled.jpg"
+    },
+    {
+        "component_id": 44,
+        "file_prefix": "PIN",
+        "draw_hint": "Pleas draw a pin",
+        "val_hint": "Do you see a labeled pin?",
+        "component_hint_img": "/data/hints/PIN.jpg",
+        "labeled_hint_img": "/data/hints/PIN_labeled.jpg"
     }
 ]
