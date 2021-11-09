@@ -39,6 +39,8 @@ services:
     user: root
     image: mysql:8.0
     restart: unless-stopped
+    cap_add:
+      - SYS_NICE
     ports:
       - 3306:3306
     networks:
