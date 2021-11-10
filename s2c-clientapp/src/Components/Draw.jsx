@@ -81,8 +81,7 @@ class Draw extends React.Component {
             return;
         }
 
-        let valuePic = await Jimp.read(Buffer.from(valuePicmatches[2], 'base64'))
-        let componentPic = await Jimp.read(Buffer.from(componentPicmatches[2], 'base64'))
+        const [valuePic, componentPic] = await Promise.all([Jimp.read(Buffer.from(valuePicmatches[2], 'base64')), Jimp.read(Buffer.from(componentPicmatches[2], 'base64'))]);
 
         const cropAreaValue = autocropTransparent(valuePic);
         const cropAreaComponent = autocropTransparent(componentPic);
@@ -99,8 +98,8 @@ class Draw extends React.Component {
         const newH = Math.max(cropAreaValue.y + cropAreaValue.h, cropAreaComponent.y + cropAreaComponent.h) - newY;
 
         const scaleFactor = resolution / Math.max(newW, newH);
-        valuePic.scale(scaleFactor);
-        componentPic.scale(scaleFactor);
+        valuePic.scale(scaleFactor, {mode: Jimp.RESIZE_NEAREST_NEIGHBOR});
+        componentPic.scale(scaleFactor, {mode: Jimp.RESIZE_NEAREST_NEIGHBOR});
 
         let offValueX = 0;
         let offValueY = 0;
@@ -129,7 +128,9 @@ class Draw extends React.Component {
         finalValuePic.composite(valuePic, offValueX, offValueY, {mode: Jimp.BLEND_DARKEN});
         finalComponentPic.composite(componentPic, offComponentX, offComponentY, {mode: Jimp.BLEND_DARKEN});
 
-        return {valuePicture: await finalValuePic.colorType(0).getBase64Async(Jimp.MIME_PNG), componentPicture: await finalComponentPic.colorType(0).getBase64Async(Jimp.MIME_PNG)};
+        const result = await Promise.all([finalValuePic.colorType(0).getBase64Async(Jimp.MIME_PNG), finalComponentPic.colorType(0).getBase64Async(Jimp.MIME_PNG)]);
+
+        return {valuePicture: result[0], componentPicture: result[1]};
     }
     
     componentDidUpdate(prevProps, prevState) {

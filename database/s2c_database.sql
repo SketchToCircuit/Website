@@ -89,7 +89,6 @@ ALTER TABLE `images`
   ADD PRIMARY KEY (`image_id`),
   ADD KEY `drawer_id` (`drawer_id`),
   ADD KEY `validator_id` (`validator_id`),
-  ADD KEY `images_ibfk_3` (`component_type`);
 
 --
 -- AUTO_INCREMENT für exportierte Tabellen
