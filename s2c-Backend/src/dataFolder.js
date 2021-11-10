@@ -12,6 +12,11 @@ function init()
     {
         fs.mkdirSync(env.HINTFOLDER);
     }
+    
+    if(!fs.existsSync(env.LOGLOC));
+    {
+        fs.closeSync(fs.openSync(env.LOGLOC, 'w'))
+    }
 
     let files = fs.readdirSync(env.HINTFOLDER);
     if(files)
@@ -34,7 +39,12 @@ function init()
     }
 }
 
+function writeErrorLog(data, level)
+{
+    fs.appendFile(env.LOGLOC, '\n' + `[${level}]` + data);
+}
 
 module.exports = {
-    init
+    init,
+    writeErrorLog
 }

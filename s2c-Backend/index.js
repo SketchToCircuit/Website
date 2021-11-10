@@ -35,7 +35,6 @@ wss.on('connection', function connection(ws, req) {
     const id = getUniqueId(count);
     count += 1;
 
-    console.log(`Connection from ${req.socket.remoteAddress} with id ${id}`);
     let userObject = new UserObject(id);
 
     clients.set(ws, userObject);
@@ -45,16 +44,16 @@ wss.on('connection', function connection(ws, req) {
         try {
             success = PacketHandler(data, ws);
         } catch (error) {
-            console.log(error);
+            dataFolder.writeErrorLog(error, "Ws-Error")
             success = false;
         }
         if (!success) {
-            //console.log(`Couldn't handle data: ${JSON.stringify(JSON.parse(data))}`);
+            let message = `Couldn't handle data: ${JSON.stringify(JSON.parse(data))}`;
+            dataFolder.writeErrorLog(message, "Not-Handled");
         }
     });
 
     ws.on('close', () => {
-        console.log(`Closed connection with id ${clients.get(ws).id}`);
         clients.delete(ws);
     })
 });
@@ -86,6 +85,7 @@ function PacketHandler(data, ws) {
 
             websocket.getUserData(ws, client, database);
         }).catch((err) => {
+            dataFolder.writeErrorLog(err, "API-Error")
             console.log(err);
             client.isAuth = false;
         });
@@ -94,7 +94,6 @@ function PacketHandler(data, ws) {
     }
 
     if (!clients.get(ws).isAuth) {
-        console.log("User is unauthorized");
         return false;
     }
 
@@ -118,4 +117,10 @@ function PacketHandler(data, ws) {
     return true;
 }
 
-console.log("\nWss startet");
+//Sketchy
+process.on('uncaughtException', err => {
+    dataFolder.writeErrorLog(err, "Uncaught:Severe");
+    process.exit(1) //mandatory (as per the Node.js docs)
+  })
+
+console.log("Running");
