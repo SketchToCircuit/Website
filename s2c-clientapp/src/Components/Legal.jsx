@@ -15,7 +15,7 @@ class Legal extends React.Component {
         <br />Ibererstraße 15 - 21
         <br />A - 8051 Graz
         <br />Tel.: 05 02480 66-0
-        <br />E-Mail: <a href="mailto:willkommen@bulme.at">willkommen@bulme.at</a>
+        <br />E-Mail: <a href="mailto:sm@bulme.at">sm@bulme.at</a>
         <h1>Data protection declaration</h1>
         <p>The responsible party in the sense of data protection laws, in particular the EU General Data Protection Regulation (DSGVO), is:</p>
         <p>Höhere technische Bundeslehranstalt Graz-Gösting</p>
