@@ -7,15 +7,15 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
-   sodipodi:docname="notok_icon.svg"
-   id="svg4"
-   version="1.1"
-   class="bi bi-x-lg"
-   fill="currentColor"
-   viewBox="0 0 16 16"
+   width="16px"
    height="16px"
-   width="16px">
+   viewBox="0 0 16 16"
+   fill="currentColor"
+   class="bi bi-x-lg"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="notok_icon.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)">
   <metadata
      id="metadata10">
     <rdf:RDF>
@@ -30,41 +30,42 @@
   <defs
      id="defs8">
     <inkscape:path-effect
-       update_on_knot_move="true"
-       attempt_force_join="true"
-       miter_limit="4"
-       offset="0.125"
-       unit="pt"
-       linejoin_type="miter"
-       lpeversion="1"
-       is_visible="true"
+       effect="offset"
        id="path-effect835"
-       effect="offset" />
+       is_visible="true"
+       lpeversion="1"
+       linejoin_type="miter"
+       unit="pt"
+       offset="0.35433071"
+       miter_limit="4"
+       attempt_force_join="true"
+       update_on_knot_move="true" />
   </defs>
   <sodipodi:namedview
-     inkscape:current-layer="svg4"
-     inkscape:window-maximized="1"
-     inkscape:window-y="-8"
-     inkscape:window-x="-8"
-     inkscape:cy="8"
-     inkscape:cx="8"
-     inkscape:zoom="35.4375"
-     showgrid="false"
-     id="namedview6"
-     inkscape:window-height="1017"
-     inkscape:window-width="1920"
-     inkscape:pageshadow="2"
-     inkscape:pageopacity="0"
-     guidetolerance="10"
-     gridtolerance="10"
-     objecttolerance="10"
-     borderopacity="1"
+     inkscape:document-rotation="0"
+     pagecolor="#ffffff"
      bordercolor="#666666"
-     pagecolor="#ffffff" />
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     id="namedview6"
+     showgrid="false"
+     inkscape:zoom="35.4375"
+     inkscape:cx="8"
+     inkscape:cy="8"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4" />
   <path
-     inkscape:original-d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z"
-     inkscape:path-effect="#path-effect835"
-     style="fill:#ffffff;fill-opacity:1"
+     d="M 14.074219,0.49609375 C 13.67147,0.47510416 13.281259,0.625206 12.958984,0.95898438 L 8,5.9179688 3.0410156,0.95898438 c -0.5766942,-0.57652026 -1.5052362,-0.57662106 -2.08203122,0 -0.57652026,0.57669422 -0.57657066,1.50528662 0,2.08203122 L 5.9179688,8 0.953125,12.964844 c -1.33855826,1.385911 0.6961238,3.420485 2.0878906,2.076172 L 8,10.082031 l 4.964844,4.964844 c 1.385911,1.338559 3.420485,-0.696124 2.076172,-2.087891 L 10.082031,8 15.035156,3.046875 c 1.012403,-0.9778107 0.23151,-2.48863603 -0.960937,-2.55078125 z"
      id="path2"
-     d="m 14.056641,0.80273438 c -0.305817,-0.0159379 -0.614664,0.097397 -0.88086,0.37304682 L 8,6.3515625 2.8242188,1.1757812 c -0.4561851,-0.45604738 -1.1922169,-0.45608294 -1.6484376,0 -0.45604738,0.4561851 -0.45606516,1.1922347 0,1.6484376 L 6.3515625,8 1.1738281,13.177734 c -1.06139453,1.098943 0.5493823,2.70991 1.6503907,1.646485 L 8,9.6484375 13.177734,14.826172 c 1.098943,1.061395 2.70991,-0.549383 1.646485,-1.650391 L 9.6484375,8 14.822266,2.8261719 C 15.65312,2.0237064 14.968518,0.85025747 14.056641,0.80273438 Z" />
+     style="fill:#d10000;fill-opacity:1"
+     inkscape:path-effect="#path-effect835"
+     inkscape:original-d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z" />
 </svg>
