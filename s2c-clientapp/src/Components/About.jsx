@@ -12,6 +12,7 @@ class About extends React.Component {
                     This site is used to help us gather training data for our thesis: SketchToCircuit<br/>
                     The goal of SketchToCircuit is to easily convert sketches of electronic circuits to a format understandable by simulation and displaying software. We therefore hope to make the life of teachers and students easier by enabling them to use their sketches for further digital processing.
                 </p>
+                <img alt="" className="BulmeLogo" src="/Logo/bulme.png"/>
             </div>
         );
     }
