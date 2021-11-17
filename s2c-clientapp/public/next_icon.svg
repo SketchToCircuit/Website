@@ -24,9 +24,9 @@
    inkscape:window-maximized="1"
    inkscape:window-y="-8"
    inkscape:window-x="-8"
-   inkscape:cy="27.875999"
-   inkscape:cx="27.875999"
-   inkscape:zoom="10.170039"
+   inkscape:cy="38.032714"
+   inkscape:cx="46.799766"
+   inkscape:zoom="7.1913035"
    showgrid="false"
    id="namedview7"
    inkscape:window-height="1017"
@@ -38,11 +38,12 @@
    objecttolerance="10"
    borderopacity="1"
    bordercolor="#666666"
-   pagecolor="#ffffff" />
+   pagecolor="#ffffff"
+   inkscape:document-rotation="0" />
 <g
    id="g4">
 	<path
-   style="fill:#ffffff;fill-opacity:1"
+   style="fill:#00a600;fill-opacity:1"
    sodipodi:nodetypes="ccsccccscccc"
    id="path2"
    d="m 43.006,23.916 c -22.521,-22.335 0,0 -22.521,-22.335 -2.109,-2.107 -5.527,-2.108 -7.637,0.001 -2.109,2.108 -2.109,5.527 0,7.637 L 31.459,27.828 12.754,46.535 c -2.11,2.107 -2.11,5.527 0,7.637 1.055,1.053 2.436,1.58 3.817,1.58 1.381,0 2.765,-0.527 3.817,-1.582 L 43.006,31.74 c 1.08,-1.08 1.598,-2.498 1.574,-3.912 0.025,-1.415 -0.494,-2.835 -1.574,-3.912 z" />
