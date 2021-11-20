@@ -358,5 +358,13 @@
         "val_hint": "Do you see a labeled motor?",
         "component_hint_img": "/data/hints/M_V.jpg",
         "labeled_hint_img": "/data/hints/M_V_labeled.jpg"
+    },
+    {
+        "component_id": 46,
+        "file_prefix": "L2",
+        "draw_hint": "Please draw a coil",
+        "val_hint": "Do you see a labeled coil?",
+        "component_hint_img": "/data/hints/L2.jpg",
+        "labeled_hint_img": "/data/hints/L2_labeled.jpg"
     }
 ]
