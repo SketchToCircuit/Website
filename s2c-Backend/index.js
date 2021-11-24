@@ -117,10 +117,4 @@ function PacketHandler(data, ws) {
     return true;
 }
 
-//Sketchy
-process.on('uncaughtException', err => {
-    dataFolder.writeErrorLog(err, "Uncaught:Severe");
-    process.exit(1) //mandatory (as per the Node.js docs)
-  })
-
 console.log("Running");
