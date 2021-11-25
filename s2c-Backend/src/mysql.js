@@ -62,16 +62,24 @@ function AddUser(googleId, username, email) {
             database.query(query, (err, result) => {
                 if (err) {
                     console.error(err);
+                } else {
+                    query = "UPDATE google_user SET email = ? WHERE google_id = ? AND email is NULL;";
+                    query = mysql.format(query, [googleId, email]);
+                    database.query(query, (err, result) => {
+                        if (err) {
+                            console.error(err);
+                        }
+                    });
                 }
             })
-        }
-    });
-
-    query = "UPDATE google_user SET email = ? WHERE google_id = ? AND email is NULL";
-    query = mysql.format(query, [googleId, email]);
-    database.query(query, (err, result) => {
-        if (err) {
-            console.error(err);
+        } else {
+            query = "UPDATE google_user SET email = ? WHERE google_id = ? AND email is NULL;";
+            query = mysql.format(query, [googleId, email]);
+            database.query(query, (err, result) => {
+                if (err) {
+                    console.error(err);
+                }
+            });
         }
     });
 }
@@ -92,7 +100,7 @@ function getUserScore(googleId, callback)
 function getScoreBoard(userScore, callback)
 {
     let query = "SELECT score, username FROM google_user ORDER BY score DESC LIMIT ?";
-    query = mysql.format(query, env.NUM_SCORES)
+    query = mysql.format(query, parseInt(env.NUM_SCORES, 10))
     database.query(query, (err, result) => {
         if (err) {
             console.error(err);
