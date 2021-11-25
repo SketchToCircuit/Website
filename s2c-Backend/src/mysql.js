@@ -48,7 +48,7 @@ async function loadData()
 }
 
 // add googleId to database
-function AddUser(googleId, username) {
+function AddUser(googleId, username, email) {
     let query = "SELECT * FROM google_user WHERE google_id = ?;";
     query = mysql.format(query, googleId);
     database.query(query, (err, result) => {
@@ -58,12 +58,20 @@ function AddUser(googleId, username) {
 
         if (!err && result && !result.length) {
             query = "INSERT INTO google_user(google_id, username, score, untrusted) VALUES(?,?,0,FALSE);";
-            query = mysql.format(query, [googleId, username])
+            query = mysql.format(query, [googleId, username, email])
             database.query(query, (err, result) => {
                 if (err) {
                     console.error(err);
                 }
             })
+        }
+    });
+
+    query = "UPDATE google_user SET email = ? WHERE google_id = ? AND email is NULL";
+    query = mysql.format(query, [googleId, email]);
+    database.query(query, (err, result) => {
+        if (err) {
+            console.error(err);
         }
     });
 }

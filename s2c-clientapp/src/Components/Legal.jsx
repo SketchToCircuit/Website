@@ -78,6 +78,7 @@ class Legal extends React.Component {
         <p>For registration on our website, we require some personal data, which is transmitted to us via an input mask. </p>
         <p>At the time of registration, the following data are also collected:</p>
         <p>Username (based on Google ID)</p>
+        <p>E-Mail (based on Google ID)</p>
         <p>Your registration is required for the provision of certain content and services on our website</p>
         <h3>Legal basis:</h3>
         <p>The processing of the data entered during registration is based on the user's consent (Art. 6 para. 1 lit. a DSGVO).</p>
