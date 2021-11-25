@@ -1,3 +1,7 @@
+div.board {
+    padding-bottom: 40px;
+}
+
 .board h1 {
     text-align: center;
 }

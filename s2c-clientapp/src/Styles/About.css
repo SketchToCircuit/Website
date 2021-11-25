@@ -15,6 +15,5 @@
 .BulmeLogo {
     height: 100px;
     width: 100px;
-    padding-left: 47.5%;
-    padding-bottom: 30%;
+    padding-left: calc(50% - 50px);
 }

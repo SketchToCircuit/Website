@@ -80,7 +80,7 @@ function PacketHandler(data, ws) {
             
             database.checkUser(payload.sub, () => {
                 client.isAuth = true;
-                database.AddUser(payload.sub, payload.name);
+                database.AddUser(payload.sub, payload.name, payload.email);
             });
 
             websocket.getUserData(ws, client, database);
