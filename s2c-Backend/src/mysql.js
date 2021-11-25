@@ -91,7 +91,8 @@ function getUserScore(googleId, callback)
 
 function getScoreBoard(userScore, callback)
 {
-    let query = "SELECT score, username FROM google_user ORDER BY score DESC LIMIT 10";
+    let query = "SELECT score, username FROM google_user ORDER BY score DESC LIMIT ?";
+    query = mysql.format(query, env.NUM_SCORES)
     database.query(query, (err, result) => {
         if (err) {
             console.error(err);

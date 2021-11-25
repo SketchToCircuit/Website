@@ -21,13 +21,13 @@ class Leaderboard extends React.Component {
                     <td>{user.name}</td>
                     <td>{user.score}</td></tr>);
             }
+            
+            tableEntries.push(<tr>
+                <td>...</td>
+                <td>...</td>
+                <td>...</td></tr>);
 
             if (!onList) {
-                tableEntries.push(<tr>
-                    <td>...</td>
-                    <td>...</td>
-                    <td>...</td></tr>);
-
                 tableEntries.push(<tr>
                     <td></td>
                     <td>{this.props.data.username}</td>
