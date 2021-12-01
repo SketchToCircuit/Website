@@ -41,7 +41,7 @@ function init()
 
 function writeErrorLog(data, level)
 {
-    fs.appendFile(env.LOGLOC, '\n' + `[${level}]` + data);
+    fs.appendFile(env.LOGLOC, '\n' + `[${level}]` + data, (e) => {});
 }
 
 module.exports = {
