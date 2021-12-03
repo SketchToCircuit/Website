@@ -170,7 +170,7 @@ function getDrawData(lastDrawId, base64Helper, callback) {
                 drawData.id = r.component_id;
                 drawData.componentText = r.draw_hint;
                 drawData.labelText = "Please label the component somewhere";
-                [dtawData.componentImg, drawData.labelImg] = await Promise.all([base64Helper.getBase64Img(r.component_hint_img), base64Helper.getBase64Img(r.labeled_hint_img)]);
+                [drawData.componentImg, drawData.labelImg] = await Promise.all([base64Helper.getBase64Img(r.component_hint_img), base64Helper.getBase64Img(r.labeled_hint_img)]);
                 return drawData;
             }
 
