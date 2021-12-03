@@ -145,8 +145,7 @@ function getValidationData(base64Helper, googleId, callback) {
             async function combineData(r) {
                 let valData = new Object();
                 valData.hintText = r.val_hint;
-                valData.hintImg = await base64Helper.getBase64Img(r.labeled_hint_img);
-                valData.valImg = await base64Helper.getCombinedBase64Img(r.component_path, r.label_path);
+                [valData.hintImg, valData.valImg] = await Promise.all([base64Helper.getBase64Img(r.labeled_hint_img), base64Helper.getCombinedBase64Img(r.component_path, r.label_path)]);
                 valData.imgId = r.image_id;
                 return valData;
             }
@@ -170,9 +169,8 @@ function getDrawData(lastDrawId, base64Helper, callback) {
                 drawData.type = r.file_prefix;
                 drawData.id = r.component_id;
                 drawData.componentText = r.draw_hint;
-                drawData.componentImg = await base64Helper.getBase64Img(r.component_hint_img);
                 drawData.labelText = "Please label the component somewhere";
-                drawData.labelImg = await base64Helper.getBase64Img(r.labeled_hint_img);
+                [dtawData.componentImg, drawData.labelImg] = await Promise.all([base64Helper.getBase64Img(r.component_hint_img), base64Helper.getBase64Img(r.labeled_hint_img)]);
                 return drawData;
             }
 

@@ -19,8 +19,7 @@ async function getBase64Img(absPath) {
 
 async function getCombinedBase64Img(pathA, pathB) {
     try {
-        let imgA = await Jimp.read(pathA);
-        let imgB = await Jimp.read(pathB);
+        let [imgA, imgB] = await Promise.all([await Jimp.read(pathA), await Jimp.read(pathB)])
         imgA.composite(imgB, 0, 0, {
             mode: Jimp.BLEND_DARKEN
         });
