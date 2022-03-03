@@ -1,4 +1,4 @@
-class UserObject {
+class UserObject {//Object to store all relevant data from user
     constructor(id) {
         this.id = id; //UserID this.
         this.isAuth = false; //Is user Authenticated this.

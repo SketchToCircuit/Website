@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const {env} = require('process');
 
-function init()
+function init()//Initalize folders and files
 {
     if(!fs.existsSync(env.SAVEFOLDER))
     {
@@ -12,14 +12,13 @@ function init()
     {
         fs.mkdirSync(env.HINTFOLDER);
     }
-    
     if(!fs.existsSync(env.LOGLOC));
     {
         fs.closeSync(fs.openSync(env.LOGLOC, 'w'))
     }
 
     let files = fs.readdirSync(env.HINTFOLDER);
-    if(files)
+    if(files)//If folder exists delete all files
     {
         files.forEach(file => {
             let absPAth = path.join(env.HINTFOLDER, file)
@@ -29,7 +28,7 @@ function init()
 
     let copyPath = "/code/data/hints";
     files = fs.readdirSync(copyPath)
-    if(files)
+    if(files)//Copy files into hint folder
     {
         files.forEach(file => {
             let absPath = path.join(copyPath, file);
@@ -39,7 +38,7 @@ function init()
     }
 }
 
-function writeErrorLog(data, level)
+function writeErrorLog(data, level)//Write errors into log
 {
     fs.appendFile(env.LOGLOC, '\n' + `[${level}]` + data, (e) => {});
 }

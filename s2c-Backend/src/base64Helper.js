@@ -3,7 +3,7 @@ const util = require('util');
 const fs = require('fs');
 const path = require('path');
 
-async function getBase64Img(absPath) {
+async function getBase64Img(absPath) {//Load image from disk and convert it to base64
     try {
         let img = await Jimp.read(absPath);
         let ext = absPath.split('.').pop().toLowerCase();
@@ -17,7 +17,7 @@ async function getBase64Img(absPath) {
     }
 }
 
-async function getCombinedBase64Img(pathA, pathB) {
+async function getCombinedBase64Img(pathA, pathB) {//Load 2 images from disk and combines them and returns the new image as base64
     try {
         let [imgA, imgB] = await Promise.all([await Jimp.read(pathA), await Jimp.read(pathB)])
         imgA.composite(imgB, 0, 0, {
@@ -30,8 +30,7 @@ async function getCombinedBase64Img(pathA, pathB) {
     }
 }
 
-// store image
-async function saveBase64Image(dataString, absPath) {
+async function saveBase64Image(dataString, absPath) {//Save base64 image on disk
     try {
         let matches = dataString.match(/^data:image\/([A-Za-z]+);base64,(.+)$/);
         if (matches.length !== 3) {
@@ -45,8 +44,6 @@ async function saveBase64Image(dataString, absPath) {
         return '';
     }
 }
-
-
 
 module.exports = {
     getBase64Img,
