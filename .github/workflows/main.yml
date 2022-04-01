@@ -1,7 +1,7 @@
 name: CI to Docker
 on:
   push:
-    branches: [ master ]
+    branches: [ master-production ]
 jobs:
   s2c:
     runs-on: [self-hosted]
